@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- 背景 -->
+  <rect width="900" height="600" fill="#f8f9fa" />
+  
+  <!-- タイトル -->
+  <rect x="150" y="20" width="600" height="60" rx="10" fill="#2c3e50" />
+  <text x="450" y="60" font-family="'Noto Sans JP', sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">市民開発の理念体系</text>
+  
+  <!-- パーパス部分 -->
+  <rect x="250" y="100" width="400" height="100" rx="10" fill="#EE6C8A" />
+  <text x="450" y="130" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">パーパス</text>
+  <foreignObject x="270" y="140" width="360" height="40">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: white; text-align: center;">
+      RPAを通じて全社員のデジタル能力を引き出し、<br/>業務革新と企業価値向上を実現する。
+    </div>
+  </foreignObject>
+  
+  <!-- 中央から各要素への線 -->
+  <line x1="450" y1="200" x2="450" y2="220" stroke="#888" stroke-width="3" />
+  
+  <!-- 3分岐線 -->
+  <line x1="450" y1="220" x2="250" y2="220" stroke="#888" stroke-width="3" />
+  <line x1="450" y1="220" x2="450" y2="220" stroke="#888" stroke-width="3" />
+  <line x1="450" y1="220" x2="650" y2="220" stroke="#888" stroke-width="3" />
+  
+  <!-- 縦線 -->
+  <line x1="250" y1="220" x2="250" y2="240" stroke="#888" stroke-width="3" />
+  <line x1="450" y1="220" x2="450" y2="240" stroke="#888" stroke-width="3" />
+  <line x1="650" y1="220" x2="650" y2="240" stroke="#888" stroke-width="3" />
+  
+  <!-- ミッション -->
+  <rect x="150" y="240" width="200" height="320" rx="10" fill="#9B59B6" />
+  <text x="250" y="270" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">ミッション</text>
+  <text x="250" y="300" font-family="'Noto Sans JP', sans-serif" font-size="16" fill="white" text-anchor="middle">私たちの使命</text>
+  
+  <circle cx="170" cy="330" r="5" fill="white" />
+  <foreignObject x="180" y="320" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+      全社員のDXマインド醸成とRPAスキル向上の促進
+    </div>
+  </foreignObject>
+  
+  <circle cx="170" cy="380" r="5" fill="white" />
+  <foreignObject x="180" y="370" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+      業務効率化・自動化による生産性と企業価値の向上
+    </div>
+  </foreignObject>
+  
+  <circle cx="170" cy="430" r="5" fill="white" />
+  <foreignObject x="180" y="420" width="160" height="50">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+      市民開発者を支援するCoE体制の確立と強化
+    </div>
+  </foreignObject>
+  
+  <!-- ビジョン -->
+  <rect x="350" y="240" width="200" height="320" rx="10" fill="#1ABC9C" />
+  <text x="450" y="270" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">ビジョン</text>
+  <text x="450" y="300" font-family="'Noto Sans JP', sans-serif" font-size="16" fill="white" text-anchor="middle">目指す未来像</text>
+  
+  <circle cx="370" cy="330" r="5" fill="white" />
+  <foreignObject x="380" y="320" width="160" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+      すべての部門に市民開発の文化が浸透し、自律的にDXを推進する組織
+    </div>
+  </foreignObject>
+  
+  <circle cx="370" cy="390" r="5" fill="white" />
+  <foreignObject x="380" y="380" width="160" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+      RPAスキルを習得した人材が社内で活躍し、継続的な業務改善が実現する環境
+    </div>
+  </foreignObject>
+  
+  <circle cx="370" cy="450" r="5" fill="white" />
+  <foreignObject x="380" y="440" width="160" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+      高度な技術サポートと知識共有が行われる市民開発者コミュニティの形成
+    </div>
+  </foreignObject>
+  
+  <!-- バリュー -->
+  <rect x="550" y="240" width="200" height="320" rx="10" fill="#F1C40F" />
+  <text x="650" y="270" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="#2c3e50" text-anchor="middle">バリュー</text>
+  
+  <!-- バリュー項目 -->
+  <rect x="570" y="300" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+  <text x="650" y="325" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">革新</text>
+  
+  <rect x="570" y="350" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+  <text x="650" y="375" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">実践</text>
+  
+  <rect x="570" y="400" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+  <text x="650" y="425" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">共創</text>
+  
+  <rect x="570" y="450" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+  <text x="650" y="475" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">誠実</text>
+  
+  <rect x="570" y="500" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+  <text x="650" y="525" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">挑戦</text>
+  
+
+</svg>

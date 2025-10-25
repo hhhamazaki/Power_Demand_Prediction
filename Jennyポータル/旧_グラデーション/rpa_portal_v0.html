@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPA市民開発ポータル | DX推進チーム</title>
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            scroll-behavior: smooth;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .logo-accent {
+            color: #3498db;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 12px 5px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s, border-bottom 0.3s;
+            font-size: 0.95rem;
+            padding-bottom: 3px;
+            border-bottom: 2px solid transparent;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+        }
+
+        /* ハンバーガーメニュー */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            height: 3px;
+            width: 100%;
+            background-color: #2c3e50;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        /* メインビジュアル */
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            text-align: center;
+            padding: 100px 20px 80px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="none" width="100" height="100"/><path fill="rgba(255,255,255,0.05)" d="M50 0 L100 50 L50 100 L0 50 Z"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 35px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #fff;
+            color: #3498db;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            border-color: #fff;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0,0,0,0.15);
+        }
+
+        /* コンテンツ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: #3498db;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* コース一覧 */
+        .courses {
+            display: grid;
+            /* 2カラム表示に固定 */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.4s, box-shadow 0.4s;
+            position: relative;
+            top: 0;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+
+        .course-level {
+            background: #3498db;
+            color: white;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            position: relative;
+        }
+
+        .course-level.entry {
+            background: #3498db;
+        }
+
+        .course-level.beginner {
+            background: #27ae60;
+        }
+
+        .course-level.intermediate {
+            background: #f39c12;
+        }
+
+        .course-level.advanced {
+            background: #e74c3c;
+        }
+
+        .course-content {
+            padding: 25px;
+        }
+
+        .course-content h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .course-content p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .course-items {
+            background: #f1f8fe;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .course-level.entry + .course-content .course-items {
+            border-left-color: #3498db;
+        }
+
+        .course-level.beginner + .course-content .course-items {
+            border-left-color: #27ae60;
+            background: #f0f9f4;
+        }
+
+        .course-level.intermediate + .course-content .course-items {
+            border-left-color: #f39c12;
+            background: #fef8ea;
+        }
+
+        .course-level.advanced + .course-content .course-items {
+            border-left-color: #e74c3c;
+            background: #fdf1f0;
+        }
+
+        .course-items h4 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+        }
+
+        .course-items ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .course-items li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .course-items li:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            color: #3498db;
+            border: 2px solid #3498db;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .course-level.entry + .course-content .btn-outline {
+            color: #3498db;
+            border-color: #3498db;
+        }
+
+        .course-level.beginner + .course-content .btn-outline {
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .course-level.intermediate + .course-content .btn-outline {
+            color: #f39c12;
+            border-color: #f39c12;
+        }
+
+        .course-level.advanced + .course-content .btn-outline {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-outline:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .course-level.entry + .course-content .btn-outline:hover {
+            background-color: #3498db;
+        }
+
+        .course-level.beginner + .course-content .btn-outline:hover {
+            background-color: #27ae60;
+        }
+
+        .course-level.intermediate + .course-content .btn-outline:hover {
+            background-color: #f39c12;
+        }
+
+        .course-level.advanced + .course-content .btn-outline:hover {
+            background-color: #e74c3c;
+        }
+
+        /* 詳細テーブル */
+        /* テーブルはカードに置き換えるため非表示または削除 */
+        /* table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #eaf2f8;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        } */
+
+        /* 共通情報セクションのスタイル */
+        .info-section {
+            background: white;
+            padding: 60px 30px;
+            margin-top: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-section .section-title {
+            margin-bottom: 40px;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            /* 既存の下線スタイル - カード化により不要になる可能性あり */
+            /* border-bottom: 2px solid #3498db; */
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        /* コース詳細の見出しにレベルごとの下線色を適用 - カード化により不要 */
+        /* #course-details-intro {
+            border-bottom-color: #3498db;
+        }
+
+        #course-details-beginner {
+            border-bottom-color: #27ae60;
+        }
+
+        #course-details-intermediate {
+            border-bottom-color: #f39c12;
+        }
+
+        #course-details-advanced {
+            border-bottom-color: #e74c3c;
+        } */
+
+
+        .info-section h4 {
+            color: #3498db;
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+        }
+
+        .info-section ul li {
+            margin-bottom: 12px;
+            color: #555;
+            font-size: 1.05rem;
+            position: relative;
+            padding-left: 28px;
+            line-height: 1.6;
+        }
+
+        .info-section ul li::before {
+            content: '•';
+            color: #3498db;
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left: 8px;
+            top: -2px;
+        }
+
+        /* カードとグリッドの共通スタイル */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .info-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid #3498db;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .info-card .icon {
+            font-size: 2rem;
+            color: #3498db;
+            margin-right: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            background-color: #f1f8fe;
+            border-radius: 50%;
+        }
+
+        .info-card .content {
+            flex-grow: 1;
+        }
+
+        .info-card h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .info-card p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .info-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 12px;
+            margin-bottom: 0;
+            padding-left: 0; /* Remove default padding */
+        }
+
+        .info-card ul li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative; /* Add position relative for ::before */
+            line-height: 1.6;
+        }
+
+         .info-card ul li::before {
+            content: '•'; /* Add bullet point */
+            color: #3498db; /* Bullet color */
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left: 8px; /* Adjust position */
+            top: -2px; /* Adjust position */
+        }
+
+
+        .info-card ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* バリューカード特別スタイル */
+        .value-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .value-card .icon {
+            margin: 0 auto 15px;
+            width: 70px;
+            height: 70px;
+            font-size: 2.5rem;
+        }
+
+        /* コース詳細のカードスタイル */
+        .course-details-cards {
+            display: grid;
+            /* 1カラム表示に固定 */
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .course-details-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.4s, box-shadow 0.4s;
+            position: relative;
+            top: 0;
+        }
+
+        .course-details-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+
+        .course-details-card .course-level {
+             /* コース一覧と同じレベル色を適用 */
+             padding: 14px; /* パディングを調整 */
+             font-size: 1.1rem; /* フォントサイズを調整 */
+             font-weight: bold;
+             text-align: center;
+        }
+
+        .course-details-card .course-content {
+             padding: 25px; /* パディングを調整 */
+        }
+
+        .course-details-card .course-content h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .course-details-card .course-content p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+         /* コース詳細カード内のテーブルスタイル */
+        .course-details-card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0; /* テーブルの下マージンを削除 */
+            box-shadow: none; /* テーブルのシャドウを削除 (カード自体にシャドウがあるため) */
+            background-color: transparent; /* テーブルの背景色を透明に (カードの背景色を使用) */
+            border-radius: 0; /* テーブルの角丸を削除 */
+            overflow: hidden;
+        }
+
+        /* テーブルヘッダーのみ中央揃え */
+        .course-details-card th {
+            padding: 12px; /* テーブルセルのパディングを調整 */
+            text-align: center; /* テーブルヘッダーを中央揃え */
+            border: 1px solid #eee; /* テーブルボーダーの色を調整 */
+            font-size: 0.9rem; /* テーブル内のフォントサイズを調整 */
+            background-color: #f8f9fa; /* テーブルヘッダーの背景色を調整 */
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+         /* テーブルデータは左揃えを維持 */
+        .course-details-card td {
+            padding: 12px; /* テーブルセルのパディングを調整 */
+            text-align: left; /* テーブルデータを左揃え */
+            border: 1px solid #eee; /* テーブルボーダーの色を調整 */
+            font-size: 0.9rem; /* テーブル内のフォントサイズを調整 */
+        }
+
+
+        .course-details-card tr:hover {
+            background-color: #eef; /* ホバー時の背景色を調整 */
+        }
+
+        .course-details-card tr:nth-child(even) {
+            background-color: #f8f9fa; /* 偶数行の背景色を調整 */
+        }
+
+
+        /* フッター */
+        footer {
+            background: linear-gradient(to right, #2c3e50, #34495e);
+            color: white;
+            padding: 60px 20px 40px;
+            text-align: center;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #3498db, #2ecc71, #f1c40f, #e74c3c);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #3498db;
+        }
+
+        .footer-col p {
+            color: #bdc3c7;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            display: block;
+            padding: 3px 0;
+        }
+
+        .footer-col ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .copyright {
+            margin-top: 40px;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* コンタクト情報のスタイル */
+        .contact-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            nav.active {
+                max-height: 400px;
+                padding: 10px 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            nav ul li {
+                margin: 0;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid #eee;
+            }
+
+            nav ul li:last-child {
+                border-bottom: none;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 12px 0;
+                border-bottom: none;
+            }
+
+            .hero {
+                padding: 80px 15px 60px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            /* 画面幅768px以下では1カラム表示 */
+            .courses,
+            .course-details-cards { /* コース詳細カードもレスポンシブ対応 */
+                grid-template-columns: 1fr;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .footer-col {
+                margin-bottom: 0;
+            }
+
+            .footer-col h3 {
+                text-align: center;
+            }
+
+            .footer-col h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-col ul {
+                text-align: center;
+            }
+        }
+
+        /* アニメーション */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* スクロールトップボタン */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 99;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transform: translateY(20px);
+            text-decoration: none;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px) scale(1.05);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">RPA<span class="logo-accent">市民開発</span>ポータル</div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#hero" class="active">ホーム</a></li>
+                    <li><a href="#course-overview">研修コース</a></li>
+                    <li><a href="#course-details">詳細カリキュラム</a></li>
+                    <li><a href="#preparation">環境構築</a></li>
+                    <li><a href="#development-flow">開発フロー</a></li>
+                    <li><a href="#educational-content">教育コンテンツ</a></li>
+                    <li><a href="#philosophy-message">理念・ビジョン</a></li>
+                    <li><a href="#contact">お問い合わせ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>RPA市民開発で業務効率化を実現する</h1>
+            <p>RPA技術を習得して日常業務を自動化し、創造的な仕事に集中できる環境を作りましょう。</p>
+            <a href="#course-overview" class="btn">研修コースを見る</a>
+        </div>
+    </section>
+
+    <section class="container" id="course-overview">
+        <div class="section-title">
+            <h2>RPA現場ハンズオン研修（社内インターンシップ講座、新入社員研修）</h2>
+            <p>レベル別に体系化されたRPA開発コースで、着実にスキルアップできます</p>
+        </div>
+
+        <div class="courses">
+            <div class="course-card">
+                <div class="course-level entry">入門コース</div>
+                <div class="course-content">
+                    <h3>RPAの基本を学ぶ</h3>
+                    <p>RPAツールの基本操作からシンプルな自動化シナリオの作成まで、初めての方でも安心して学べるコースです。</p>
+                    <div class="course-items">
+                        <h4>学習内容</h4>
+                        <ul>
+                            <li>ブラウザ操作の自動化</li>
+                            <li>基本的な条件分岐</li>
+                            <li>Excel基本操作</li>
+                            <li>繰り返し処理の実装</li>
+                        </ul>
+                    </div>
+                    <a href="#course-details-intro-card" class="btn-outline">詳細を見る</a>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-level beginner">初級コース</div>
+                <div class="course-content">
+                    <h3>実践的な自動化スキル</h3>
+                    <p>業務で実際に使える自動化シナリオの作成方法を学び、様々なデータ処理や操作を自動化します。</p>
+                    <div class="course-items">
+                        <h4>学習内容</h4>
+                        <ul>
+                            <li>変数とデータ型の活用</li>
+                            <li>高度なWeb操作テクニック</li>
+                            <li>Excel操作の応用</li>
+                            <li>データ加工・変換技術</li>
+                            <li>複雑な条件分岐設計</li>
+                        </ul>
+                    </div>
+                    <a href="#course-details-beginner-card" class="btn-outline">詳細を見る</a>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-level intermediate">中級コース</div>
+                <div class="course-content">
+                    <h3>応用シナリオ作成</h3>
+                    <p>複雑な業務フローを自動化するための高度なテクニックと例外処理を学びます。</p>
+                    <div class="course-items">
+                        <h4>学習内容</h4>
+                        <ul>
+                            <li>堅牢な例外処理設計</li>
+                            <li>再利用可能なモジュール化</li>
+                            <li>多様なファイル形式の操作</li>
+                            <li>複数システム間の連携</li>
+                        </ul>
+                    </div>
+                    <a href="#course-details-intermediate-card" class="btn-outline">詳細を見る</a>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <div class="course-level advanced">上級コース</div>
+                <div class="course-content">
+                    <h3>高度な連携と活用</h3>
+                    <p>企業全体のデジタル変革を推進できる高度なRPA開発スキルを身につけます。</p>
+                    <div class="course-items">
+                        <h4>学習内容</h4>
+                        <ul>
+                            <li>APIを活用した外部連携</li>
+                            <li>エンタープライズレベルのセキュリティ</li>
+                            <li>AI/Copilotとの連携活用</li>
+                            <li>大規模プロジェクト管理手法</li>
+                        </ul>
+                    </div>
+                    <a href="#course-details-advanced-card" class="btn-outline">詳細を見る</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container info-section" id="course-details">
+        <div class="section-title">
+            <h2>詳細カリキュラム</h2>
+            <p>各コースで習得できる具体的なスキルと学習項目</p>
+        </div>
+
+        <div class="course-details-cards">
+            <div class="course-details-card" id="course-details-intro-card">
+                <div class="course-level entry">入門コース 詳細</div>
+                <div class="course-content">
+                    <h3>RPAの基本を習得する</h3>
+                    <p>RPAツールの基本操作から始め、シンプルな業務自動化の実現まで、初心者に最適なカリキュラムです。</p>
+                    <table>
+                        <tr>
+                            <th width="30%">学習項目</th>
+                            <th>習得スキル・アクティビティ</th>
+                        </tr>
+                        <tr>
+                            <td>RPAの基礎知識</td>
+                            <td>・RPAとは何か<br>・業務自動化のメリット<br>・適切な自動化対象の見極め方</td>
+                        </tr>
+                        <tr>
+                            <td>ブラウザ操作の自動化</td>
+                            <td>・Webページの操作（開く、クリック、入力）<br>・要素の選択と認識<br>・データ取得と抽出</td>
+                        </tr>
+                        <tr>
+                            <td>基本的な条件分岐</td>
+                            <td>・ファイル存在チェックに基づく処理分岐<br>・Web要素の有無による処理分岐</td>
+                        </tr>
+                        <tr>
+                            <td>Excel基本操作</td>
+                            <td>・範囲を指定してデータを読み込み<br>・特定のセルにデータを書き込み<br>・Excelファイルの保存</td>
+                        </tr>
+                        <tr>
+                            <td>繰り返し処理の実装</td>
+                            <td>・データテーブルの各行を処理<br>・指定回数の繰り返し<br>・条件を満たすまでの繰り返し</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="course-details-card" id="course-details-beginner-card">
+                <div class="course-level beginner">初級コース 詳細</div>
+                <div class="course-content">
+                    <h3>実践的な自動化スキル</h3>
+                    <p>業務で実際に使える自動化シナリオの作成方法を学び、様々なデータ処理や操作を自動化します。</p>
+                    <table>
+                        <tr>
+                            <th width="30%">学習項目</th>
+                            <th>習得スキル・アクティビティ</th>
+                        </tr>
+                        <tr>
+                            <td>変数とデータ型の活用</td>
+                            <td>・変数作成・型指定（文字列、数値、真偽値など）<br>・配列/リスト利用<br>・変数スコープの理解と活用</td>
+                        </tr>
+                        <tr>
+                            <td>高度なWeb操作テクニック</td>
+                            <td>・動的セレクターの利用<br>・要素の出現や消失を待機<br>・複雑な入力フォームの自動化（ドロップダウン、チェックボックスなど）</td>
+                        </tr>
+                         <tr>
+                            <td>Excel操作の応用</td>
+                            <td>・複数シートの操作と連携<br>・データテーブルの高度な活用（フィルタリング、ソート）<br>・Excel関数やVBAマクロの実行（引数なし/あり）</td>
+                        </tr>
+                        <tr>
+                            <td>データ加工・変換技術</td>
+                            <td>・文字列の分割、結合、置換、正規表現<br>・日付/時刻データの扱いとフォーマット変換<br>・データ型の変換</td>
+                        </tr>
+                        <tr>
+                            <td>複雑な条件分岐設計</td>
+                            <td>・複数の条件を組み合わせたIf/Switch文の活用<br>・フローチャートを用いた条件分岐の設計</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="course-details-card" id="course-details-intermediate-card">
+                <div class="course-level intermediate">中級コース 詳細</div>
+                <div class="course-content">
+                    <h3>応用シナリオ作成</h3>
+                    <p>複雑な業務フローを自動化するための高度なテクニックと例外処理を学びます。</p>
+                    <table>
+                        <tr>
+                            <th width="30%">学習項目</th>
+                            <th>習得スキル・アクティビティ</th>
+                        </tr>
+                        <tr>
+                            <td>堅牢な例外処理設計</td>
+                            <td>・Try-Catchブロックによるエラー制御<br>・カスタム例外の作成と利用<br>・エラー発生時のログ出力と通知<br>・リトライ処理の実装</td>
+                        </tr>
+                        <tr>
+                            <td>再利用可能なモジュール化</td>
+                            <td>・ワークフローの分割と再利用可能なコンポーネント化<br>・引数の設定とワークフロー間でのデータ受渡<br>・Configファイルや設定ファイルを利用した柔軟な設計</td>
+                        </tr>
+                         <tr>
+                            <td>多様なファイル形式の操作</td>
+                            <td>・ファイル/フォルダの一括処理（コピー、移動、削除）<br>・PDFファイルの読み込みとデータ抽出<br>・SharePoint Onlineなどのクラウドストレージ上のファイル操作</td>
+                        </tr>
+                        <tr>
+                            <td>複数システム間の連携</td>
+                            <td>・異なるアプリケーション間でのデータ連携<br>・ターミナルエミュレーターやレガシーシステム操作</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="course-details-card" id="course-details-advanced-card">
+                <div class="course-level advanced">上級コース 詳細</div>
+                <div class="course-content">
+                    <h3>高度な連携と活用</h3>
+                    <p>企業全体のデジタル変革を推進できる高度なRPA開発スキルを身につけます。</p>
+                    <table>
+                        <tr>
+                            <th width="30%">学習項目</th>
+                            <th>習得スキル・アクティビティ</th>
+                        </tr>
+                        <tr>
+                            <td>APIを活用した外部連携</td>
+                            <td>・REST APIの呼び出しとデータの送受信<br>・外部サービスの認証処理（OAuthなど）<br>・JSON/XMLデータの解析と生成</td>
+                        </tr>
+                        <tr>
+                            <td>エンタープライズレベルのセキュリティ</td>
+                            <td>・認証情報の安全な管理方法（Credential Managerなど）<br>・アクセス権限の設計と管理<br>・監査ログの実装と監視<br>・資格情報アセットの利用</td>
+                        </tr>
+                         <tr>
+                            <td>AI/Copilotとの連携活用</td>
+                            <td>・AIサービスのAPI連携（テキスト分析、画像認識など）<br>・Copilotなど生成AIを活用したRPA制御やシナリオ生成<br>・AIによるデータ分析結果をRPAに連携</td>
+                        </tr>
+                        <tr>
+                            <td>大規模プロジェクト管理手法</td>
+                        <td>・バージョン管理システムの利用（Gitなど）<br>・テスト自動化と継続的インテグレーション<br>・プロジェクト計画と進捗管理<br>・デプロイメント戦略</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="container info-section" id="preparation">
+        <div class="section-title">
+            <h2>環境構築</h2>
+            <p>市民開発を始めるための環境構築に関する情報です。</p>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-tools"></i></span>
+                <div class="content">
+                    <h4>開発ツールのインストール</h4>
+                    <p>市民開発に使用するツールのダウンロードとインストール手順について説明します。</p>
+                     <ul>
+                        <li>ツールダウンロードリンク</li>
+                        <li>インストールガイド</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="info-card">
+                 <span class="icon"><i class="fas fa-laptop-code"></i></span>
+                <div class="content">
+                    <h4>必要なソフトウェア・設定</h4>
+                    <p>開発に必要なその他のソフトウェアや環境設定に関する情報です。</p>
+                    <ul>
+                        <li>〇〇ツール バージョンX.X</li>
+                        <li>△△ライブラリ</li>
+                        <li>その他推奨環境</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container info-section" id="development-flow">
+        <div class="section-title">
+            <h2>開発フロー</h2>
+            <p>市民開発におけるロボット/ツールの開発フローについて説明します。</p>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-pencil-alt"></i></span>
+                <div class="content">
+                    <h4>開発フェーズ</h4>
+                    <p>ロボット/ツールの設計、実装、テストを行います。</p>
+                    <ul>
+                        <li>要件定義</li>
+                        <li>設計書の作成</li>
+                        <li>実装</li>
+                        <li>単体テスト</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-flask"></i></span>
+                <div class="content">
+                    <h4>プレ本番フェーズ</h4>
+                    <p>本番環境への移行に向けた準備とテストを行います。</p>
+                     <ul>
+                        <li>結合テスト</li>
+                        <li>ユーザー受け入れテスト (UAT)</li>
+                        <li>運用手順書の作成</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-rocket"></i></span>
+                <div class="content">
+                    <h4>本番フェーズ</h4>
+                    <p>ロボット/ツールの本番稼働と運用・保守を行います。</p>
+                     <ul>
+                        <li>本番リリース</li>
+                        <li>稼働監視</li>
+                        <li>メンテナンス</li>
+                        <li>改修対応</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section class="container info-section" id="educational-content">
+        <div class="section-title">
+            <h2>教育コンテンツ</h2>
+            <p>市民開発スキル習得に役立つ追加コンテンツです。</p>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                <span class="icon"><i class="fas fa-robot"></i></span>
+                <div class="content">
+                    <h4>ミニロボット/サンプルツール集</h4>
+                    <p>すぐに試せる簡単なミニロボットやサンプルツールを提供します。</p>
+                    <ul>
+                        <li>Webサイトからのデータ取得ミニロボ</li>
+                        <li>Excelデータ処理ミニロボ</li>
+                        <li>メール自動送信ミニロボ</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-file-alt"></i></span>
+                <div class="content">
+                    <h4>応用サンプル</h4>
+                    <p>より複雑な業務に対応したサンプルロボット/ツールです。</p>
+                     <ul>
+                        <li>請求書処理サンプルロボット</li>
+                        <li>レポート作成サンプルロボット</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="info-card">
+                 <span class="icon"><i class="fas fa-book-open"></i></span>
+                <div class="content">
+                    <h4>UiPath_Academy</h4>
+                    <ul>
+                        <li><a href="https://academy.uipath.com/courses/build-your-first-automation-with-studiox-v202110-jp" target="_blank">StudioX による初めてのオートメーション開発 (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/microsoft-excel-automation-in-studiox-v202110-jp" target="_blank">StudioX での Microsoft Excel 操作の自動化 (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/email-automation-in-studiox-v202110-jp" target="_blank">StudioX での メール操作の自動化 (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/decisions-iterations-and-scenarios-in-studiox-v202110-jp" target="_blank">StudioX での 分岐と繰り返しの処理 (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/get-started-with-citizen-developer-journey-v202010" target="_blank">市民開発者のジャーニーへようこそ (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/file-and-folder-automation-in-studiox-v202110-jp" target="_blank">StudioX での ファイル、フォルダー操作の自動化 (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/user-interface-automation-in-studiox-v202110-jp" target="_blank">StudioX での UI 操作の自動化 (v2021.10)</a></li>
+                        <li><a href="https://academy.uipath.com/courses/how-to-handle-errors-in-studiox-v202110-jp" target="_blank">StudioX での エラー処理方法 (v2021.10)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="container info-section" id="philosophy-message">
+        <div class="section-title">
+            <h2>市民開発チームの理念と目標</h2>
+            <p>私たちのチームが市民開発を通じて目指すものです。</p>
+        </div>
+
+        <h3>パーパス</h3>
+        <p>RPAを活用して組織全体のデジタル変革を推進し、企業価値を向上させる。</p>
+
+        <h3>ミッション：RPAを活用した</h3>
+        <ul>
+            <li>目的 ①DXマインド醸成およびスキル向上</li>
+            <li>目的 ②生産性向上による企業価値向上</li>
+            <li>目的 ③市民開発サポートCoEの増員</li>
+        </ul>
+
+        <h3>ビジョン：市民開発サポート要員の育成</h3>
+        <ul>
+            <li>目標 ①業務フロー自体を変革する能力の習得</li>
+            <li>目標 ②ユーザー開発をサポートできる能力の習得</li>
+            <li>目標 ③問い合わせ対応できる能力の習得</li>
+        </ul>
+
+        <h3>バリュー</h3>
+        <div class="card-grid">
+            <div class="info-card value-card">
+                <span class="icon"><i class="fas fa-lightbulb"></i></span>
+                <div class="content">
+                    <h4>革新</h4>
+                    <p>常に最先端のテクノロジーと手法を追求し、新しい可能性を開拓します</p>
+                </div>
+            </div>
+            <div class="info-card value-card">
+                <span class="icon"><i class="fas fa-cogs"></i></span>
+                <div class="content">
+                    <h4>実践</h4>
+                    <p>理論だけでなく、実務に即した実践的なスキルと知識を重視します</p>
+                </div>
+            </div>
+            <div class="info-card value-card">
+                 <span class="icon"><i class="fas fa-handshake"></i></span>
+                <div class="content">
+                    <h4>共創</h4>
+                    <p>仲間と共に考え、最適な解決策を共創します</p>
+                </div>
+            </div>
+             <div class="info-card value-card">
+                 <span class="icon"><i class="fas fa-heart"></i></span>
+                <div class="content">
+                    <h4>誠実</h4>
+                    <p>すべてのステークホルダーに対して誠実に向き合い、信頼関係を築きます</p>
+                </div>
+            </div>
+             <div class="info-card value-card">
+                 <span class="icon"><i class="fas fa-rocket"></i></span>
+                <div class="content">
+                    <h4>挑戦</h4>
+                    <p>失敗を恐れず、常に新しいことへの挑戦を続けます</p>
+                </div>
+            </div>
+        </div>
+
+
+        <h3>代表メッセージ</h3>
+        <h4>AI時代の働き方を変革する</h4>
+        <p>市民開発チームは、社員一人ひとりがテクノロジーを活用し、業務効率を向上させることを目指しています。RPAはその強力なツールの一つです。</p>
+        <p>このRPAコースを通じて、皆様が日々の定型業務から解放され、より創造的で戦略的な業務に集中できるようになることを願っています。共に学び、新しい働き方を創造していきましょう。</p>
+        <p>市民開発チーム リーダー [リーダー名]</p>
+    </section>
+
+     <section class="container info-section" id="guide-rules">
+        <div class="section-title">
+            <h2>ガイド・規約</h2>
+            <p>市民開発における開発および運用に関するガイドラインと規約です。</p>
+        </div>
+         <div class="card-grid">
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-ruler"></i></span>
+                <div class="content">
+                    <h4>開発ガイドライン</h4>
+                    <p>ロボット/ツール開発における標準的なルールや推奨事項です。</p>
+                    <ul>
+                        <li>命名規則</li>
+                        <li>エラー処理の標準</li>
+                        <li>セキュリティに関する注意点</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-scroll"></i></span>
+                <div class="content">
+                    <h4>運用規約</h4>
+                    <p>開発したロボット/ツールの申請、承認、本番稼働、保守に関する規約です。</p>
+                     <ul>
+                        <li>開発申請プロセス</li>
+                        <li>本番稼働申請と承認</li>
+                        <li>定期的な棚卸し</li>
+                        <li>変更管理</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container info-section" id="operating-status">
+        <div class="section-title">
+            <h2>稼働状況・開発者ランキング</h2>
+            <p>市民開発によるロボット/ツールの稼働状況や、開発に貢献している社員のランキングです。</p>
+        </div>
+         <div class="card-grid">
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-chart-bar"></i></span>
+                <div class="content">
+                    <h4>ロボット/ツール稼働状況</h4>
+                    <p>現在稼働しているロボット/ツール数、自動化された業務時間などの統計情報です。</p>
+                    <p>[稼働状況のサマリー]</p>
+                </div>
+            </div>
+             <div class="info-card">
+                 <span class="icon"><i class="fas fa-trophy"></i></span>
+                <div class="content">
+                    <h4>開発者トップ10ランキング</h4>
+                    <p>開発したロボット/ツール数や貢献度に基づいたランキングです。</p>
+                    <p>[ランキングリストのプレースホルダー]</p>
+                    <p>※ランキングは定期的に更新されます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section class="container info-section" id="community-qa">
+        <div class="section-title">
+            <h2>コミュニティ・よくある質問</h2>
+            <p>市民開発に関するよくある質問や、コミュニティ活動に関する情報です。</p>
+        </div>
+         <div class="card-grid">
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-question-circle"></i></span>
+                <div class="content">
+                    <h4>よくある質問 (FAQ)</h4>
+                    <p>市民開発に関する一般的な質問と回答を掲載しています。</p>
+                    <p>[FAQリストのプレースホルダー]</p>
+                </div>
+            </div>
+            <div class="info-card">
+                 <span class="icon"><i class="fas fa-comments"></i></span>
+                <div class="content">
+                    <h4>コミュニティ活動</h4>
+                    <p>勉強会や情報交換会など、市民開発コミュニティ活動に関する情報です。</p>
+                     <ul>
+                        <li>次回の勉強会のお知らせ</li>
+                        <li>過去の勉強会資料</li>
+                        <li>情報交換フォーラムへのリンク</li>
+                    </ul>
+                </div>
+            </div>
+             <div class="info-card">
+                 <span class="icon"><i class="fas fa-envelope"></i></span>
+                <div class="content">
+                    <h4>問い合わせ先</h4>
+                    <p>市民開発に関するご質問は、こちらからお問い合わせください。</p>
+                     <p>内線: XXXX<br>メール: citizen-dev@yourcompany.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>市民開発チーム</h3>
+                <p>市民開発を通じて、社員の生産性向上と組織のデジタル変革をサポートします。</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>メニュー</h3>
+                <ul>
+                    <li><a href="#hero">ホーム</a></li>
+                    <li><a href="#course-overview">研修コース</a></li>
+                    <li><a href="#course-details">詳細カリキュラム</a></li>
+                    <li><a href="#preparation">環境構築</a></li>
+                    <li><a href="#development-flow">開発フロー</a></li>
+                    <li><a href="#educational-content">教育コンテンツ</a></li>
+                    <li><a href="#philosophy-message">理念・ビジョン</a></li>
+                    <li><a href="#guide-rules">ガイド・規約</a></li>
+                    <li><a href="#operating-status">稼働状況</a></li>
+                    <li><a href="#community-qa">コミュニティ・FAQ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>お問い合わせ</h3>
+                <p class="contact-info"><i class="fas fa-phone-alt"></i> 内線: XXXX</p>
+                <p class="contact-info"><i class="fas fa-envelope"></i> メール: citizen-dev@yourcompany.com</p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            &copy; [2025] 市民開発チーム All Rights Reserved.
+        </div>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scroll-top">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                // Close mobile menu after clicking a link
+                if (window.innerWidth <= 768) {
+                    const nav = document.getElementById('main-nav');
+                    const menuToggle = document.getElementById('menu-toggle');
+                    nav.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
+            });
+        });
+
+        // Highlight active navigation link on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100; // Adjust offset as needed
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Check if the link href matches the section id or the course details card id
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                } else if (current.startsWith('course-details-') && link.getAttribute('href') === '#course-details') {
+                    link.classList.add('active');
+                }
+            });
+
+            // Show/hide scroll-top button
+            const scrollTopButton = document.getElementById('scroll-top');
+            if (pageYOffset > 300) {
+                scrollTopButton.classList.add('visible');
+            } else {
+                scrollTopButton.classList.remove('visible');
+            }
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const nav = document.getElementById('main-nav');
+
+        menuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+         // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            const isClickInsideNav = nav.contains(event.target);
+            const isClickInsideToggle = menuToggle.contains(event.target);
+
+            if (!isClickInsideNav && !isClickInsideToggle && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+
+    </script>
+</body>
+</html>

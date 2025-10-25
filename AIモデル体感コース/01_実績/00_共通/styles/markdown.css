@@ -1,0 +1,49 @@
+h1 {
+  padding: 0.5em 0.7em;
+  border: 2px solid #2589d0;
+  box-shadow: 5px 5px #2589d0;
+  color: #333333;
+}
+
+h2 {
+  padding: 0.5em 0.7em;
+  border-left: 5px solid #2589d0;
+  background-color: #f2f2f2;
+  color: #333333;
+}
+
+h3 {
+  padding: 0 0.4em 0.2em;
+  border-bottom: 3px solid #2589d0;
+  background-color: #ffffff;
+  color: #333333;
+}
+
+:not(pre):not(.hljs) > code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: #f2f2f2;
+  border-radius: 6px;
+  color: blue !important;
+}
+
+pre.hljs {
+  background-color: #1e1e1e;
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+pre.hljs code {
+  font-family: "Fira Code", monospace;
+  font-size: 85%;
+  line-height: 1.5;
+  color: #d4d4d4 !important;
+}
+
+.hljs-comment {
+  color: #6a9955;
+  font-style: italic;
+}

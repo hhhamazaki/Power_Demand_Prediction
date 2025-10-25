@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localStorage動作テスト</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: #e0e0e0; }
+        .section { margin: 20px 0; padding: 15px; background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.2); border-radius: 8px; }
+        button { margin: 5px; padding: 8px 15px; cursor: pointer; background: #00ffff; border: none; border-radius: 5px; color: #000; font-weight: bold; }
+        .output { background: #000; padding: 10px; border-radius: 5px; margin-top: 10px; font-family: monospace; font-size: 12px; white-space: pre-wrap; max-height: 400px; overflow-y: auto; }
+        .year-btn { margin: 3px; padding: 8px 12px; cursor: pointer; border: 1px solid #00ff88; border-radius: 5px; background: linear-gradient(45deg,#00ff88,#00ffb3); color: #002200; font-weight: bold; }
+        .year-btn.active { box-shadow: 0 0 15px rgba(0,255,136,0.9); }
+        .year-btn:not(.active) { background: linear-gradient(45deg, rgba(0,255,136,0.28), rgba(0,255,136,0.12)); color: #00ff88; }
+        h2 { color: #00ffff; }
+        h3 { color: #00ff88; }
+    </style>
+</head>
+<body>
+    <h1>localStorage学習年記憶機能テスト</h1>
+    
+    <div class="section">
+        <h2>1. モデル選択</h2>
+        <button onclick="selectModel('LightGBM')">LightGBM</button>
+        <button onclick="selectModel('Keras')">Keras</button>
+        <button onclick="selectModel('PyCaret')">PyCaret</button>
+        <button onclick="selectModel('RandomForest')">RandomForest</button>
+        <div style="margin-top: 10px;">選択中のモデル: <strong id="currentModel">LightGBM</strong></div>
+    </div>
+    
+    <div class="section">
+        <h2>2. 学習年選択（クリックでON/OFF）</h2>
+        <div id="yearContainer"></div>
+        <div style="margin-top: 10px;">選択中の年: <strong id="selectedYears">なし</strong></div>
+    </div>
+    
+    <div class="section">
+        <h2>3. アクション</h2>
+        <button onclick="saveYears()">学習年を保存</button>
+        <button onclick="restoreYears()">学習年を復元</button>
+        <button onclick="clearStorage()">localStorage全クリア</button>
+        <button onclick="reloadPage()">ページリロード</button>
+    </div>
+    
+    <div class="section">
+        <h2>4. localStorage内容確認</h2>
+        <button onclick="showStorage()">更新</button>
+        <div class="output" id="storageOutput">ここにlocalStorageの内容が表示されます</div>
+    </div>
+    
+    <div class="section">
+        <h2>5. コンソールログ</h2>
+        <div class="output" id="consoleOutput"></div>
+    </div>
+
+    <script>
+        let selectedModel = 'LightGBM';
+        const testYears = ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+        
+        // コンソールログ出力
+        function log(message, data = null) {
+            const output = document.getElementById('consoleOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            let text = `[${timestamp}] ${message}`;
+            if (data !== null) {
+                text += `: ${JSON.stringify(data)}`;
+            }
+            output.textContent = text + '\n' + output.textContent;
+            console.log(message, data);
+        }
+        
+        // 年ボタンをレンダリング
+        function renderYears() {
+            const container = document.getElementById('yearContainer');
+            container.innerHTML = '';
+            testYears.forEach(year => {
+                const btn = document.createElement('button');
+                btn.className = 'year-btn active';
+                btn.textContent = year;
+                btn.dataset.year = year;
+                btn.onclick = () => {
+                    btn.classList.toggle('active');
+                    updateSelectedDisplay();
+                };
+                container.appendChild(btn);
+            });
+            updateSelectedDisplay();
+        }
+        
+        // 選択表示を更新
+        function updateSelectedDisplay() {
+            const buttons = Array.from(document.querySelectorAll('.year-btn'));
+            const selected = buttons.filter(b => b.classList.contains('active')).map(b => b.dataset.year);
+            document.getElementById('selectedYears').textContent = selected.length ? selected.join(', ') : 'なし';
+        }
+        
+        // モデル選択
+        function selectModel(model) {
+            selectedModel = model;
+            document.getElementById('currentModel').textContent = model;
+            log(`モデルを変更しました: ${model}`);
+            restoreYears();
+        }
+        
+        // 学習年を保存
+        function saveYears() {
+            try {
+                const buttons = Array.from(document.querySelectorAll('.year-btn'));
+                const selected = buttons.filter(b => b.classList.contains('active')).map(b => b.dataset.year);
+                const storageKey = `ai_training_years_${selectedModel}`;
+                
+                localStorage.setItem(storageKey, JSON.stringify(selected));
+                log(`保存成功 (${selectedModel})`, selected);
+                
+                // 確認
+                const verification = localStorage.getItem(storageKey);
+                log(`保存確認`, verification);
+                
+                showStorage();
+            } catch (e) {
+                log(`保存失敗: ${e.message}`);
+            }
+        }
+        
+        // 学習年を復元
+        function restoreYears() {
+            try {
+                const storageKey = `ai_training_years_${selectedModel}`;
+                const savedYearsJson = localStorage.getItem(storageKey);
+                
+                log(`復元開始 (${selectedModel})`, savedYearsJson);
+                
+                const buttons = Array.from(document.querySelectorAll('.year-btn'));
+                
+                if (savedYearsJson) {
+                    const savedYears = JSON.parse(savedYearsJson);
+                    buttons.forEach(btn => {
+                        const year = btn.dataset.year;
+                        if (savedYears.includes(year)) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                    log(`復元成功 (${selectedModel})`, savedYears);
+                } else {
+                    // デフォルト全選択
+                    buttons.forEach(btn => btn.classList.add('active'));
+                    log(`保存データなし - デフォルト全選択`);
+                }
+                
+                updateSelectedDisplay();
+            } catch (e) {
+                log(`復元失敗: ${e.message}`);
+            }
+        }
+        
+        // localStorage内容を表示
+        function showStorage() {
+            const output = document.getElementById('storageOutput');
+            let content = '=== localStorage全体 ===\n';
+            
+            if (localStorage.length === 0) {
+                content += '(空)\n';
+            } else {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    content += `${key}: ${value}\n`;
+                }
+            }
+            
+            output.textContent = content;
+        }
+        
+        // localStorageをクリア
+        function clearStorage() {
+            if (confirm('localStorageを全てクリアしますか？')) {
+                localStorage.clear();
+                log('localStorageをクリアしました');
+                showStorage();
+            }
+        }
+        
+        // ページリロード
+        function reloadPage() {
+            log('ページをリロードします（3秒後）');
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        }
+        
+        // 初期化
+        window.onload = () => {
+            log('ページ読み込み完了');
+            renderYears();
+            restoreYears();
+            showStorage();
+            log('初期化完了');
+        };
+    </script>
+</body>
+</html>

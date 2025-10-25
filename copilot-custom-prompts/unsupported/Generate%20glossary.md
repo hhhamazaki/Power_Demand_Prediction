@@ -1,0 +1,12 @@
+---
+copilot-command-context-menu-enabled: false
+copilot-command-slash-enabled: false
+copilot-command-context-menu-order: 80
+copilot-command-model-key: ""
+copilot-command-last-used: 0
+---
+> A command with this name already exists 
+
+Original name: Generate glossary 
+
+Create a glossary of important terms, concepts, and phrases from {}. Format each entry as "Term: Definition". Sort entries alphabetically. Return only the glossary.

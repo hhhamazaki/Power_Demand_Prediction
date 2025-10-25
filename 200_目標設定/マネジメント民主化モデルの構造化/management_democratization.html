@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マネジメント民主化モデル</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+1p:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-size: 18px; /* 全体の基本フォントサイズ */
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 1600px;
+            min-height: 900px;
+            height: auto;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #0A2463; /* ビジネス-1 */
+            color: #ffffff;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 36px; /* ヘッダータイトル */
+            font-weight: bold;
+        }
+
+        .header-date {
+            font-size: 18px; /* ヘッダー日付 */
+        }
+
+        .footer {
+            background: #0A2463; /* ビジネス-1 */
+            color: white;
+            padding: 10px 40px;
+            text-align: center;
+            font-size: 16px; /* フッター */
+            margin-top: auto;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .two-column {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .three-column {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .column {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
+        }
+
+        .two-column .column {
+            width: calc(50% - 12px);
+        }
+
+        .three-column .column {
+            width: calc(33.333% - 16px);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            height: auto;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            /* Added margin for nested cards */
+            margin-bottom: 15px;
+        }
+
+        .card:last-child {
+             margin-bottom: 0; /* Remove bottom margin for the last nested card */
+        }
+
+        /* Specific style for cards inside multi-column containers */
+        .nested-cards-two-column .card,
+        .nested-cards-four-column .card {
+            margin-bottom: 0; /* Remove bottom margin when in grid layout */
+        }
+
+        .card-title {
+            background-color: #3D84B8; /* Default blue (ビジネス-3) */
+            color: #ffffff;
+            padding: 12px 18px; /* パディングを調整 */
+            font-size: 24px; /* カードタイトル */
+            font-weight: bold;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Updated colorful background classes for main card titles */
+        .card-title-bg-red {
+            background-color: #FF0000; /* 赤 */
+        }
+
+        .card-title-bg-orange {
+            background-color: #FFA500; /* オレンジ */
+        }
+
+        .card-title-bg-green {
+            background-color: #008000; /* 緑 */
+        }
+
+
+        .card-content {
+            padding: 18px; /* パディングを調整 */
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* ギャップを調整 */
+            font-size: 18px; /* カードコンテンツの基本フォントサイズ */
+            overflow-wrap: break-word;
+            max-height: 100%;
+        }
+
+        ul {
+            padding-left: 20px; /* パディングを調整 */
+            margin-bottom: 8px; /* マージンを調整 */
+        }
+
+        li {
+            margin-bottom: 6px; /* マージンを調整 */
+            font-size: 18px; /* リストアイテムのフォントサイズ */
+            line-height: 1.5; /* 行間を調整 */
+        }
+
+        .highlight-pink {
+            background-color: #fdf2f4;
+            color: #EE6C8A;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .highlight-yellow {
+            background-color: #fff9c4;
+            color: #b59d00;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .highlight-green {
+            background-color: #e6f5e6; /* 緑の背景色 */
+            color: #008000; /* 緑の文字色 */
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+         .highlight-red {
+            background-color: #ffebee; /* 赤の背景色 */
+            color: #f44336; /* 赤の文字色 */
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0; /* マージンを調整 */
+            position: relative;
+        }
+
+        .process-flow::after {
+            content: '';
+            position: absolute;
+            top: 22px; /* 位置を調整 */
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background-color: #e2e8f0;
+            z-index: 1;
+        }
+
+        .process-step {
+            text-align: center;
+            width: 22%;
+            z-index: 2;
+        }
+
+        .process-icon {
+            background-color: #1E56A0;
+            color: white;
+            width: 40px; /* サイズを調整 */
+            height: 40px; /* サイズを調整 */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px; /* マージンを調整 */
+            font-size: 18px; /* フォントサイズを調整 */
+            font-weight: bold;
+        }
+
+        .process-title {
+            font-size: 16px; /* フォントサイズを調整 */
+            font-weight: 600;
+            margin-bottom: 6px; /* マージンを調整 */
+        }
+
+        .process-desc {
+            font-size: 14px; /* フォントサイズを調整 */
+            line-height: 1.4;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; /* ギャップを調整 */
+        }
+
+        .grid-item {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 15px; /* パディングを調整 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #3D84B8;
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* ギャップを調整 */
+        }
+
+        .grid-item-title {
+            font-weight: bold;
+            color: #1E56A0;
+            font-size: 18px; /* フォントサイズを調整 */
+            margin-bottom: 4px; /* マージンを調整 */
+        }
+
+        .grid-item-content {
+            font-size: 16px; /* フォントサイズを調整 */
+            line-height: 1.5; /* 行間を調整 */
+        }
+
+        .model-overview {
+            position: relative;
+            margin: 20px 0; /* マージンを調整 */
+            display: flex;
+            justify-content: center;
+        }
+
+        .model-center {
+            background-color: #0A2463;
+            color: white;
+            border-radius: 10px;
+            padding: 20px; /* パディングを調整 */
+            width: 220px; /* サイズを調整 */
+            height: 90px; /* サイズを調整 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px; /* フォントサイズを調整 */
+            z-index: 2;
+        }
+
+        .model-elements {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .model-element {
+            background-color: #3D84B8;
+            color: white;
+            border-radius: 8px;
+            padding: 12px; /* パディングを調整 */
+            width: 160px; /* サイズを調整 */
+            height: 70px; /* サイズを調整 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: 500;
+            font-size: 16px; /* フォントサイズを調整 */
+            position: relative;
+        }
+
+        .model-element:nth-child(1) {
+            left: -60px; /* 位置を調整 */
+        }
+
+        .model-element:nth-child(4) {
+            right: -60px; /* 位置を調整 */
+        }
+
+        .model-element:nth-child(2), .model-element:nth-child(3) {
+            top: -90px; /* 位置を調整 */
+        }
+
+        .model-element:nth-child(1)::after, .model-element:nth-child(4)::after {
+            content: '';
+            position: absolute;
+            width: 70px; /* サイズを調整 */
+            height: 2px;
+            background-color: #78A6C8;
+            top: 50%;
+        }
+
+        .model-element:nth-child(1)::after {
+            right: -70px; /* 位置を調整 */
+        }
+
+        .model-element:nth-child(4)::after {
+            left: -70px; /* 位置を調整 */
+        }
+
+        .model-element:nth-child(2)::after, .model-element:nth-child(3)::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 50px; /* サイズを調整 */
+            background-color: #78A6C8;
+            bottom: -50px; /* 位置を調整 */
+        }
+
+        .relationship-box {
+            align-items: center;
+            justify-content: space-between;
+            margin: 0;
+            width: 100%;
+        }
+
+        .relationship-item {
+            background-color: #E6F2F5; /* Keep background color */
+            border-radius: 8px;
+            padding: 15px; /* パディングを調整 */
+        }
+
+        .relationship-title {
+            font-weight: bold;
+            color: #1E56A0;
+            font-size: 18px; /* フォントサイズを調整 */
+            text-align: center;
+            margin-bottom: 8px; /* マージンを調整 */
+        }
+
+        .relationship-content ul {
+            font-size: 14px; /* Default font size for relationship list items */
+        }
+
+        /* New style to increase font size for specific list items */
+        .nested-cards-four-column .card-content ul li {
+            font-size: 18px; /* Increased font size */
+        }
+
+
+        .arrow-right {
+             display: none;
+        }
+
+        h3 {
+            font-size: 18px; /* h3のフォントサイズを調整 */
+            color: #1E56A0;
+            margin-top: 12px; /* マージンを調整 */
+            margin-bottom: 6px; /* マージンを調整 */
+        }
+
+        .text-box {
+            background-color: #E6F2F5;
+            border-radius: 8px;
+            padding: 12px; /* パディングを調整 */
+            margin: 6px 0; /* マージンを調整 */
+            font-size: 18px; /* テキストボックスのフォントサイズ */
+        }
+
+        /* Style for the container holding the two relationship cards */
+        .nested-cards-two-column {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px; /* ギャップを調整 */
+        }
+
+        /* New style for the container holding the four main elements cards */
+        .nested-cards-four-column {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns */
+            gap: 24px; /* ギャップを調整 */
+        }
+
+        /* Style for the table within the card content */
+        .card-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px; /* マージンを調整 */
+            table-layout: auto; /* Ensure auto layout */
+        }
+
+        .card-content th,
+        .card-content td {
+            border: 1px solid #ddd;
+            padding: 10px; /* パディングを調整 */
+            text-align: left;
+            vertical-align: top; /* Align content to the top */
+            font-size: 16px; /* テーブルセルのフォントサイズを元に戻す */
+        }
+
+        .card-content th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .card-content td ul {
+            padding-left: 24px; /* パディングを調整 */
+            margin: 0;
+        }
+
+        .card-content td li {
+            margin-bottom: 3px; /* マージンを調整 */
+            font-size: 16px; /* テーブル内のリストアイテムのフォントサイズを調整 */
+        }
+
+        /* Style for the colon-separated table */
+        .colon-separated-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px; /* マージンを調整 */
+            border: 1px solid #ddd; /* Add border to the table */
+            table-layout: auto; /* Ensure auto layout */
+        }
+
+        .colon-separated-table tr {
+             border-bottom: 1px solid #ddd; /* Add border between rows */
+        }
+
+        .colon-separated-table tr:last-child {
+             border-bottom: none; /* Remove border for the last row */
+        }
+
+
+        .colon-separated-table td {
+            padding: 10px; /* パディングを調整 */
+            border: none; /* Remove borders from cells */
+            vertical-align: top;
+            font-size: 16px; /* テーブルセルのフォントサイズを元に戻す */
+        }
+
+        .colon-separated-table td:first-child {
+            font-weight: bold;
+            padding-right: 8px; /* パディングを調整 */
+            white-space: nowrap; /* Prevent text wrapping */
+            border-right: 1px solid #ddd; /* Add vertical border */
+        }
+
+        .colon-separated-table td:last-child {
+            width: auto; /* Allow the second column to take remaining width */
+             border-right: none; /* Ensure no right border on the last cell */
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            body {
+                font-size: 16px; /* レスポンシブ時の基本フォントサイズ */
+            }
+            .two-column .column {
+                width: 100%;
+            }
+            .three-column .column {
+                 width: 100%;
+            }
+            .process-flow {
+                flex-direction: column;
+                align-items: center;
+            }
+            .process-step {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+            .process-flow::after {
+                display: none; /* Hide the connecting line on small screens */
+            }
+            .model-overview {
+                 flex-direction: column;
+                 align-items: center;
+                 height: auto;
+            }
+            .model-elements {
+                 position: static;
+                 flex-direction: column;
+                 align-items: center;
+                 gap: 20px;
+                 transform: none;
+                 margin-top: 20px;
+                 width: 80%;
+            }
+            .model-element {
+                 width: 100%;
+                 left: auto;
+                 right: auto;
+                 top: auto;
+            }
+            .model-element::after {
+                 display: none; /* Hide connecting lines on small screens */
+            }
+            .relationship-box {
+                flex-direction: column; /* Stack items on small screens */
+                gap: 20px;
+            }
+            .relationship-item {
+                width: 100%; /* Full width on small screens */
+            }
+            .arrow-right {
+                transform: rotate(90deg); /* Rotate arrow on small screens */
+            }
+
+            /* Card content becomes single column on medium screens */
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                grid-template-columns: none; /* Remove grid columns */
+                font-size: 16px; /* レスポンシブ時のカードコンテンツフォントサイズ */
+                padding: 15px; /* レスポンシブ時のパディングを調整 */
+            }
+
+             /* Nested cards in 2-column layout stack on smaller screens */
+             .nested-cards-two-column {
+                 grid-template-columns: 1fr;
+             }
+
+             /* Nested cards in 4-column layout become 2 columns on medium screens */
+             .nested-cards-four-column {
+                 grid-template-columns: repeat(2, 1fr);
+             }
+
+            .card-title {
+                font-size: 20px; /* レスポンシブ時のカードタイトルを調整 */
+                padding: 10px 15px; /* レスポンシブ時のパディングを調整 */
+            }
+
+            li {
+                font-size: 16px; /* レスポンシブ時のリストアイテムフォントサイズを調整 */
+            }
+
+            .text-box {
+                font-size: 16px; /* レスポンシブ時のテキストボックスフォントサイズを調整 */
+                padding: 10px; /* レスポンシブ時のパディングを調整 */
+            }
+
+            .card-content table th,
+            .card-content table td,
+            .colon-separated-table td {
+                font-size: 16px; /* レスポンシブ時のテーブルフォントサイズを調整 */
+                padding: 8px; /* レスポンシブ時のパディングを調整 */
+            }
+
+            .card-content td li {
+                 font-size: 14px; /* レスポンシブ時のテーブル内リストアイテムフォントサイズを調整 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px; /* さらに小さい画面での基本フォントサイズ */
+            }
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 20px;
+            }
+            .header-title {
+                font-size: 28px; /* さらに小さい画面でのヘッダータイトルを調整 */
+            }
+            .header-date {
+                font-size: 16px; /* さらに小さい画面でのヘッダー日付を調整 */
+            }
+            .footer {
+                padding: 10px 20px;
+                font-size: 14px; /* さらに小さい画面でのフッターを調整 */
+            }
+            .content {
+                padding: 15px;
+                gap: 15px;
+            }
+            .card-title {
+                font-size: 18px; /* さらに小さい画面でのカードタイトルを調整 */
+                padding: 8px 12px;
+            }
+            .card-content {
+                padding: 12px;
+                font-size: 14px; /* さらに小さい画面でのカードコンテンツフォントサイズを調整 */
+                gap: 10px;
+                grid-template-columns: none;
+            }
+            li {
+                font-size: 14px; /* さらに小さい画面でのリストアイテムフォントサイズを調整 */
+            }
+            h3 {
+                font-size: 16px; /* さらに小さい画面でのh3フォントサイズを調整 */
+            }
+            .grid-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .grid-item-title {
+                font-size: 16px; /* さらに小さい画面でのグリッドアイテムタイトルを調整 */
+            }
+            .grid-item-content {
+                font-size: 14px; /* さらに小さい画面でのグリッドアイテムコンテンツを調整 */
+            }
+            .process-step {
+                width: 95%;
+            }
+            .process-icon {
+                width: 36px; /* さらに小さい画面でのアイコンサイズを調整 */
+                height: 36px; /* さらに小さい画面でのアイコンサイズを調整 */
+                font-size: 16px; /* さらに小さい画面でのアイコンフォントサイズを調整 */
+            }
+            .process-title {
+                font-size: 14px; /* さらに小さい画面でのプロセスタイトルを調整 */
+            }
+             .process-desc {
+                font-size: 12px; /* さらに小さい画面でのプロセス説明を調整 */
+            }
+            .model-center {
+                width: 180px; /* さらに小さい画面でのモデル中央サイズを調整 */
+                height: 80px; /* さらに小さい画面でのモデル中央サイズを調整 */
+                font-size: 16px; /* さらに小さい画面でのモデル中央フォントサイズを調整 */
+            }
+            .model-elements {
+                 width: 95%;
+            }
+            .model-element {
+                width: 100%;
+                height: 60px; /* さらに小さい画面でのモデル要素サイズを調整 */
+                font-size: 14px; /* さらに小さい画面でのモデル要素フォントサイズを調整 */
+            }
+            .relationship-title {
+                font-size: 16px; /* さらに小さい画面でのリレーションシップタイトルを調整 */
+            }
+            .relationship-content ul {
+                font-size: 12px; /* さらに小さい画面でのリレーションシップリストアイテムを調整 */
+            }
+
+             /* Nested cards in 4-column layout become 1 column on small screens */
+             .nested-cards-four-column {
+                 grid-template-columns: 1fr;
+             }
+
+            .card-content table th,
+            .card-content table td,
+            .colon-separated-table td {
+                font-size: 14px; /* さらに小さい画面でのテーブルフォントサイズを調整 */
+                padding: 6px; /* さらに小さい画面でのパディングを調整 */
+            }
+
+             .card-content td li {
+                 font-size: 12px; /* さらに小さい画面でのテーブル内リストアイテムフォントサイズを調整 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="header-title">マネジメント民主化モデル</h1>
+            <div class="header-date">2025年5月</div>
+        </div>
+
+        <div class="content">
+            <div class="column">
+                <div class="column">
+                    <div class="card">
+                        <div class="card-title card-title-bg-red">背景と目的</div>
+                        <div class="card-content">
+                            <div class="nested-cards-four-column">
+                                <div class="card">
+                                    <div class="card-title">背景</div>
+                                    <div class="card-content">
+                                        <ul>
+                                            <li>「管理職」志望者の減少と<span class="highlight-pink">「罰ゲーム」</span>認識の拡大</li>
+                                            <li>「働き方の多様化」や「ハラスメント対応」による「管理職」の<span class="highlight-yellow">過剰な負荷</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                 <div class="card">
+                                    <div class="card-title">目的</div>
+                                    <div class="card-content">
+                                        <ul>
+                                            <li>「管理職」の過剰な「負荷を軽減」、適正に「責任を分配」</li>
+                                            <li><span class="highlight-pink">「育て上手なリーダー」</span>と<span class="highlight-green">「育てられ上手なメンバー」</span>の相互関係を構築</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+
+                <div class="column">
+                    <div class="card">
+                        <div class="card-title card-title-bg-orange">構成要素</div>
+                        <div class="card-content">
+                            <div class="nested-cards-two-column">
+                                <div class="card">
+                                    <div class="card-title">成長支援行動</div>
+                                    <div class="card-content">
+                                        <div class="text-box">
+                                            メンバーやチームの成長に貢献し、その成果・成長を「自分ごと」として実感<br>リーダーの「やりがい」の源泉、組織の育成文化を形成
+                                        </div>
+                                        <table class="colon-separated-table">
+                                            <tr>
+                                                <td><span class="highlight-green">好循環</span></td>
+                                                <td>お手本<span class="highlight-green">存在</span> → 育成スキル<span class="highlight-green">獲得</span> → メンバー育成 → <span class="highlight-green">成功</span>体験 → <span class="highlight-green">意欲向上</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="highlight-pink">悪循環</span></td>
+                                                <td>お手本<span class="highlight-red">不在</span> → 育成スキル<span class="highlight-red">不足</span> → メンバー育成<span class="highlight-red">失敗</span> → <span class="highlight-red">疲弊</span> → <span class="highlight-red">「罰ゲーム」</span>認識</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                 <div class="card">
+                                    <div class="card-title">謙虚なリーダーシップ</div>
+                                    <div class="card-content">
+                                        <div class="text-box">
+                                            実践的で再現性の有るリーダーシップ<br>自分の限界を認め、メンバーや周囲から学ぶ姿勢
+                                        </div>
+                                        <table class="colon-separated-table">
+                                            <tr>
+                                                <td>正しい自己認識</td>
+                                                <td>自身の「強み・弱み」「知識・スキル」を正確に把握<br>過信せず「不足」を認識し「成長」に繋げる</td>
+                                            </tr>
+                                            <tr>
+                                                <td>貢献への感謝</td>
+                                                <td>「他者の貢献」を認識し、具体的な「言葉や行動で感謝」を表現<br>チームの「心理的安全性」を高める</td>
+                                            </tr>
+                                            <tr>
+                                                <td>学習志向</td>
+                                                <td>新しい「知識やスキルを習得」「変化に適応」しようとする意欲<br>失敗から学び「成長の機会」を捉える</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="column">
+                    <div class="card">
+                        <div class="card-title card-title-bg-green">「育て上手×育てられ上手」の相互関係</div>
+                        <div class="card-content">
+                            <div class="text-box">
+                                <span class="highlight-pink">「育て上手なリーダー」</span>と<span class="highlight-green">「育てられ上手なメンバー」</span>が相互に作用し、育成の負担を分散、「組織全体の成長」を加速する関係性
+                            </div>
+
+                             <div class="nested-cards-four-column">
+                                 <div class="card">
+                                     <div class="card-title">育て上手なリーダー</div>
+                                     <div class="card-content">
+                                         <ul>
+                                             <li>「成長支援行動」の実行</li>
+                                             <li>「謙虚なリーダーシップ」の実践</li>
+                                             <li>「理論」に基づく育成</li>
+                                             <li>「相互信頼」の構築</li>
+                                         </ul>
+                                     </div>
+                                 </div>
+
+                                 <div class="card">
+                                     <div class="card-title">育てられ上手なメンバー</div>
+                                     <div class="card-content">
+                                         <ul>
+                                             <li>打てば響く「素直さ」と「行動変容力」</li>
+                                             <li>適切な「自己認識」と「自己管理能力」</li>
+                                             <li>「感謝の表現」と「建設的なフィードバック」</li>
+                                             <li>「学習志向」と「成長意欲」</li>
+                                         </ul>
+                                     </div>
+                                 </div>
+                             </div>
+
+                         </div>
+                    </div>
+
+                    </div>
+
+                <div class="column">
+                    </div>
+            </div>
+        </div>
+
+        <div class="footer">市民開発チーム | © 2025</div>
+    </div>
+</body>
+</html>

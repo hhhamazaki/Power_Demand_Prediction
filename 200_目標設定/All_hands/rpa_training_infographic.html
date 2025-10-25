@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPA市民開発ハンズオン研修ご案内</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+1p:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px;
+            font-size: 22px;
+        }
+
+        .slide-container {
+            width: 1600px;
+            height: auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            background: linear-gradient(135deg, #0A2463 0%, #1E56A0 100%);
+            color: white;
+            border-radius: 12px;
+        }
+
+        .header-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .column {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: #ffffff;
+            padding: 25px 30px;
+            font-size: 34px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-content {
+            padding: 30px;
+            font-size: 26px;
+            line-height: 1.7;
+        }
+
+        .highlight-pink {
+            background-color: #fdf2f4;
+            color: #EE6C8A;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .highlight-yellow {
+            background-color: #fff9c4;
+            color: #b59d00;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: linear-gradient(135deg, #E6F2F5 0%, #ffffff 100%);
+            padding: 30px;
+            border-left: 6px solid #3D84B8;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 60px;
+            font-weight: 700;
+            color: #1E56A0;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 24px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .business-needs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        .need-item {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 6px solid #3D84B8;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .need-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1E56A0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .need-content {
+            font-size: 22px;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: linear-gradient(90deg, #3D84B8 0%, #EE6C8A 100%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            text-align: center;
+            width: 30%;
+            z-index: 2;
+            background: white;
+            padding: 15px;
+        }
+
+        .timeline-icon {
+            background: linear-gradient(135deg, #EE6C8A 0%, #d63384 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(238, 108, 138, 0.3);
+        }
+
+        .timeline-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1E56A0;
+        }
+
+        .timeline-desc {
+            font-size: 18px;
+            color: #475569;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 22px;
+        }
+
+        .info-table th, .info-table td {
+            border: 1px solid #e2e8f0;
+            padding: 16px 20px;
+            text-align: left;
+        }
+
+        .info-table th {
+            background-color: #f1f5f9;
+            color: #1E56A0;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .info-table tbody th {
+            text-align: left;
+        }
+
+        .info-table td {
+            background-color: #ffffff;
+            color: #475569;
+            font-size: 24px;
+        }
+
+        .training-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 22px;
+        }
+
+        .training-table th, .training-table td {
+            border: 1px solid #e2e8f0;
+            padding: 16px 20px;
+            text-align: left;
+        }
+
+        .training-table thead th {
+            background-color: #f1f5f9;
+            color: #1E56A0;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .training-table tbody th {
+            background-color: #f1f5f9;
+            color: #1E56A0;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .training-table td {
+            background-color: #ffffff;
+            color: #475569;
+            font-size: 24px;
+        }
+        
+        .call-to-action {
+            text-align: center;
+            background: linear-gradient(135deg, #EE6C8A 0%, #d63384 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 16px;
+            margin-top: 25px;
+        }
+
+        .cta-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cta-subtitle {
+            font-size: 28px;
+            opacity: 0.9;
+        }
+
+        ul {
+            padding-left: 25px;
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .svg-container svg {
+            width: 1200px;
+            height: auto;
+            display: block;
+        }
+
+        .svg-vertical-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .svg-vertical-container svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="header-title">🤖 RPA市民開発ハンズオン研修ご案内</h1>
+        </div>
+
+        <div class="content">
+            <div class="column">
+                <!-- ビジネス部門の経営層ニーズ -->
+                <div class="card">
+                    <div class="card-title">
+                        💼 ビジネス部門の経営層からの市民開発ニーズ
+                    </div>
+                    <div class="card-content">
+                        <div class="business-needs">
+                            <div class="need-item">
+                                <div class="need-title">⚙️ OM系_副社長・執行役員</div>
+                                <div class="need-content">
+                                    <ul>
+                                        <li>人員不足で<span class="highlight-pink">自動化</span>が必須</li>
+                                        <li>実務に必要なアプリを<span class="highlight-pink">スピーディー</span>に開発・改修</li>
+                                        <li>変革コミュニティRPA分科会で支援</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="need-item">
+                                <div class="need-title">📱 販売系_常務執行役員</div>
+                                <div class="need-content">
+                                    <ul>
+                                        <li>業務改善勧告へ<span class="highlight-pink">スピーディー</span>に対応</li>
+                                        <li>RPA・AIで情報収集・再発防止</li>
+                                        <li>業務改革ポータルでBI連携・可視化</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 市民開発の取り組み -->
+                <div class="card">
+                    <div class="card-title">
+                        📈 市民開発の戦略的意義
+                    </div>
+                    <div class="card-content">
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>主要アクションプラン</td>
+                                    <td>全社員のデジタル人財化に向け市民開発ツール<span class="highlight-pink">利用者支援</span></td>
+                                </tr>
+                                <tr>
+                                    <td>部門横断テーマ</td>
+                                    <td><span class="highlight-pink">「ビジネスアライメント（部門間コラボ）」</span>と<span class="highlight-pink">「人材育成（キャリア自律）」</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="svg-container">
+                            <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0" y="0" width="800" height="600" fill="#f8f9fa" />
+                              
+                              <path d="M 350 180 L 250 155" stroke="#3498db" stroke-width="2" stroke-linecap="round" fill="none" />
+                              <path d="M 450 180 L 550 155" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" fill="none" />
+                              <path d="M 350 230 L 250 320" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" fill="none" />
+                              <path d="M 450 230 L 550 320" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" fill="none" />
+                              <path d="M 400 260 L 400 320" stroke="#34495e" stroke-width="2" stroke-linecap="round" fill="none" />
+                              <path d="M 400 400 L 400 420" stroke="#16a085" stroke-width="2" stroke-linecap="round" fill="none" />
+                              
+                              <path d="M 350 250 L 140 440" stroke="#3D84B8" stroke-width="2" stroke-linecap="round" fill="none" />
+                              <path d="M 450 250 L 660 440" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" fill="none" />
+                              
+                              <rect x="10" y="10" width="780" height="60" rx="0" fill="#2c3e50" />
+                              <text x="400" y="48" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">ローコード市民開発の効果</text>
+                              
+                              <circle cx="400" cy="200" r="80" fill="#f1f5f9" stroke="#3498db" stroke-width="3" />
+                              <text x="400" y="185" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">ローコード</text>
+                              <text x="400" y="210" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">市民開発</text>
+                              <text x="400" y="235" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#2c3e50" text-anchor="middle">非IT人材によるアプリ開発</text>
+                              
+                              <g transform="translate(30, 100)">
+                                <rect x="0" y="0" width="220" height="110" rx="0" fill="white" stroke="#3498db" stroke-width="2" />
+                                <rect x="0" y="0" width="220" height="30" rx="0" fill="#3498db" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="white">💫 全社員の主体的な行動</text>
+                                <text x="10" y="48" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・アプリ開発スキル強化</text>
+                                <text x="10" y="68" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・自己効力（自分にもできる）感の獲得</text>
+                                <text x="10" y="88" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・主体的な行動の活性化</text>
+                              </g>
+                              
+                              <g transform="translate(550, 100)">
+                                <rect x="0" y="0" width="220" height="110" rx="0" fill="white" stroke="#2ecc71" stroke-width="2" />
+                                <rect x="0" y="0" width="220" height="30" rx="0" fill="#2ecc71" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="white">🚀 スピーディーな業務Kaizen</text>
+                                <text x="10" y="48" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・ニーズに合致した最適アプリ開発</text>
+                                <text x="10" y="68" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・業務Kaizenスピード解決</text>
+                                <text x="10" y="88" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・変化への柔軟な対応</text>
+                              </g>
+                              
+                              <g transform="translate(30, 270)">
+                                <rect x="0" y="0" width="220" height="110" rx="0" fill="white" stroke="#f1c40f" stroke-width="2" />
+                                <rect x="0" y="0" width="220" height="30" rx="0" fill="#f1c40f" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="white">💰 短期間・低コスト開発</text>
+                                <text x="10" y="48" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・内製化の推進</text>
+                                <text x="10" y="68" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・短期間で低コスト開発・改修・廃止</text>
+                                <text x="10" y="88" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・アジャイルKaizen定着</text>
+                              </g>
+                              
+                              <g transform="translate(550, 270)">
+                                <rect x="0" y="0" width="220" height="110" rx="0" fill="white" stroke="#e74c3c" />
+                                <rect x="0" y="0" width="220" height="30" rx="0" fill="#e74c3c" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="white">🧠 言語化・AIプロンプト高度化</text>
+                                <text x="10" y="48" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・業務の構造化・言語化スキル向上</text>
+                                <text x="10" y="68" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・システム要件定義での齟齬の解消</text>
+                                <text x="10" y="88" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・AI（言語モデル）自動化の適用</text>
+                              </g>
+                              
+                              <g transform="translate(30, 440)">
+                                <rect x="0" y="0" width="220" height="110" rx="0" fill="white" stroke="#3D84B8" />
+                                <rect x="0" y="0" width="220" height="30" rx="0" fill="#3D84B8" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="white">👥 部門間コラボレーション</text>
+                                <text x="10" y="48" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・部門間ナレッジ共有</text>
+                                <text x="10" y="68" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・協働で組織力を強化</text>
+                                <text x="10" y="88" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・他部門への貢献で幸福度アップ</text>
+                              </g>
+                              
+                              <g transform="translate(550, 440)">
+                                <rect x="0" y="0" width="220" height="110" rx="0" fill="white" stroke="#9b59b6" />
+                                <rect x="0" y="0" width="220" height="30" rx="0" fill="#9b59b6" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="white">🌟 キャリア・エンゲージメント</text>
+                                <text x="10" y="48" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・新たなスキル習得</text>
+                                <text x="10" y="68" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・キャリア自律・成長サポート</text>
+                                <text x="10" y="88" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・エンゲージメント向上</text>
+                              </g>
+                              
+                              <g transform="translate(290, 320)">
+                                <rect x="0" y="0" width="220" height="80" rx="0" fill="white" stroke="#34495e" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="#34495e">📚 ノウハウ流出・属人化の防止</text>
+                                <text x="10" y="40" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・外部ベンダー脱却でノウハウ蓄積</text>
+                                <text x="10" y="60" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・属人化の防止</text>
+                              </g>
+                              
+                              <g transform="translate(290, 420)">
+                                <rect x="0" y="0" width="220" height="80" rx="0" fill="white" stroke="#16a085" />
+                                <text x="10" y="20" font-family="'Noto Sans JP', sans-serif" font-size="13" font-weight="bold" fill="#16a085">📊 ROI検証・専門開発への昇華</text>
+                                <text x="10" y="40" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・小規模開発でROI検証</text>
+                                <text x="10" y="60" font-family="'Noto Sans JP', sans-serif" font-size="11" fill="#333">・投資判断の精度向上でリスク抑制</text>
+                              </g>
+                              
+                              </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FY24実績 -->
+                <div class="card">
+                    <div class="card-title">
+                        📊 FY24実績ハイライト
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">1,200</div>
+                                <div class="stat-label">利用者数</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">90</div>
+                                <div class="stat-label">開発者数</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">120</div>
+                                <div class="stat-label">稼働中ロボット数</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 課題と対応 -->
+                <div class="card">
+                    <div class="card-title">
+                        FY24課題とFY25対応
+                    </div>
+                    <div class="card-content">
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FY24課題</td>
+                                    <td>トレーニングやサポート体制が不足</td>
+                                </tr>
+                                <tr>
+                                    <td>FY25対応</td>
+                                    <td style="font-size: 24px;">
+                                        <table style="width:100%; border-collapse: collapse; margin:0;">
+                                            <tr>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">5月1日</td>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">支社ITソリューションU<span class="highlight-pink">新メンバー増員5名</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">5月16日</td>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">S4<span class="highlight-pink">サンプルロボ提供</span>（新メンバー作成）</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">5月23日</td>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">OMダッシュボードS4データ取得ロボの<span class="highlight-pink">開発サポート</span>・本番稼働</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">5月-7月</td>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">新メンバー育成</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">8月</td>
+                                                <td style="border:1px solid #e2e8f0; padding: 8px;">ハンズオン研修（新メンバーが講師）</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 研修概要 -->
+                <div class="card">
+                    <div class="card-title">
+                        🎓 ハンズオン研修プログラム概要
+                    </div>
+                    <div class="card-content">
+                        <table class="training-table">
+                            <thead>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>内容</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th><span class="feature-icon">🔰</span> 対象者</th>
+                                    <td style="font-size: 24px;">ローコードツール<span class="highlight-pink">未経験の入門者（知識ゼロ歓迎）</span></td>
+                                </tr>
+                                <tr>
+                                    <th><span class="feature-icon">🎯</span> 学習内容</th>
+                                    <td style="font-size: 24px;">制御構造の基礎（ブラウザ操作、条件分岐、Excel操作、繰り返し）</td>
+                                </tr>
+                                <tr>
+                                    <th><span class="feature-icon">🎪</span> サポート方針</th>
+                                    <td style="font-size: 24px;">脱落者ゼロを目指すシンプルかつ丁寧なサポート</td>
+                                </tr>
+                                <tr>
+                                    <th>📍 開催形式</th>
+                                    <td style="font-size: 24px;">
+                                        東西支社で対面+リモート開催（1日で完結）
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 参加呼びかけ -->
+                <div class="call-to-action">
+                    <div class="cta-title">🚀 デジタル部門の皆さんへ</div>
+                    <div class="cta-subtitle">下記の理念に共感いただける方は、研修への積極的な参加をお待ちしています！</div>
+                </div>
+
+                <!-- 理念とバリューのSVGをここに挿入 -->
+                <div class="svg-vertical-container">
+                    <!-- 市民開発の理念体系 -->
+                    <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0" y="0" width="900" height="600" fill="#f8f9fa" />
+                      
+                      <rect x="150" y="20" width="600" height="60" rx="10" fill="#2c3e50" />
+                      <text x="450" y="60" font-family="'Noto Sans JP', sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">市民開発の理念体系</text>
+                      
+                      <rect x="250" y="100" width="400" height="100" rx="10" fill="#EE6C8A" />
+                      <text x="450" y="130" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">パーパス</text>
+                      <foreignObject x="270" y="140" width="360" height="40">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 14px; color: white; text-align: center;">
+                          RPAを通じて全社員のデジタル能力を引き出し、<br/>業務革新と企業価値向上を実現する。
+                        </div>
+                      </foreignObject>
+                      
+                      <line x1="450" y1="200" x2="450" y2="220" stroke="#888" stroke-width="3" />
+                      
+                      <line x1="450" y1="220" x2="250" y2="220" stroke="#888" stroke-width="3" />
+                      <line x1="450" y1="220" x2="450" y2="220" stroke="#888" stroke-width="3" />
+                      <line x1="450" y1="220" x2="650" y2="220" stroke="#888" stroke-width="3" />
+                      
+                      <line x1="250" y1="220" x2="250" y2="240" stroke="#888" stroke-width="3" />
+                      <line x1="450" y1="220" x2="450" y2="240" stroke="#888" stroke-width="3" />
+                      <line x1="650" y1="220" x2="650" y2="240" stroke="#888" stroke-width="3" />
+                      
+                      <rect x="150" y="240" width="200" height="320" rx="10" fill="#9B59B6" />
+                      <text x="250" y="270" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">ミッション</text>
+                      <text x="250" y="300" font-family="'Noto Sans JP', sans-serif" font-size="16" fill="white" text-anchor="middle">私たちの使命</text>
+                      
+                      <circle cx="170" cy="330" r="5" fill="white" />
+                      <foreignObject x="180" y="320" width="160" height="50">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+                          全社員のDXマインド醸成とRPAスキル向上の促進
+                        </div>
+                      </foreignObject>
+                      
+                      <circle cx="170" cy="380" r="5" fill="white" />
+                      <foreignObject x="180" y="370" width="160" height="50">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+                          業務効率化・自動化による生産性と企業価値の向上
+                        </div>
+                      </foreignObject>
+                      
+                      <circle cx="170" cy="430" r="5" fill="white" />
+                      <foreignObject x="180" y="420" width="160" height="50">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+                          市民開発者を支援するCoE体制の確立と強化
+                        </div>
+                      </foreignObject>
+                      
+                      <rect x="350" y="240" width="200" height="320" rx="10" fill="#1ABC9C" />
+                      <text x="450" y="270" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">ビジョン</text>
+                      <text x="450" y="300" font-family="'Noto Sans JP', sans-serif" font-size="16" fill="white" text-anchor="middle">目指す未来像</text>
+                      
+                      <circle cx="370" cy="330" r="5" fill="white" />
+                      <foreignObject x="380" y="320" width="160" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+                          すべての部門に市民開発の文化が浸透し、自律的にDXを推進する組織
+                        </div>
+                      </foreignObject>
+                      
+                      <circle cx="370" cy="390" r="5" fill="white" />
+                      <foreignObject x="380" y="380" width="160" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+                          RPAスキルを習得した人材が社内で活躍し、継続的な業務改善が実現する環境
+                        </div>
+                      </foreignObject>
+                      
+                      <circle cx="370" cy="450" r="5" fill="white" />
+                      <foreignObject x="380" y="440" width="160" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 13px; color: white;">
+                          高度な技術サポートと知識共有が行われる市民開発者コミュニティの形成
+                        </div>
+                      </foreignObject>
+                      
+                      <rect x="550" y="240" width="200" height="320" rx="10" fill="#F1C40F" />
+                      <text x="650" y="270" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="#2c3e50" text-anchor="middle">バリュー</text>
+                      
+                      <rect x="570" y="300" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+                      <text x="650" y="325" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">革新</text>
+                      
+                      <rect x="570" y="350" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+                      <text x="650" y="375" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">実践</text>
+                      
+                      <rect x="570" y="400" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+                      <text x="650" y="425" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">共創</text>
+                      
+                      <rect x="570" y="450" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+                      <text x="650" y="475" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">誠実</text>
+                      
+                      <rect x="570" y="500" width="160" height="40" rx="5" fill="#fffacd" stroke="#F1C40F" stroke-width="2" />
+                      <text x="650" y="525" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" fill="#2c3e50" text-anchor="middle">挑戦</text>
+                      
+                    </svg>
+                    <!-- 市民開発のバリュー（価値観） -->
+                    <svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0" y="0" width="900" height="700" fill="#f8f9fa" />
+                      
+                      <rect x="150" y="20" width="600" height="60" rx="10" fill="#2c3e50" />
+                      <text x="450" y="60" font-family="'Noto Sans JP', sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">市民開発のバリュー（価値観）</text>
+                      
+                      <rect x="150" y="100" width="600" height="60" rx="10" fill="#F1C40F" />
+                      <text x="450" y="140" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="#2c3e50" text-anchor="middle">私たちが大切にする5つの価値観</text>
+                      
+                      <rect x="150" y="170" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+                      <rect x="150" y="170" width="120" height="90" rx="10" fill="#F1C40F" />
+                      <text x="210" y="220" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">革新</text>
+                      <foreignObject x="280" y="185" width="450" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+                          既存の業務に疑問を持ち、<br/>最新テクノロジーで変革を生み出す姿勢を大切にします
+                        </div>
+                      </foreignObject>
+                      
+                      <rect x="150" y="270" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+                      <rect x="150" y="270" width="120" height="90" rx="10" fill="#F1C40F" />
+                      <text x="210" y="320" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">実践</text>
+                      <foreignObject x="280" y="285" width="450" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+                          知識だけでなく行動に移し、<br/>実務に即した価値ある自動化を実現します
+                        </div>
+                      </foreignObject>
+                      
+                      <rect x="150" y="370" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+                      <rect x="150" y="370" width="120" height="90" rx="10" fill="#F1C40F" />
+                      <text x="210" y="420" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">共創</text>
+                      <foreignObject x="280" y="385" width="450" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+                          部門を超えて知恵を出し合い、<br/>互いに学び合いながら最適解を見出します
+                        </div>
+                      </foreignObject>
+                      
+                      <rect x="150" y="470" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+                      <rect x="150" y="470" width="120" height="90" rx="10" fill="#F1C40F" />
+                      <text x="210" y="520" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">誠実</text>
+                      <foreignObject x="280" y="485" width="450" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+                          透明性を持って問題に向き合い、<br/>信頼される市民開発の文化を築きます
+                        </div>
+                      </foreignObject>
+                      
+                      <rect x="150" y="570" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+                      <rect x="150" y="570" width="120" height="90" rx="10" fill="#F1C40F" />
+                      <text x="210" y="620" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">挑戦</text>
+                      <foreignObject x="280" y="585" width="450" height="60">
+                        <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+                          失敗を学びの機会と捉え、<br/>常に新たな可能性に挑戦し続けます
+                        </div>
+                      </foreignObject>
+                      
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

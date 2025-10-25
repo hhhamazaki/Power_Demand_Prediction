@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - 準備</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn {
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">準備</h2>
+        <p class="text-gray-700 mb-6">Jennyの利用申請や環境構築に関する情報をご紹介します。</p>
+
+        <div id="prep_overview_cards" class="content-section active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">利用申請・インストール</h4>
+                    <p class="text-sm mb-4">Jennyを始めるための準備手順。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('prep_application_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">環境設定ガイド</h4>
+                    <p class="text-sm mb-4">学習環境をスムーズに構築するためのガイド。</p>
+                    <button class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('prep_environment_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">よくある質問</h4>
+                    <p class="text-sm mb-4">利用開始前や学習中に頻繁に寄せられる質問。</p>
+                    <button class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('prep_faq_detail')">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="prep_application_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-purple-700 mb-3 border-b-2 border-indigo-300 pb-2">利用申請・インストール</h3>
+                <p class="text-gray-700 mb-6">Jennyを始めるための準備手順をご案内します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <a href="http://example.com/application_step1" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Step 1: 利用申請</h4>
+                            <p class="text-sm mb-4">オンラインフォームから簡単に申請可能</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/application_step2" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Step 2: 環境構築</h4>
+                            <p class="text-sm mb-4">必要なソフトウェアのインストールガイド</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/application_step3" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Step 3: 初期設定</h4>
+                            <p class="text-sm mb-4">学習環境の最適化と設定</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('prep_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="prep_environment_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">環境設定ガイド</h3>
+                <p class="text-gray-700 mb-6">Jennyの学習環境をスムーズに構築するための詳細ガイドです。必要なソフトウェアのダウンロードから初期設定まで、ステップバイステップで解説します。</p>
+                <div class="grid grid-cols-1 gap-6">
+                    <a href="http://example.com/environment_guide" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">環境設定の詳細</h4>
+                            <p class="text-sm">Jennyの学習環境をスムーズに構築するための詳細ガイドです。必要なソフトウェアのダウンロードから初期設定まで、ステップバイステップで解説します。</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('prep_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="prep_faq_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">よくある質問</h3>
+                <p class="text-gray-700 mb-4">Jennyの利用開始前や学習中に頻繁に寄せられる質問とその回答をまとめました。</p>
+                <div class="grid grid-cols-1 gap-6">
+                    <a href="http://example.com/faq_details" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">質問と回答</h4>
+                            <p class="text-sm mb-2">Jennyは初心者でも利用できますか？</p>
+                            <p class="text-sm mb-2">利用料金はかかりますか？</p>
+                            <p class="text-sm">どのようなサポート体制がありますか？</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('prep_overview_cards')">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // すべてのコンテンツセクションを非表示にし、指定されたセクションを表示する関数
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に概要カードを表示
+            showSection('prep_overview_cards');
+        });
+    </script>
+</body>
+</html>

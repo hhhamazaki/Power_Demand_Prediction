@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI教育コンテンツ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        :root {
+            /* Cyber Theme (Default) */
+            --bg-color: #1a202c;
+            --bg2-color: #2d3748;
+            --card-bg-color: #2a2a4a;
+            --text-color: #f0f0f0;
+            --accent-color: #00f0ff;
+            --secondary-accent-color: #ff00ff;
+            --border-color: #5a5a7a;
+            --shadow-color: rgba(0, 240, 255, 0.3);
+        }
+
+        /* Pastel Theme */
+        .pastel-mode {
+            --bg-color: #f8f9fa;
+            --bg2-color: #ffffff;
+            --card-bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #6c63ff;
+            --secondary-accent-color: #ff77aa; /* stronger magenta */
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(108, 99, 255, 0.2);
+        }
+
+        /* Vivid Dark Theme */
+        .vivid-dark-mode {
+            --bg-color: #0d1117;
+            --bg2-color: #161b22;
+            --card-bg-color: #21262d;
+            --text-color: #e6edf3;
+            --accent-color: #00e5ff;
+            --secondary-accent-color: #c6ff00;
+            --border-color: #30363d;
+            --shadow-color: rgba(0, 229, 255, 0.25);
+        }
+        
+        /* Glassmorphism Theme */
+        .glassmorphism-mode {
+            --bg-color: #e0e7ff;
+            --bg2-color: #f0f4ff;
+            --card-bg-color: rgba(255, 255, 255, 0.5);
+            --text-color: #333333;
+            --accent-color: #89c2d9;
+            --secondary-accent-color: #38b000;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(137, 194, 217, 0.3);
+        }
+
+        /* Matrix Theme */
+        .matrix-mode {
+            --bg-color: #0d120a;
+            --bg2-color: #1a1e17;
+            --card-bg-color: #131710;
+            --text-color: #00ff41;
+            --accent-color: #00ff41;
+            --secondary-accent-color: #ff66b3; /* adjusted paler magenta */
+            --border-color: #008020;
+            --shadow-color: rgba(0, 255, 65, 0.5);
+        }
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            transition: color 0.5s ease;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        
+        .card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, border-color 0.5s ease;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px var(--secondary-accent-color);
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            margin: 2rem 0;
+            transition: background 0.5s ease;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: background 0.5s ease;
+        }
+        .text-center { text-align: center; }
+        .text-5xl { font-size: 3rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-lg { font-size: 1.125rem; }
+        .font-extrabold { font-weight: 800; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mt-12 { margin-top: 3rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .pl-5 { padding-left: 1.25rem; }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .gap-8 { gap: 2rem; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+        .space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: 2rem; }
+        .list-disc { list-style-type: disc; }
+        .text-white { color: var(--text-color); }
+        .text-magenta { color: var(--secondary-accent-color); }
+        .text-cyan-300 { color: var(--accent-color); }
+    /* Glass mode: make cyan text slightly darker for better contrast */
+    .glassmorphism-mode .text-cyan-300 { color: #1f6480; }
+        .text-pink-300 { color: var(--secondary-accent-color); }
+        .text-green-300 { color: #6ee7b7; }
+        .text-blue-300 { color: #93c5fd; }
+        .text-purple-300 { color: #c084fc; }
+
+        .page-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .page-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        /* 縦スクロール（スタック）モード */
+        .page-container.vertical {
+            display: block;
+            transition: none;
+        }
+
+        .page {
+            flex: 0 0 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 80px;
+        }
+
+        /* 縦スクロール時のページ調整 */
+        .page-container.vertical .page {
+            flex: none;
+            width: 100%;
+            padding: 1.25rem 40px;
+            margin-bottom: 2rem;
+        }
+
+
+        
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* ページネーション切替ボタン */
+        .pagination-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0.25rem 0.5rem;
+            padding: 0.55rem 1rem;
+            border: 1px solid rgba(0,0,0,0.15);
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .pagination-toggle:hover {
+            transform: translateY(-2px);
+        }
+
+        .pagination-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: var(--border-color);
+            color: var(--bg-color);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .pagination-number.active {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-table th, .custom-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .custom-table thead th {
+            background-color: var(--card-bg-color);
+            color: var(--accent-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .custom-table tbody tr {
+            background-color: var(--bg2-color);
+        }
+
+        .custom-table tbody td {
+            vertical-align: top;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .flow-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 360px;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .flow-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px var(--shadow-color);
+        }
+
+        .flow-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .flow-icon.human {
+            background: linear-gradient(135deg, #ffa500, #ff6347);
+            color: #fff;
+        }
+
+        .flow-icon.ai {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent-color));
+            color: var(--bg-color);
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin: 0 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .goal-card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px var(--shadow-color);
+        }
+
+        .lowcode-ai-box {
+            background-color: var(--card-bg-color);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .page { padding: 0 20px; }
+            .text-5xl { font-size: 2rem; }
+            .text-4xl { font-size: 1.5rem; }
+            .flow-container { flex-direction: column; }
+            .arrow { transform: rotate(90deg); }
+            .grid-cols-2, .grid-cols-3 { grid-template-columns: 1fr; }
+        }
+
+        .color-selector { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 0; }
+        .color-selector button { padding: 0.55rem 1rem; border: 1px solid rgba(255,255,255,0.06); background-color: transparent; color: var(--text-color); border-radius: 8px; cursor: pointer; transition: all 0.18s ease; }
+        .color-selector button.active { background-color: rgba(255,255,255,0.06); color: var(--accent-color); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+        .color-selector button:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.12); }
+        
+        /* ----------------------- フロー図スタイル ----------------------- */
+        .flex.flex-col > .relative { margin-bottom: 2rem; }
+        .flex.flex-col > .relative:last-child { margin-bottom: 0; }
+        .min-w-\[280px\] { min-width: 280px; }
+        .border-2 { border-width: 2px; }
+        .border-green-400 { border-color: #4ade80; }
+        .border-blue-400 { border-color: #60a5fa; }
+        .border-purple-400 { border-color: #c084fc; }
+        .bg-green-400 { background-color: #4ade80; }
+        .bg-blue-400 { background-color: #60a5fa; }
+        .bg-purple-400 { background-color: #c084fc; }
+        .text-green-900 { color: #064e3b; }
+        .text-blue-900 { color: #1e40af; }
+        .text-purple-900 { color: #581c87; }
+        .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
+        .from-green-900\/30 { --tw-gradient-from: rgba(6, 78, 59, 0.3); --tw-gradient-to: rgba(6, 78, 59, 0); }
+        .to-green-800\/30 { --tw-gradient-to: rgba(21, 128, 61, 0.3); }
+        .from-blue-900\/30 { --tw-gradient-from: rgba(30, 64, 175, 0.3); --tw-gradient-to: rgba(30, 64, 175, 0); }
+        .to-blue-800\/30 { --tw-gradient-to: rgba(30, 58, 138, 0.3); }
+        .from-purple-900\/30 { --tw-gradient-from: rgba(88, 28, 135, 0.3); --tw-gradient-to: rgba(88, 28, 135, 0); }
+        .to-purple-800\/30 { --tw-gradient-to: rgba(109, 40, 217, 0.3); }
+        .w-16 { width: 4rem; }
+        .h-16 { height: 4rem; }
+        .bg-green-900\/50 { background-color: rgba(6, 78, 59, 0.5); }
+        .bg-purple-900\/50 { background-color: rgba(88, 28, 135, 0.5); }
+        .border-l-3 { border-left-width: 3px; }
+        .border-blue-400 { border-color: #60a5fa; }
+        .border-purple-400 { border-color: #c084fc; }
+        .animate-bounce { animation: bounce 1s infinite; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-slider">
+            <div class="page-container">                
+                <!-- Page 3: 5つの体験フロー -->
+                <div class="page">
+
+                        <div class="flow-container">
+                            <!-- ステップ1 -->
+                            <div class="flow-item">
+                                <div class="flow-icon human">🧑‍💻</div>
+                                <h4 class="text-2xl font-bold mb-2 text-white">①ワークフロー作成</h4>
+                                <p class="text-sm text-white mb-2"></p>
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                            <!-- ステップ2 -->
+                            <div class="flow-item">
+                                <div class="flow-icon ai">🤖</div>
+                                <h4 class="text-2xl font-bold mb-2 text-white">②ワークフローから設計書</h4>
+                                <p class="text-sm text-white mb-2"></p>
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                            <!-- ステップ3 -->
+                            <div class="flow-item">
+                                <div class="flow-icon ai">🤖</div>
+                                <h4 class="text-2xl font-bold mb-2 text-white">③設計書からコード</h4>
+                                <p class="text-sm text-white mb-2"></p>
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                            <!-- ステップ4 -->
+                            <div class="flow-item">
+                                <div class="flow-icon ai">🤖</div>
+                                <h4 class="text-2xl font-bold mb-2 text-white">④サイトからWebアプリ</h4>
+                                <p class="text-sm text-white mb-2"></p>
+                            </div>
+
+                            <div class="arrow">→</div>
+
+                            <!-- ステップ5 -->
+                            <div class="flow-item">
+                                <div class="flow-icon ai">🤖</div>
+                                <h4 class="text-2xl font-bold mb-2 text-white">⑤データからMLモデル</h4>
+                                <p class="text-sm text-white mb-2"></p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+</body>
+</html>

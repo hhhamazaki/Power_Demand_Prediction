@@ -1,0 +1,146 @@
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #22c55e;
+  --user: #2563eb;
+  --bot: #334155;
+  --border: #1f2937;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+  background: radial-gradient(1200px 600px at 80% 0%, #1f2937 0%, var(--bg) 50%);
+  color: var(--text);
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.app {
+  width: min(800px, 92vw);
+  height: min(80vh, 900px);
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+}
+
+.app__header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(31,41,55,0.6), rgba(17,24,39,0.6));
+}
+
+.app__title {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+}
+
+.messages {
+  padding: 16px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+  background:
+    radial-gradient(600px 300px at 10% 10%, rgba(34,197,94,0.15), transparent 60%),
+    radial-gradient(800px 400px at 90% 0%, rgba(37,99,235,0.12), transparent 60%);
+}
+
+.msg {
+  display: inline-block;
+  max-width: 80%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid var(--border);
+}
+
+.msg--user {
+  justify-self: end;
+  background: rgba(37,99,235,0.18);
+  border-color: rgba(37,99,235,0.35);
+}
+
+.msg--bot {
+  justify-self: start;
+  background: rgba(51,65,85,0.4);
+  border-color: rgba(51,65,85,0.55);
+}
+
+.msg__meta {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--border);
+  background: linear-gradient(0deg, rgba(17,24,39,0.8), rgba(17,24,39,0.6));
+}
+
+.composer__input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #0b1020;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  outline: none;
+}
+
+.composer__input:focus {
+  border-color: rgba(34,197,94,0.45);
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.15);
+}
+
+.composer__send {
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(34,197,94,0.25), rgba(34,197,94,0.15));
+  color: var(--text);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.composer__send:hover {
+  filter: brightness(1.05);
+}
+
+.loading {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.loading__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--muted);
+  opacity: 0.5;
+  border-radius: 50%;
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+.loading__dot:nth-child(2) { animation-delay: 0.2s; }
+.loading__dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.4; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-2px); }
+}

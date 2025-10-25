@@ -1,0 +1,42 @@
+name: Deploy docs to GitHub Pages (gh-pages)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Grant permissions so the deploy action can push to gh-pages and publish Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare public folder
+        run: |
+          rm -rf public || true
+          mkdir -p public
+          # The docs directory in this repository lives under a nested project path.
+          # Adjust the path below if your docs are in a different subfolder.
+          SRC_PATH="AIモデル体感コース/01_実績/Power_Demand_Prediction/docs"
+          if [ -d "$SRC_PATH" ]; then
+            cp -R "$SRC_PATH"/. public/
+          else
+            echo "ERROR: docs not found at $SRC_PATH"
+            ls -la
+            exit 1
+          fi
+
+      - name: Deploy to gh-pages branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: public
+          token: ${{ secrets.GITHUB_TOKEN }}

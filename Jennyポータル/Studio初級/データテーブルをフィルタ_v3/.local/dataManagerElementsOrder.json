@@ -1,0 +1,29 @@
+{
+  "Workflows": [
+    {
+      "Path": null,
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Main.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "dtChunk&Sequence_4",
+        "counter&Sequence_3",
+        "chunkSize&Sequence_3",
+        "currentIndex&Sequence_3",
+        "rowCount&Sequence_3",
+        "FileName&Sequence_3",
+        "DtFileName&Sequence_3",
+        "Dt_HE_KKS&SequenceX_1"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    }
+  ]
+}

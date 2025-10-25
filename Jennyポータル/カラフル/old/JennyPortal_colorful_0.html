@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - ポータル</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* リセットとベーススタイル */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        /* コンテナ */
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: rgba(26, 32, 44, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ヘッダー */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #667eea; /* フォールバック */
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: #cbd5e0;
+        }
+        
+        /* セクション */
+        section {
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        section.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .section-description {
+            margin-bottom: 1.5rem;
+            color: #a0aec0;
+        }
+        
+        /* グリッドレイアウト */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .grid-cols-1 {
+            grid-template-columns: 1fr;
+        }
+        
+        .grid-cols-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-cols-3 {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        
+        .grid-cols-4 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        /* カード */
+        .card {
+            background-color: #2d3748;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            border: 2px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: block; /* カード全体をリンクにする */
+            text-decoration: none; /* リンクの下線を削除 */
+            color: inherit; /* テキスト色を親から継承 */
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card:hover::before {
+            opacity: 0.1;
+        }
+        
+        /* カードのボーダー色 */
+        .border-blue { border-color: #3b82f6; }
+        .border-green { border-color: #10b981; }
+        .border-yellow { border-color: #f59e0b; }
+        .border-pink { border-color: #ec4899; }
+        .border-red { border-color: #ef4444; }
+        .border-teal { border-color: #14b8a6; }
+        .border-purple { border-color: #8b5cf6; }
+        .border-orange { border-color: #f97316; }
+        .border-indigo { border-color: #6366f1; }
+        
+        /* カードタイトル */
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        .gradient-blue {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-green {
+            background: linear-gradient(to right, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-yellow {
+            background: linear-gradient(to right, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-pink {
+            background: linear-gradient(to right, #ec4899, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-red {
+            background: linear-gradient(to right, #ef4444, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-teal {
+            background: linear-gradient(to right, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-purple {
+            background: linear-gradient(to right, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-orange {
+            background: linear-gradient(to right, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* カードテキスト */
+        .card-text {
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .card-list {
+            margin-bottom: 1rem;
+        }
+        
+        .card-list-item {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-bottom: 0.25rem;
+        }
+        
+        .card-list-item::before {
+            content: '• ';
+            margin-right: 0.5rem;
+        }
+        
+        /* ボタン */
+        
+        
+        /* ニュースアイテム */
+        .news-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+        
+        .news-text {
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+        }
+        
+        
+        
+        /* フォーラム特殊要素 */
+        .forum-label {
+            color: #8b5cf6;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .forum-question {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .question-mark {
+            color: #6366f1;
+        }
+        
+        /* フッター */
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4a5568;
+        }
+        
+        .footer-text {
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: #6366f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #4f46e5;
+        }
+        
+        /* スクロールバー */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #667eea;
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .grid {
+                gap: 1rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.25rem;
+            }
+            
+            .card-title {
+                font-size: 1.125rem;
+            }
+        }
+        
+        /* アニメーション */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-delayed {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* ホバーエフェクト強化 */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.8s ease;
+        }
+        
+        .card:hover::after {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header>
+            <h1 class="main-title">JennyPortal</h1>
+            <p class="subtitle">RPAプラットフォーム - ポータル</p>
+        </header>
+
+        <!-- はじめに セクション -->
+        <section class="fade-in">
+            <h2 class="section-title">はじめに</h2>
+            <p class="section-description">理念、サポート体制、規約、稼働状況など</p>
+            
+            <div class="grid grid-cols-4">
+                <a href="https://www.yahoo.co.jp/" target="_blank"rpa-about" class="card border-blue">
+                    <h4 class="card-title gradient-blue">RPAとは</h4>
+                    <p class="card-text">理念、パーパス、ミッション、ビジョン、バリュー</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"support" class="card border-green">
+                    <h4 class="card-title gradient-green">サポート体制</h4>
+                    <p class="card-text">ローコード市民開発の効果</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"guidelines" class="card border-yellow">
+                    <h4 class="card-title gradient-yellow">規約ガイド</h4>
+                    <p class="card-text">市民開発における規約とガイド</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"status" class="card border-pink">
+                    <h4 class="card-title gradient-pink">稼働状況</h4>
+                    <p class="card-text">最新の稼働状況と開発者ランキング</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- 準備 セクション -->
+        <section class="fade-in">
+            <h2 class="section-title">準備</h2>
+            <p class="section-description">利用申請や環境構築など</p>
+            
+            <div class="grid grid-cols-3">
+                <a href="https://forms.office.com/example" class="card border-red">
+                    <h4 class="card-title gradient-red">Step 1: 利用申請</h4>
+                    <p class="card-text">オンラインフォームから申請</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"installation" class="card border-teal">
+                    <h4 class="card-title gradient-teal">Step 2: 環境構築</h4>
+                    <p class="card-text">ソフトウェアのインストールガイド</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"setup" class="card border-purple">
+                    <h4 class="card-title gradient-purple">Step 3: 初期設定</h4>
+                    <p class="card-text">学習環境の最適化と設定</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- 試行したい セクション -->
+        <section class="fade-in">
+            <h2 class="section-title">試行したい</h2>
+            <p class="section-description">自動化する実務が無い場合の教育コンテンツやサンプルロボ</p>
+            
+            <div class="grid grid-cols-3">
+                <a href="https://www.yahoo.co.jp/" target="_blank"mini-robots" class="card border-yellow">
+                    <h4 class="card-title gradient-yellow">ミニロボ</h4>
+                    <p class="card-text">独学に最適な数分でマスターできる超入門ミニロボ事例集</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"sample-robots" class="card border-indigo">
+                    <h4 class="card-title gradient-blue">サンプルロボ</h4>
+                    <p class="card-text">すぐに業務に適用できるサンプルロボット事例集</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"education-content" class="card border-orange">
+                    <h4 class="card-title gradient-orange">教育コンテンツ</h4>
+                    <p class="card-text">業務効率化の基礎概念から応用まで、段階的に学習できるコンテンツ</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- ハンズオン研修 セクション -->
+        <section class="fade-in">
+            <h2 class="section-title">ハンズオン研修</h2>
+            <p class="section-description">ハンズオン研修カリキュラム</p>
+            
+            <div class="grid grid-cols-4">
+                <a href="https://www.yahoo.co.jp/" target="_blank"course-beginner" class="card border-green">
+                    <h4 class="card-title gradient-green">入門コース</h4>
+                    <p class="card-text">RPAツールの基本操作を習得</p>
+                    <div class="card-list">
+                        <div class="card-list-item">ブラウザ操作</div>
+                        <div class="card-list-item">条件分岐</div>
+                        <div class="card-list-item">Excel操作</div>
+                        <div class="card-list-item">繰り返し処理</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"course-elementary" class="card border-blue">
+                    <h4 class="card-title gradient-blue">初級コース</h4>
+                    <p class="card-text">基礎知識と応用スキルを習得</p>
+                    <div class="card-list">
+                        <div class="card-list-item">変数とデータ型</div>
+                        <div class="card-list-item">Web操作応用</div>
+                        <div class="card-list-item">Excel操作応用</div>
+                        <div class="card-list-item">データ加工</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"course-intermediate" class="card border-yellow">
+                    <h4 class="card-title gradient-yellow">中級コース</h4>
+                    <p class="card-text">複雑な業務プロセスの自動化</p>
+                    <div class="card-list">
+                        <div class="card-list-item">例外処理</div>
+                        <div class="card-list-item">モジュール化</div>
+                        <div class="card-list-item">ファイル操作</div>
+                        <div class="card-list-item">SharePoint連携</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"course-advanced" class="card border-purple">
+                    <h4 class="card-title gradient-purple">上級コース</h4>
+                    <p class="card-text">エンタープライズレベルのRPA</p>
+                    <div class="card-list">
+                        <div class="card-list-item">API連携</div>
+                        <div class="card-list-item">セキュリティ対策</div>
+                        <div class="card-list-item">Copilot連携</div>
+                        <div class="card-list-item">AI自動化</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 開発したい セクション -->
+        <section class="fade-in">
+            <h2 class="section-title">開発したい</h2>
+            <p class="section-description">自動化したい実務が有る場合の開発フロー</p>
+            
+            <div class="grid grid-cols-3">
+                <a href="https://www.yahoo.co.jp/" target="_blank"development-phase" class="card border-teal">
+                    <h4 class="card-title gradient-teal">開発フェーズ</h4>
+                    <p class="card-text">要件定義・設計<br>業務分析から自動化対象の特定、システム設計まで</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"testing-phase" class="card border-orange">
+                    <h4 class="card-title gradient-orange">プレ本番フェーズ</h4>
+                    <p class="card-text">テスト・検証<br>開発したロボットの動作確認とパフォーマンステスト</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"production-phase" class="card border-green">
+                    <h4 class="card-title gradient-green">本番フェーズ</h4>
+                    <p class="card-text">運用・保守<br>本番環境での運用開始と継続的な改善</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- コミュニティ セクション -->
+        <section class="fade-in">
+            <h2 class="section-title">コミュニティ</h2>
+            <p class="section-description">質問・相談、事例共有、勉強会など</p>
+            
+            <div class="grid grid-cols-3">
+                <a href="https://www.yahoo.co.jp/" target="_blank"forum" class="card border-purple">
+                    <h4 class="card-title gradient-purple">質問フォーラム</h4>
+                    <p class="card-text">技術的な疑問や学習に関する質問を投稿</p>
+                    <div class="forum-label">最新の質問:</div>
+                    <div class="forum-question">
+                        <div class="question-mark">Q:</div>
+                        <div>"【ダミー】xxx操作でxxxを取得する方法は？"</div>
+                    </div>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"case-studies" class="card border-blue">
+                    <h4 class="card-title gradient-blue">事例共有</h4>
+                    <p class="card-text">成功事例や失敗談を共有</p>
+                    <div class="forum-label">事例:</div>
+                    <div class="forum-question">"【ダミー】xxx処理の自動化で月xx時間削減に成功"</div>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"events" class="card border-red">
+                    <h4 class="card-title gradient-red">勉強会・イベント</h4>
+                    <p class="card-text">勉強会やウェビナーの開催</p>
+                    <div class="forum-question">【ダミー】次回: RPAセキュリティベストプラクティス<br>20xx年xx月xx日 14:00-</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ニュース・お知らせ -->
+        <section class="fade-in">
+            <h2 class="section-title">ニュース・お知らせ</h2>
+            
+            <div class="grid grid-cols-2">
+                <a href="https://www.yahoo.co.jp/" target="_blank"news/ai-feature" class="card border-indigo">
+                    <div class="news-date">2025.07.15</div>
+                    <h4 class="news-title">【ダミー】新機能リリース: AI支援開発機能</h4>
+                    <p class="news-text">xxx連携による自然言語でのRPA開発が可能になりました。</p>
+                </a>
+                
+                <a href="https://www.yahoo.co.jp/" target="_blank"news/maintenance" class="card border-indigo">
+                    <div class="news-date">2025.07.10</div>
+                    <h4 class="news-title">【ダミー】メンテナンス予定のお知らせ</h4>
+                    <p class="news-text">xx月xx日（日）2:00-6:00にシステムメンテナンスを実施いたします。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer>
+            <p class="footer-text">© 2025 JennyPortal. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="https://www.yahoo.co.jp/" target="_blank"privacy" class="footer-link">プライバシーポリシー</a>
+                <a href="https://www.yahoo.co.jp/" target="_blank"terms" class="footer-link">利用規約</a>
+                <a href="https://www.yahoo.co.jp/" target="_blank"contact" class="footer-link">お問い合わせ</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 段階的フェードイン効果
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+            
+            // Intersection Observer for better performance
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // 段階的にアニメーションを適用
+                        setTimeout(() => {
+                            entry.target.classList.add('fade-in');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // カードの微細なホバーエフェクト
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - 試行したい</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn {
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">試行したい</h2>
+        <p class="text-gray-700 mb-6">自動化する実務がない場合の教育コンテンツやサンプルロボをご紹介します。</p>
+
+        <div id="trial_overview_cards" class="content-section active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">ミニロボ</h4>
+                    <p class="text-sm mb-4">業務効率化の基礎概念から応用まで。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('trial_education_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">サンプルロボ</h4>
+                    <p class="text-sm mb-4">すぐに使えるロボットの事例集。</p>
+                    <button class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('trial_sample_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">アカデミー</h4>
+                    <p class="text-sm mb-4">業務改善の理論と実践を学ぶ。</p>
+                    <button class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('trial_academy_detail')">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="trial_education_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">教育コンテンツ - ミニロボ</h3>
+                <p class="text-gray-700 mb-6">業務効率化の基礎概念から応用まで、段階的に学習できるコンテンツです。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="http://example.com/education_intro" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                            <p class="text-sm">業務効率化の基礎概念を学習</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/education_beginner" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">初級コース</h4>
+                            <p class="text-sm">基本的なRPAツールの使い方</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/education_intermediate" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">中級コース</h4>
+                            <p class="text-sm">ChatGPTとExcelの連携活用</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/education_advanced" class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">上級コース</h4>
+                            <p class="text-sm">AI活用による高度な自動化</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('trial_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="trial_sample_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">サンプルロボ</h3>
+                <p class="text-gray-700 mb-6">すぐに業務に適用できるサンプルロボットをご紹介します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="http://example.com/sample_data_processing" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">シンプルなデータ処理ロボット</h4>
+                            <p class="text-sm">基本的なデータ処理の自動化</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/sample_email_automation" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">メール自動送信ロボット</h4>
+                            <p class="text-sm">基本的なメール自動送信の実装</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/sample_web_scraping" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Webスクレイピングロボット</h4>
+                            <p class="text-sm">特定のウェブサイトから情報を自動取得</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/sample_ai_report" class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">AI連携レポート生成ロボット</h4>
+                            <p class="text-sm">AIを活用して自動的にレポートを作成</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('trial_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="trial_academy_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">アカデミー</h3>
+                <p class="text-gray-700 mb-6">業務改善の理論と実践を深く学ぶためのカリキュラムです。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="http://example.com/academy_intro" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                            <p class="text-sm">業務効率化の理論と実践</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/academy_beginner" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">初級コース</h4>
+                            <p class="text-sm">プロジェクト管理と改善手法</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/academy_intermediate" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">中級コース</h4>
+                            <p class="text-sm">業務分析とプロセス設計</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/academy_advanced" class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">上級コース</h4>
+                            <p class="text-sm">組織変革とDX推進</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('trial_overview_cards')">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // すべてのコンテンツセクションを非表示にし、指定されたセクションを表示する関数
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に概要カードを表示
+            showSection('trial_overview_cards');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>市民開発による全社員の行動変容</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .slide-container {
+            width: 1600px;
+            height: 900px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #003366;
+            color: white;
+            padding: 10px 40px; /* 高さを低くするためにpaddingを減らします */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        
+        .header-date {
+            font-size: 18px;
+        }
+        
+        .content {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+        
+        .card-title {
+            background-color: #0066cc;
+            color: white;
+            padding: 12px 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .card-content {
+            padding: 16px;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        
+        .grid-item {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            border-radius: 4px;
+        }
+        
+        .grid-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .three-column-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .chart-container {
+            height: 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .chart-title {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 120px;
+            padding-top: 20px;
+            width: 100%;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
+        
+        .bar {
+            width: 60px;
+            margin: 0 10px;
+            position: relative;
+        }
+        
+        .bar-label {
+            position: absolute;
+            top: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .x-label {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            background-color: #003366;
+            color: white;
+            padding: 12px 40px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        ul li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        ul li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: #0066cc;
+        }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <h1 class="header-title">市民開発による全社員の行動変容</h1>
+            <div class="header-date">2025年4月25日</div>
+        </div>
+        
+        <div class="content">
+            <div class="column">
+                <div class="card">
+                    <div class="card-title">👨‍💻 私のキャリア</div>
+                    <div class="card-content">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <div class="grid-title">🏭 現場</div>
+                                <ul>
+                                    <li>プラント性能
+                                        <span style="background-color: #ffcccc;">データ分析</span>（プログラミング独学）</li>
+                                </ul>
+                            </div>
+                            <div class="grid-item">
+                                <div class="grid-title">🌎 海外</div>
+                                <ul>
+                                    <li>7か国で省エネ事業（運用改善による性能向上）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="height: auto;">
+                    <div class="card-title">📊 FY24_市民開発の実績</div>
+                    <div class="card-content">
+                        <div class="grid-container" style="margin-top: 2px;">
+                            <div class="grid-item">
+                                <div class="grid-title">
+                                    「お知らせ配信」や「開発サポート」により
+                                    <span style="background-color: #ffcccc;">100%内製ロボ激増！</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="three-column-grid" style="margin-top: 12px;">
+                            <div class="chart-container">
+                                <div class="chart-title">利用者</div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart-title">開発者</div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="chart-title">本番ロボ</div>
+                            </div>
+
+                            <div class="chart-container">
+                                <div class="bar-chart">
+                                    <div class="bar-group">
+                                        <div class="bar" style="height: 100px; background-color: #4285f4;">
+                                            <div class="bar-label">800人</div>
+                                        </div>
+                                        <div class="x-label">FY2023</div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar" style="height: 150px; background-color: #34a853;">
+                                            <div class="bar-label">1200人</div>
+                                        </div>
+                                        <div class="x-label">FY2024</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="bar-chart">
+                                    <div class="bar-group">
+                                        <div class="bar" style="height: 80px; background-color: #4285f4;">
+                                            <div class="bar-label">60人</div>
+                                        </div>
+                                        <div class="x-label">FY2023</div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar" style="height: 120px; background-color: #34a853;">
+                                            <div class="bar-label">90人</div>
+                                        </div>
+                                        <div class="x-label">FY2024</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-container">
+                                <div class="bar-chart">
+                                    <div class="bar-group">
+                                        <div class="bar" style="height: 100px; background-color: #4285f4;">
+                                            <div class="bar-label">80体</div>
+                                        </div>
+                                        <div class="x-label">FY2023</div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar" style="height: 150px; background-color: #34a853;">
+                                            <div class="bar-label">120体</div>
+                                        </div>
+                                        <div class="x-label">FY2024</div>
+                                    </div>
+                                </div>
+                            </div>                                                        
+                        </div>
+
+                        <div class="grid-container" style="margin-top: 40px;">
+                            <div class="grid-item">
+                                <div class="grid-title">
+                                    <span style="background-color: #ffff99;">「利用者」の7.5%</span>が
+                                    <span style="background-color: #ffcccc;">アクティブな「開発者」</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <div class="card-title">📝 FY25_市民開発ガイドライン制定</div>
+                    <div class="card-content">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <div class="grid-title">✅ 厳格に統制：</div>
+                                <ul>
+                                    <li>「禁止事項に抵触」「費用対効果が低い」案件は
+                                        <span style="background-color: #ffcccc;">「廃止」</span></li>
+                                    <li>「開発中」ロボ200体をサポートし
+                                        <span style="background-color: #ffcccc;">「本番化」</span></li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">🔮 今後の課題</div>
+                    <div class="card-content">
+                        <div class="grid-container">
+                            <div class="grid-item">
+                                <div class="grid-title">🤖 AI（LLM, ML,DL）ｘRPA連携：</div>
+                                <ul>
+                                    <li>「複雑な業務フロー」に
+                                        <span style="background-color: #ffcccc;">AIを組み込む</span>
+                                    「高度な自動化」<br>（最新トレンドを組み合わせ変革）</li>
+                                </ul>
+                            </div>
+                            <div class="grid-item">
+                                <div class="grid-title">🧑‍🏫 市民開発サポート要員の育成：</div>
+                                <ul>
+                                    <li>自動化スキル向上トレーニング（
+                                        <span style="background-color: #ffcccc;">現場ハンズオン研修</span>を増加）</li>
+                                </ul>
+                            </div>
+                            <div class="grid-item">
+                                <div class="grid-title">🤝 業務部門とのコラボ：</div>
+                                <ul>
+                                    <li><span style="background-color: #ffcccc;">社内インターンシップ</span>（短期集中コースを新設）</li>
+                                </ul>
+                            </div>
+                            <div class="grid-item">
+                                <div class="grid-title">🔄 役職ローテーション：</div>
+                                <ul>
+                                    <li>一般職もマネジメント（
+                                        <span style="background-color: #ffcccc;">AIエージェント</span>部下で百人力）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">市民開発チーム | © 2025</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+﻿"No.","業務内容概要","利用するApp/処理する資料","業務内容の詳細","担当者","RPA化対象","備考"
+"1","更新対象一覧Excel取得","Sharepoint、Excel","Sharepoint（https://uipath.sharepoint.com/xxx/ppp/rrrrrrrr）から、更新対象のOpportunity一覧の記載されたExcelファイルをダウンロードする。","John Doe","対象外",""
+"2","OpportunityStage更新","Opportunity一覧.xlsx、SFDC","一覧Excelに記載されたOpportuintyについて、StageをClosed Won Pendingに変更","ロボット","対象","Salesforce APIを利用"
+"3","更新完了を通知","SFDC","SlaseforceのChatter機能を利用して、OpportunityStageの更新完了を通知","ロボット","対象","Salesforce APIを利用"
+"4","実行結果をExcelに記入","Opportunity一覧.xlsx、SFDC","各Opportunityの更新成功／失敗を、Excelファイルに記入する","ロボット","対象",""
+"5","実行結果を確認","Opportunity一覧.xlsx","ロボットの処理が完了した後に、実行結果をExcelで確認する。","John Doe","対象外",""

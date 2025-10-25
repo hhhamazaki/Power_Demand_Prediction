@@ -1,0 +1,4 @@
+最上位のノートで、アウトプットの保存用に使用します。
+LiteratureNoteやFleetingNoteをもとに内容をまとめて作成します。
+アウトプットを出す時に使用します。
+フロントマターにリンクを設けることでliteratureNoteとfleetingNote を結びつけています。

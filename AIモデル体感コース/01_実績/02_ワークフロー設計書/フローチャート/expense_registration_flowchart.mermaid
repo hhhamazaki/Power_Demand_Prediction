@@ -1,0 +1,67 @@
+flowchart TD
+    A[開始] --> B{data.xlsx ファイル存在?}
+    
+    B -->|No| C[ファイルをダウンロード]
+    B -->|Yes| D[既存ファイル使用]
+    
+    C --> E{ダウンロード成功?}
+    E -->|No| F[エラー終了]
+    E -->|Yes| G[Excelファイル読み込み]
+    
+    D --> G
+    G --> H{読み込み成功?}
+    H -->|No| F
+    H -->|Yes| I[Edgeドライバー初期化]
+    
+    I --> J{WebDriver起動成功?}
+    J -->|No| F
+    J -->|Yes| K[expense-demo.comにアクセス]
+    
+    K --> L[「経費を登録する」ボタンクリック]
+    L --> M{クリック成功?}
+    M -->|No| N[ブラウザ終了]
+    N --> F
+    
+    M -->|Yes| O[処理開始時刻記録]
+    O --> P[Excelデータのループ開始]
+    
+    P --> Q{全行処理完了?}
+    Q -->|Yes| R[処理終了時刻記録]
+    
+    Q -->|No| S[「明細を登録する」ボタンクリック]
+    S --> T[タイトル入力]
+    T --> U[種別選択]
+    U --> V[金額入力]
+    V --> W[備考入力]
+    W --> X[「登録する」ボタンクリック]
+    
+    X --> Y[登録完了画面でコード取得]
+    Y --> Z[Excelセルにコード書き込み]
+    Z --> AA[「戻る」ボタンクリック]
+    AA --> BB[次の明細登録準備]
+    BB --> CC{処理中エラー発生?}
+    
+    CC -->|Yes| DD[エラーログ出力]
+    DD --> EE[次のループへ継続]
+    CC -->|No| EE
+    EE --> P
+    
+    R --> FF[Excelファイル保存]
+    FF --> GG{保存成功?}
+    GG -->|No| HH[保存エラー出力]
+    GG -->|Yes| II[完了ダイアログ表示]
+    
+    HH --> II
+    II --> JJ[処理完了メッセージ]
+    JJ --> KK[ブラウザ終了]
+    KK --> LL[終了]
+    
+    F --> LL
+    
+    style A fill:#90EE90
+    style LL fill:#FFB6C1
+    style F fill:#FF6B6B
+    style O fill:#87CEEB
+    style R fill:#87CEEB
+    style P fill:#DDA0DD
+    style Q fill:#DDA0DD

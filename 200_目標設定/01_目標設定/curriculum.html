@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPAハンズオン研修カリキュラム</title>
+    <style>
+        /* フォントのインポート */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+1p:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+
+        /* 基本スタイル */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', sans-serif; /* メインフォント */
+        }
+
+        body {
+            background-color: #f8f9fa; /* 背景色 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 上寄せ */
+            min-height: 100vh;
+            padding: 20px; /* ボディにパディングを追加 */
+            overflow-y: auto; /* 縦スクロールを許可 */
+        }
+
+        /* スクロールバーの非表示 */
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+        body {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* ベースコンテナ (スライド全体) */
+        .slide-container {
+            width: 100%; /* レスポンシブ対応 */
+            max-width: 1600px; /* 最大幅 */
+            min-height: 900px;
+            height: auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden; /* コンテナ自体のスクロールバーは非表示 */
+        }
+
+        /* コンテンツエリア */
+        .content {
+            display: flex;
+            flex-direction: column; /* 基本は縦積み */
+            padding: 32px; /* パディング調整 */
+            gap: 30px; /* セクション間の間隔 */
+            flex-grow: 1; /* 残りの高さを埋める */
+            overflow-y: auto; /* コンテンツが多い場合に縦スクロールを許可 */
+        }
+
+         /* コンテンツエリアのスクロールバー非表示 */
+        .content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+        .content {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* カラムレイアウト (ここでは基本1カラム) */
+        .column {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* カード間の間隔 */
+        }
+
+        /* カード */
+        .card {
+            background-color: white; /* カード背景色 */
+            border-radius: 10px; /* 角丸 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* シャドウ */
+            height: auto; /* コンテンツに合わせて高さ自動調整 */
+            overflow: hidden;
+            border: 1px solid #e2e8f0; /* ボーダー */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* セクションタイトル (ヘッダー様式を適用) */
+        .section-main-title {
+            background-color: #2c3e50; /* ヘッダー背景色を適用 */
+            color: #ffffff; /* ヘッダー文字色を適用 */
+            padding: 20px 40px; /* ヘッダーのパディングを適用 */
+            font-size: 28px; /* ヘッダーのタイトルフォントサイズを適用 */
+            font-weight: bold;
+            text-align: center; /* 中央寄せ */
+            margin-bottom: 20px; /* 下部のマージン */
+            position: relative; /* 下線削除のためrelativeは残す */
+            padding-bottom: 20px; /* パディング調整 */
+        }
+
+        .section-main-title::after {
+             content: none; /* 下線を削除 */
+        }
+
+        /* カードコンテンツ */
+        .card-content {
+            padding: 20px; /* パディング調整 */
+            flex: 1; /* 残りのスペースを埋める */
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* コンテンツ内の要素間隔 */
+            font-size: 14px; /* 本文フォントサイズ（リストやテーブルなど、pタグ以外に影響） */
+            color: #333333; /* 本文文字色 */
+            line-height: 1.6; /* 行間 */
+            overflow-wrap: break-word;
+            overflow: hidden;
+            max-height: 100%; /* 親要素の高さに合わせる */
+        }
+
+        /* カードコンテンツ内のpタグのフォントサイズを大きく */
+        .card-content p {
+            font-size: 16px; /* pタグのフォントサイズを調整 */
+            color: #333333; /* 本文文字色 */
+            line-height: 1.6; /* 行間 */
+            margin-bottom: 10px; /* 下部のマージン */
+        }
+
+         /* カード内のリスト */
+        .card-content ul {
+            list-style: disc; /* 標準のリストスタイルを使用 */
+            padding-left: 20px; /* 標準の左パディングを使用 */
+            margin-bottom: 0;
+        }
+
+        .card-content li {
+            margin-bottom: 8px; /* リストアイテム間隔 */
+            font-size: 14px; /* リストアイテムフォントサイズ */
+            line-height: 1.5; /* 行間 */
+            color: #555; /* リストアイテム文字色 */
+            padding-left: 0; /* カスタムパディングを削除 */
+            position: static; /* カスタムpositionを削除 */
+            background-color: transparent; /* 背景色を透明に */
+            border-radius: 0; /* 角丸を解除 */
+            text-align: left; /* テキスト左揃え */
+            box-shadow: none; /* シャドウを解除 */
+            counter-increment: none; /* カウンターを解除 */
+        }
+
+         .card-content li::before {
+             content: ''; /* カスタムマーカーを削除 */
+             position: static; /* カスタムpositionを削除 */
+             left: auto; /* 位置指定解除 */
+             top: auto; /* 位置指定解除 */
+             width: auto; /* 幅指定解除 */
+             text-align: left; /* テキスト配置解除 */
+         }
+
+        /* カード内のテーブル */
+        .card-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px; /* テーブル全体のフォントサイズを調整 */
+            border: 2px solid #e2e8f0;
+        }
+
+        .card-content th,
+        .card-content td {
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 14px; /* テーブルセル内のフォントサイズを調整 */
+        }
+
+        .card-content th {
+            background-color: #fdf2f4;
+            font-weight: bold;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center; /* 中央揃えを追加 */
+        }
+
+        /* 詳細カリキュラムカードスタイル */
+        .details-course-card {
+             background: #ffffff; /* 背景色 */
+             border-radius: 8px; /* 角丸 */
+             overflow: hidden; /* 角丸でテーブルの角を隠す */
+             box-shadow: 0 1px 5px rgba(0,0,0,0.05); /* シャドウ */
+             border: 1px solid #e2e8f0; /* ボーダー */
+             margin-top: 15px; /* 上部にマージンを追加 */
+             padding-bottom: 20px; /* 下部にパディングを追加 */
+        }
+
+        /* 詳細カリキュラムカード内のタイトル */
+        .details-course-card h5 {
+             color: #2c3e50; /* デフォルト文字色 */
+             font-size: 1.1rem;
+             font-weight: bold;
+             padding: 10px 15px; /* パディング */
+             margin: 0; /* マージンをリセット */
+             border-bottom: 1px solid #e2e8f0; /* 下線 */
+             text-align: center; /* 中央揃えを追加 */
+        }
+
+        /* 各詳細コースレベルのサブ見出し背景色 */
+        .details-course-card h5.entry {
+            background-color: #3498db;
+            color: white;
+        }
+        .details-course-card h5.beginner {
+            background-color: #27ae60;
+            color: white;
+        }
+        .details-course-card h5.intermediate {
+            background-color: #f39c12;
+            color: white;
+        }
+        .details-course-card h5.advanced {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* 詳細カリキュラムカード内のコンテンツエリア */
+        .details-course-card .card-content-inner {
+             padding: 15px; /* 内側のパディング */
+             display: flex;
+             flex-direction: column;
+             gap: 8px;
+        }
+
+        /* 詳細カリキュラムカード内の説明文 */
+         .details-course-card p {
+            font-size: 1rem; /* pタグのフォントサイズを調整 */
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+         /* 詳細カリキュラムカード内のテーブル */
+         .details-course-card table {
+             width: calc(100% - 30px); /* 左右マージン分を考慮して幅を調整 */
+             border-collapse: collapse;
+             margin: 0 auto; /* 上下マージンなし、左右中央寄せ */
+             font-size: 14px; /* テーブル全体のフォントサイズを調整 */
+             border: none; /* 外側のボーダーは親カードで指定 */
+         }
+
+         .details-course-card th,
+         .details-course-card td {
+             padding: 8px;
+             border: 1px solid #e2e8f0;
+             text-align: left;
+             font-size: 14px; /* テーブルセル内のフォントサイズを調整 */
+         }
+
+         .card-content th {
+             background-color: #fdf2f4;
+             font-weight: bold;
+             border-bottom: 1px solid #e2e8f0;
+             text-align: center; /* 中央揃えを追加 */
+         }
+         /* テーブルの角丸は親カードで対応 */
+
+
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .column {
+                gap: 15px;
+            }
+
+            .section-main-title {
+                 font-size: 20px;
+                 padding: 15px 20px;
+                 padding-bottom: 15px;
+            }
+
+            /* モバイル用カードコンテンツ */
+            .card-content {
+                padding: 15px;
+                font-size: 13px; /* 基本フォントサイズ（リストやテーブルなど、pタグ以外に影響） */
+                gap: 10px;
+            }
+
+             /* モバイル用カードコンテンツ内のpタグのフォントサイズを大きく */
+            .card-content p {
+                font-size: 14px; /* pタグのフォントサイズを調整 */
+            }
+
+             .card-content ul {
+                 padding-left: 15px;
+             }
+
+             .card-content li {
+                 font-size: 13px;
+                 margin-bottom: 6px;
+                 padding: 0; /* モバイル用パディングをリセット */
+                 padding-left: 8px; /* モバイル用リストマーカーとの間隔調整 */
+             }
+
+             .details-course-card h5 {
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
+
+             .details-course-card table {
+                 font-size: 13px; /* モバイル用テーブルフォントサイズ */
+                 width: calc(100% - 30px); /* 左右マージン分を考慮して幅を調整 */
+                 margin: 0 auto; /* 上下マージンなし、左右中央寄せ */
+             }
+
+             .details-course-card th,
+             .details-course-card td {
+                 font-size: 13px; /* モバイル用テーブルセルフォントサイズ */
+             }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="slide-container">
+        <div class="content one-column">
+            <div class="column">
+
+                <h2 class="section-main-title">RPAハンズオン研修カリキュラム</h2>
+                <div class="card">
+                    <div class="card-content">
+                         <p>レベル別に体系化されたRPAハンズオン研修コースで、着実にスキルアップできます。各コースで習得できる具体的なスキルと学習項目は以下をご覧ください。</p>
+
+                         <div class="details-course-card" id="entry-curriculum">
+                             <h5 class="entry">有人ロボ入門コース</h5>
+                             <div class="card-content-inner">
+                                 <p>RPAツールの基本操作を習得し、RPA開発の第一歩を踏み出します。</p>
+                             </div>
+                             <table>
+                                 <tr>
+                                     <th width="30%">学習項目</th>
+                                     <th>習得スキル</th>
+                                 </tr>
+                                 <tr>
+                                     <td>利用申請</td>
+                                     <td>RPA利用のための申請</td>
+                                 </tr>
+                                 <tr>
+                                     <td>UiPath_Studio、Edge拡張機能インストール</td>
+                                     <td>RPA開発ツール（UiPath_Studio）およびブラウザ（Edge）拡張機能をインストール</td>
+                                 </tr>
+                                 <tr>
+                                     <td>ガイド・規約</td>
+                                     <td>RPA開発ガイドラインやコーディング規約</td>
+                                 </tr>
+                                 <tr>
+                                     <td>ブラウザ操作</td>
+                                     <td>デモ画面を開く、ボタンをクリック、文字を入力、項目を選択、テキストを取得</td>
+                                 </tr>
+                                 <tr>
+                                     <td>条件分岐</td>
+                                     <td>ファイルが存在しなければURLからダウンロード</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Excel操作</td>
+                                     <td>範囲を読み込み、セルに書き込み</td>
+                                 </tr>
+                                 <tr>
+                                     <td>繰り返し</td>
+                                     <td>繰り返し各行</td>
+                                 </tr>
+                             </table>
+                         </div>
+
+                         <div class="details-course-card" id="beginner-curriculum">
+                             <h5 class="beginner">有人ロボ初級コース</h5>
+                             <div class="card-content-inner">
+                                <p>RPAの基礎知識と応用スキルを習得し、簡単な業務の自動化を実現します。</p>
+                                </div>
+                             <table>
+                                 <tr>
+                                     <th width="30%">学習項目</th>
+                                     <th>習得スキル</th>
+                                 </tr>
+                                 <tr>
+                                     <td>変数とデータ型</td>
+                                     <td>変数のスコープ、基本データ型、変数の変換、配列、データテーブル</td>
+                                 </tr>
+                                 <tr>
+                                     <td>データ加工</td>
+                                     <td>文字列操作、日付操作</td>
+                                 </tr>
+                                 <tr>
+                                     <td>複雑な条件分岐</td>
+                                     <td>多分岐（スイッチ）</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Web操作応用</td>
+                                     <td>要素待機、動的セレクター、複雑な入力フォーム</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Excel操作応用</td>
+                                     <td>マクロ実行（引数なし/あり）</td>
+                                 </tr>
+                             </table>
+                         </div>
+
+                         <div class="details-course-card" id="vm-beginner-curriculum">
+                             <h5 class="beginner">仮想マシン初級コース</h5>
+                             <div class="card-content-inner">
+                                 <p>仮想マシン（Virtual Machine; VM）環境でのRPA開発の基礎を学びます。</p>
+                             </div>
+                             <table>
+                                 <tr>
+                                     <th width="30%">学習項目</th>
+                                     <th>習得スキル</th>
+                                 </tr>
+                                 <tr>
+                                     <td>システム構成</td>
+                                     <td>VM環境の構成やネットワーク概要</td>
+                                 </tr>
+                                 <tr>
+                                     <td>プレ本番VM利用方法</td>
+                                     <td>プレ本番環境でのVM利用</td>
+                                 </tr>
+                             </table>
+                         </div>
+
+                         <div class="details-course-card" id="intermediate-curriculum">
+                             <h5 class="intermediate">無人ロボ中級コース</h5>
+                             <div class="card-content-inner">
+                                <p>より複雑な業務プロセスの自動化スキルを習得し、RPA適用範囲を拡大します。</p>
+                             </div>
+                             <table>
+                                 <tr>
+                                     <th width="30%">学習項目</th>
+                                     <th>習得スキル</th>
+                                 </tr>
+                                 <tr>
+                                     <td>モジュール化</td>
+                                     <td>EUC開発フレームワーク操作（Configファイル利用）、ワークフロー分割/再利用、引数設定/受渡</td>
+                                 </tr>
+                                 <tr>
+                                     <td>セキュリティ対策</td>
+                                     <td>アセットによるパスワード管理</td>
+                                 </tr>
+                                 <tr>
+                                     <td>ファイル操作</td>
+                                     <td>Sharepoint操作</td>
+                                 </tr>
+                                 <tr>
+                                     <td>例外処理</td>
+                                     <td>リトライスコープやTry-Catchによるエラー制御、カスタム例外作成、エラーログ出力</td>
+                                 </tr>
+                             </table>
+                         </div>
+
+                         <div class="details-course-card" id="vm-intermediate-curriculum">
+                             <h5 class="intermediate">仮想マシン中級コース</h5>
+                             <div class="card-content-inner">
+                                <p>仮想マシン環境でのRPA運用・管理ツール（UiPath_Orchestrator; OC）の応用スキルを習得します。</p>
+                             </div>
+                             <table>
+                                 <tr>
+                                     <th width="30%">学習項目</th>
+                                     <th>習得スキル</th>
+                                 </tr>
+                                 <tr>
+                                     <td>OCプロセス作成</td>
+                                     <td>Orchestrator上で新規プロセスを作成</td>
+                                 </tr>
+                                 <tr>
+                                     <td>OCからロボ実行の検証</td>
+                                     <td>Orchestratorからロボを実行し、動作を検証</td>
+                                 </tr>
+                                 <tr>
+                                     <td>OCログ確認</td>
+                                     <td>Orchestratorでの実行ログの確認・分析</td>
+                                 </tr>
+                                 <tr>
+                                     <td>ロボファイルのパブリッシュ</td>
+                                     <td>ロボファイルをOrchestratorにパブリッシュ</td>
+                                 </tr>
+                                 <tr>
+                                     <td>ロボの本番適用と修正</td>
+                                     <td>本番環境へのロボ適用・修正・更新</td>
+                                 </tr>
+                             </table>
+                         </div>
+
+                         <div class="details-course-card" id="advanced-curriculum">
+                             <h5 class="advanced">上級コース</h5>
+                             <div class="card-content-inner">
+                                <p>エンタープライズレベルのRPAプロジェクトを推進できるスキルを習得し、RPA導入効果を最大化します。</p>
+                                </div>
+                             <table>
+                                 <tr>
+                                     <th width="30%">学習項目</th>
+                                     <th>習得スキル</th>
+                                 </tr>
+                                 <tr>
+                                     <td>API連携</td>
+                                     <td>REST API呼出（HTTP要求）、JSONデータ解析/生成、外部サービス認証処理（認証トークン取得）</td>
+                                 </tr>
+                                 <tr>
+                                     <td>生成AI連携</td>
+                                     <td>生成AI連携、自然言語RPA制御、AIによる自動化</td>
+                                 </tr>
+                             </table>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

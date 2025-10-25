@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>市民開発による全社員の行動変容</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Hiragino Sans", "Meiryo", sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .slide-container {
+      width: 1600px;
+      height: 900px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header-title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .header-date {
+      font-size: 16px;
+    }
+    
+    .content {
+      display: flex;
+      flex: 1;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .card-title {
+      background: #3498db;
+      color: white;
+      padding: 10px 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .card-content {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    
+    .grid-item {
+      border: 1px solid #e0e0e0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    
+    .grid-item-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #2c3e50;
+    }
+    
+    .small-text {
+      font-size: 14px;
+    }
+    
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .graph-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      height: 300px;
+    }
+    
+    .graph-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .graph-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 20px;
+      text-align: center;
+    }
+    
+    svg {
+      width: 100%;
+      height: 300px;
+    }
+    
+    .icon {
+      margin-right: 8px;
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    
+    .list-item .icon {
+      margin-top: 2px;
+    }
+    
+    .list-content {
+      flex: 1;
+    }
+    
+    /* Add this style to make the card height adjust automatically */
+    .card:nth-child(2) {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <div class="header">
+      <h1 class="header-title">市民開発による全社員の行動変容</h1>
+      <div class="header-date">2025年4月28日</div>
+    </div>
+    <div class="content">
+      <div class="column">
+        <div class="card">
+          <div class="card-title">🔍 私のキャリア</div>
+          <div class="card-content">
+            <div class="grid-container">
+              <div class="grid-item">
+                <div class="list-item">
+                  <span class="icon">🏭</span>
+                  <div class="list-content">
+                    <strong>現場：<br></strong>設備の性能データ分析<br>（プログラミング独学）
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="list-item">
+                  <span class="icon">🌍</span>
+                  <div class="list-content">
+                    <strong>海外：<br></strong>7か国で省エネ事業<br>（運用改善による性能向上）
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" style="flex: 1;">
+          <div class="card-title">📊 FY24_市民開発の実績</div>
+          <div class="card-content">
+            <p style="font-size: 20px;"><strong>全社お知らせ配信や開発サポートにより激増！</strong></p>
+            
+            <div class="graph-container">
+              <div class="graph-box">
+                <div class="graph-title">ユーザー数</div>
+                <svg viewBox="0 0 240 200">
+                  <line x1="40" y1="20" x2="40" y2="170" stroke="#e0e0e0" stroke-width="1"/>
+                  <line x1="40" y1="170" x2="220" y2="170" stroke="#e0e0e0" stroke-width="1"/>
+                  
+                  <text x="10" y="170" text-anchor="middle" font-size="10">0</text>
+                  <text x="10" y="127" text-anchor="middle" font-size="10">400</text>
+                  <text x="10" y="84" text-anchor="middle" font-size="10">800</text>
+                  <text x="10" y="41" text-anchor="middle" font-size="10">1200</text>
+                  
+                  <text x="95" y="195" text-anchor="middle" font-size="14">FY2023</text>
+                  <text x="185" y="195" text-anchor="middle" font-size="14">FY2024</text>  <rect x="65" y="93" width="60" height="77" fill="#3498db"/>
+                  <rect x="155" y="40" width="60" height="130" fill="#3498db"/>
+                  
+                  <text x="95" y="88" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">800人</text>
+                  <text x="185" y="35" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">1200人</text>
+                  
+                  <text x="95" y="80" text-anchor="middle" font-size="14" fill="#000">800<tspan font-size="10">人</tspan></text>
+                  <text x="185" y="30" text-anchor="middle" font-size="14" fill="#000">1200<tspan font-size="10">人</tspan></text>
+                  
+                </svg>
+              </div>
+              
+              <div class="graph-box">
+                <div class="graph-title">本番ロボ数</div>
+                <svg viewBox="0 0 240 200">
+                  <line x1="40" y1="20" x2="40" y2="170" stroke="#e0e0e0" stroke-width="1"/>
+                  <line x1="40" y1="170" x2="220" y2="170" stroke="#e0e0e0" stroke-width="1"/>
+                  
+                  <text x="10" y="170" text-anchor="middle" font-size="10">0</text>
+                  <text x="10" y="127" text-anchor="middle" font-size="10">40</text>
+                  <text x="10" y="84" text-anchor="middle" font-size="10">80</text>
+                  <text x="10" y="41" text-anchor="middle" font-size="10">120</text>
+                  
+                  <text x="95" y="195" text-anchor="middle" font-size="14">FY2023</text> 
+                  <text x="185" y="195" text-anchor="middle" font-size="14">FY2024</text>  <rect x="65" y="93" width="60" height="77" fill="#e74c3c"/>
+                  <rect x="155" y="40" width="60" height="130" fill="#e74c3c"/>
+                  
+                  <text x="95" y="88" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">80体</text>
+                  <text x="185" y="35" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">120体</text>
+                  
+                  <text x="95" y="80" text-anchor="middle" font-size="14" fill="#000">80<tspan font-size="10">体</tspan></text>
+                  <text x="185" y="30" text-anchor="middle" font-size="14" fill="#000">120<tspan font-size="10">体</tspan></text>
+                  
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="column">
+        <div class="card">
+          <div class="card-title">📋 FY25_市民開発ガイドライン制定</div>
+          <div class="card-content">
+            <p><strong>厳格に統制：</strong></p>
+            <div class="grid-container">
+              <div class="grid-item">
+                <div class="list-item">
+                  <span class="icon">❌</span>
+                  <div class="list-content">
+                    「禁止事項に違反」「費用対効果が低い」案件は「廃止」
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="list-item">
+                  <span class="icon">✅</span>
+                  <div class="list-content">
+                    「開発中」ロボ200体をサポートし「本番化」
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card" style="flex: 1;">
+          <div class="card-title">🚀 今後の課題</div>
+          <div class="card-content">
+            <div class="grid-container">
+              <div class="grid-item">
+                <div class="grid-item-title">AI（LLM, ML, DL）ｘRPA連携：</div>
+                <div class="list-item">
+                  <span class="icon">💡</span>
+                  <div class="list-content">
+                    「複雑な業務フロー」にAIを組み込む「高度な自動化」<br>（イノベーションを組み合わせ変革）
+                  </div>
+                </div>
+              </div>
+              
+              <div class="grid-item">
+                <div class="grid-item-title">市民開発サポート要員の育成：</div>
+                <div class="list-item">
+                  <span class="icon">👥</span>
+                  <div class="list-content">
+                    自動化スキル向上トレーニング（現場ハンズオン研修）
+                  </div>
+                </div>
+              </div>
+              
+              <div class="grid-item">
+                <div class="grid-item-title">業務部門とのコラボ：</div>
+                <div class="list-item">
+                  <span class="icon">🤝</span>
+                  <div class="list-content">
+                    社内インターンシップ（短期集中カリキュラム）
+                  </div>
+                </div>
+              </div>
+              
+              <div class="grid-item">
+                <div class="grid-item-title">役職ローテーション：</div>
+                <div class="list-item">
+                  <span class="icon">🔄</span>
+                  <div class="list-content">
+                    一般職もマネジメント（AIエージェントを部下に）
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">市民開発チーム | © 2025</div>
+  </div>
+</body>
+</html>

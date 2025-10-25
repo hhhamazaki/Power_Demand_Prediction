@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>業績目標設定インフォグラフィック</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+1p:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .slide-container {
+        width: 1600px;
+        min-height: 900px;
+        height: auto;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        padding: 32px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .header {
+        background-color: #2c3e50;
+        color: #ffffff;
+        padding: 10px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .header-title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .header-date {
+      font-size: 16px;
+    }
+    
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .column {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .one-column {
+      width: 100%;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      height: auto;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 10px 15px;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+    }
+    
+    .card-content {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+        font-size: 13px;
+        overflow-wrap: break-word;
+        overflow: hidden;
+        max-height: 100%;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    
+    .grid-3col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .grid-item {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid #3D84B8;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .grid-item-title {
+      font-weight: bold;
+      color: #1E56A0;
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .grid-item-content {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    ul {
+      padding-left: 16px;
+      margin-bottom: 6px;
+    }
+    
+    li {
+      margin-bottom: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .highlight-pink {
+      background-color: #fdf2f4;
+      color: #EE6C8A;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .highlight-yellow {
+      background-color: #fff9c4;
+      color: #b59d00;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0A2463;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    .process-flow {
+      display: flex;
+      justify-content: space-between;
+      margin: 16px 0;
+      position: relative;
+    }
+    
+    .process-step {
+      text-align: center;
+      width: 22%;
+      z-index: 2;
+    }
+    
+    .process-icon {
+      background-color: #3D84B8;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 8px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .process-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #1E56A0;
+    }
+    
+    .process-desc {
+      font-size: 12px;
+    }
+    
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 5px;
+    }
+    
+    .tag-plan {
+      background-color: #E6F2F5;
+      color: #0A2463;
+    }
+    
+    .tag-exec {
+      background-color: #fdf2f4;
+      color: #EE6C8A;
+    }
+    
+    .tag-base {
+      background-color: #fff9c4;
+      color: #b59d00;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <div class="header">
+      <h1 class="header-title">市民開発サポート 業績目標設定</h1>
+      <div class="header-date">2025年度</div>
+    </div>
+    
+    <div class="content one-column">
+      <div class="column">
+        <!-- 市民開発サポート方針の策定 -->
+        <div class="card">
+          <div class="card-title">📋 1. 市民開発サポート方針の策定 <span class="tag tag-plan">計画系</span></div>
+          <div class="card-content">
+            <div class="grid-container">
+              <div class="grid-item">
+                <div class="grid-item-title">🎯 開発サポート要員スキル向上トレーニングの計画</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>全メンバーが <span class="highlight-pink">CoE 後継者として必要な知識・スキルを習得</span>するトレーニング計画の策定</li>
+                    <li>チーム内で知識共有のため、メンバー相互支援体制の構築</li>
+                    <li>市民開発ガイドライン学習カリキュラムと連携した実践的カリキュラムの設計</li>
+                    <li>進捗シート作成によるメンバー全員の状況可視化と評価体制の確立</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">👥 現場ハンズオン研修の計画</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>初心者を対象とした現場ハンズオン研修の企画・準備</li>
+                    <li>市民開発ガイドライン学習カリキュラム説明会の実施計画</li>
+                    <li>実務に直結した教材作成によるメンバーの課題解決力の育成</li>
+                    <li>全メンバーを講師またはサポーターとして参加させ、指導スキル育成を目指す</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">📚 市民開発ガイドライン学習カリキュラムの制定</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>市民開発ガイドライン学習カリキュラムの策定と制定</li>
+                    <li>カリキュラム策定プロセスにメンバー全員を参加させ、<span class="highlight-yellow">当事者意識と理解を深化</span>させる</li>
+                    <li>OJTを通じた全メンバーへのガイドライン遵守指導の実施</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 市民開発ツール環境の整備 -->
+        <div class="card">
+          <div class="card-title">🔧 2. 市民開発ツール環境の整備 <span class="tag tag-exec">実行系</span></div>
+          <div class="card-content">
+            <div class="grid-container grid-3col">
+              <div class="grid-item">
+                <div class="grid-item-title">⚙️ インフラ環境の整備</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>管理ツール（UiPath Orchestrator）、実行マシン（Azure VM）等のインフラ環境整備</li>
+                    <li>以下の業務を計画的に実施
+                      <ul>
+                        <li>新規ユーザー登録</li>
+                        <li>開発パッケージ名の払出</li>
+                        <li>VMアカウントの払出</li>
+                        <li>Orchestrator部署別フォルダ作成</li>
+                        <li>ロール割当</li>
+                        <li>エラー対応</li>
+                      </ul>
+                    </li>
+                    <li>本社との連携による開発ライセンス購入・VMアカウント申請</li>
+                    <li>開発ツール・管理ツール・実行マシンのアップグレード計画策定</li>
+                    <li>インフラ整備手順のドキュメント化とポータルサイトへの掲載</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">💻 管理ツール・実行マシン操作の個別サポート</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>個別サポート履歴のナレッジベース化</li>
+                    <li>ポータルサイト教育コンテンツへの追加による問い合わせ削減</li>
+                    <li>OJTを通じた全メンバーへのインフラ操作サポート方法の指導</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">🌐 コミュニティ環境の整備</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>年間<span class="highlight-pink">10体のサンプルロボ</span>の開発と提供</li>
+                    <li>ポータルサイト教育コンテンツの拡充</li>
+                    <li>OJTを通じた全メンバーへの教育コンテンツ作成・サンプルロボ開発方法の指導</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CoE体制強化 -->
+        <div class="card">
+          <div class="card-title">🏢 3. CoE体制強化 <span class="tag tag-exec">実行系</span></div>
+          <div class="card-content">
+            <div class="grid-container">
+              <div class="grid-item">
+                <div class="grid-item-title">📊 市民開発ガイドラインに基づく適格な統制と適正な効果の評価</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>半期ごとの稼働中ロボの棚卸しと不要ロボの廃止計画</li>
+                    <li>市民開発の品質向上施策の実行</li>
+                    <li>ユーザー開発者に対する市民開発ガイドライン遵守の徹底</li>
+                    <li>OJTを通じた全メンバーへの新規ロボ評価方法の指導</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">🎓 開発サポート要員スキル向上トレーニングの実施</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>メンバー全員が全カリキュラムの<span class="highlight-pink">50％クリア</span>を達成する計画策定</li>
+                    <li>メンバー全員の講師担当によるプレゼンテーション能力や教育スキル向上</li>
+                    <li>メンバー全員の達成度評価システムの構築</li>
+                    <li>市民開発ガイドライン学習カリキュラムの拡充計画</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">⚡ 難度および効果の高い緊急かつ重要な案件のCoE開発</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>緊急かつ重要な案件に対する優先的なCoE開発サポート体制の確立</li>
+                    <li>詳細なドキュメント（設計書、UAT報告書）作成と引継ぎプロセスの標準化</li>
+                    <li>ユーザー開発者の自律的な運用支援体制の構築</li>
+                    <li>OJTを通じた全メンバーへの高度な開発スキルとプロジェクトマネジメント能力習得支援</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">🤖 コミュニティ問い合わせ対応チャットボット開発</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>問い合わせ対応チャットボットの開発計画</li>
+                    <li>問い合わせ履歴のナレッジベース化とチャットボットRAG連携の構築</li>
+                    <li>回答精度向上のための継続的改善体制の確立</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 市民開発サポート -->
+        <div class="card">
+          <div class="card-title">🤝 4. 市民開発サポート <span class="tag tag-exec">実行系</span></div>
+          <div class="card-content">
+            <div class="grid-container grid-3col">
+              <div class="grid-item">
+                <div class="grid-item-title">🔍 ユーザーによる市民開発が停滞している案件の個別サポート</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>半期ごとの開発中ロボ棚卸しと停滞案件の特定</li>
+                    <li>個別サポートによる本番稼働達成計画の策定</li>
+                    <li>個別サポート履歴のナレッジベース化とポータルサイト教育コンテンツへの追加</li>
+                    <li>OJTを通じた全メンバーへの個別サポート方法の指導</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">👨‍🏫 現場ハンズオン研修</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>半期に1回（年2回）の現場ハンズオン研修開催計画策定</li>
+                    <li>最新教材開発とナレッジベース化</li>
+                    <li>ポータルサイト教育コンテンツへの追加による問い合わせ削減</li>
+                    <li>OJTを通じた全メンバーへの研修企画・運営方法の指導</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="grid-item">
+                <div class="grid-item-title">❓ コミュニティ問い合わせ対応</div>
+                <div class="grid-item-content">
+                  <ul>
+                    <li>問い合わせ履歴のナレッジベース化</li>
+                    <li>ポータルサイト教育コンテンツへの追加による対応効率化</li>
+                    <li>OJTを通じた全メンバーへの<span class="highlight-yellow">100％回答達成</span>に向けた対応方法の指導</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CoEとして自己啓発によるスキル向上 -->
+        <div class="card">
+          <div class="card-title">📚 5. CoEとして自己啓発によるスキル向上 <span class="tag tag-base">基盤系</span></div>
+          <div class="card-content">
+            <div class="process-flow">
+              <div class="process-step">
+                <div class="process-icon">1</div>
+                <div class="process-title">ウェビナー受講</div>
+                <div class="process-desc">最新RPA技術や事例に関するウェビナーを3回以上受講する</div>
+              </div>
+              <div class="process-step">
+                <div class="process-icon">2</div>
+                <div class="process-title">e-learning受講</div>
+                <div class="process-desc">30時間以上のe-learning学習を達成する</div>
+              </div>
+              <div class="process-step">
+                <div class="process-icon">3</div>
+                <div class="process-title">書籍での独学</div>
+                <div class="process-desc">自己啓発費で専門書籍を購入し、継続的に学習する</div>
+              </div>
+              <div class="process-step">
+                <div class="process-icon">4</div>
+                <div class="process-title">知識共有</div>
+                <div class="process-desc">習得した技術や事例知識をナレッジベース化して共有する</div>
+              </div>
+            </div>
+            <ul>
+              <li>最新のRPA技術や事例に関する知識を継続的に習得する</li>
+              <li>習得した知識を組織内でナレッジベース化し、ポータルサイト教育コンテンツに追加する</li>
+              <li>目標：年間50冊以上の専門書籍による自主学習を達成する</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>市民開発チーム</p>
+    </div>
+  </div>
+</body>
+</html>

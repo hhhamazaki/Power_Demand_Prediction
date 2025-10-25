@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortalリンク更新アプリ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Dark background */
+            color: #e0e0e0; /* Light text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #2a2a4a; /* Card background */
+            border: 1px solid #4a4a6a; /* Border color */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); /* Glow shadow */
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        h1 {
+            font-family: 'Orbitron', sans-serif; /* Example font from JennyPortal */
+            color: #00f0ff; /* Accent color */
+            /* 光沢感を調整 */
+            text-shadow: 0 0 5px #00f0ff; /* 10pxから5pxに軽減 */
+            filter: drop-shadow(0 0 2px var(--accent-color)) drop-shadow(0 0 4px var(--accent-color)); /* 5px/10pxから2px/4pxに軽減 */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        textarea, input[type="text"] {
+            background-color: #111111; /* Darker input background */
+            border: 1px solid #4a4a6a;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: #e0e0e0;
+            width: 100%;
+            box-sizing: border-box;
+            resize: vertical; /* Allow vertical resizing for textareas */
+        }
+        button {
+            background-color: #00f0ff; /* Accent color */
+            color: #1a1a2e; /* Dark text for contrast */
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        button:hover {
+            background-color: #00e0ef;
+            transform: translateY(-2px);
+        }
+        .message-box {
+            background-color: rgba(0, 240, 255, 0.1);
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+            border-radius: 5px;
+            padding: 10px 15px;
+            text-align: center;
+            display: none; /* Hidden by default */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .message-box.show {
+            display: block;
+            opacity: 1;
+        }
+        .file-input-label {
+            background-color: #00f0ff;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            display: inline-block; /* Make it behave like a button */
+            text-align: center;
+        }
+        .file-input-label:hover {
+            background-color: #00e0ef;
+            transform: translateY(-2px);
+        }
+        input[type="file"] {
+            display: none; /* Hide actual file input */
+        }
+        /* New styles for file status */
+        .file-status-default {
+            color: #ff0000; /* 赤色に変更 */
+        }
+        .file-status-uploaded {
+            color: #00f0ff; /* Accent color */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <div class="container">
+        <h1 class="text-3xl font-bold">JennyPortalリンク更新アプリ</h1>
+
+        <div>
+            <label for="allFilesInput" class="file-input-label">HTMLとCSVアップロード</label>
+            <input type="file" id="allFilesInput" multiple accept=".html,.csv">
+            <div class="mt-2 text-sm">
+                <span id="htmlFileName" class="block file-status-default">JennyPortal.htmlをアップロードしてください。</span>
+                <span id="csvFileName" class="block file-status-default">jennyportal_links.csvをアップロードしてください。</span>
+            </div>
+            <p class="text-sm text-gray-400 mt-1">※CSVファイルは**UTF-8 (BOM付き)** で保存してください。</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button id="updateLinksButton" class="flex-1">リンクを更新</button>
+            <button id="downloadHtmlButton" class="flex-1">更新済みHTMLをダウンロード</button>
+        </div>
+
+        <div id="messageBox" class="message-box"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const allFilesInput = document.getElementById('allFilesInput');
+            const htmlFileNameSpan = document.getElementById('htmlFileName');
+            const csvFileNameSpan = document.getElementById('csvFileName');
+            const updateLinksButton = document.getElementById('updateLinksButton');
+            const downloadHtmlButton = document.getElementById('downloadHtmlButton');
+            const messageBox = document.getElementById('messageBox');
+
+            let htmlContent = ''; // アップロードされたHTMLコンテンツを保持
+            let updatedHtmlContent = ''; // 更新されたHTMLコンテンツを保持
+            let csvData = []; // CSVデータを保持する配列
+            let originalHtmlFileName = ''; // アップロードされたHTMLファイル名を保持する変数
+
+            /**
+             * メッセージボックスを表示する関数
+             * @param {string} message - 表示するメッセージ
+             * @param {string} type - メッセージの種類 (success, errorなど)
+             */
+            function showMessage(message, type = 'info') {
+                messageBox.textContent = message;
+                messageBox.className = `message-box show ${type}`;
+                setTimeout(() => {
+                    messageBox.classList.remove('show');
+                }, 3000); // 3秒後に非表示
+            }
+
+            /**
+             * 全てのファイルを読み込み、HTMLとCSVを識別して格納する関数
+             */
+            allFilesInput.addEventListener('change', (event) => {
+                console.log('[All Files Upload] All files input change event triggered.');
+                const files = event.target.files;
+                
+                // Reset states and colors
+                htmlContent = '';
+                csvData = [];
+                originalHtmlFileName = ''; // ファイル名もリセット
+                
+                htmlFileNameSpan.textContent = 'JennyPortal.htmlをアップロードしてください。';
+                htmlFileNameSpan.classList.remove('file-status-uploaded');
+                htmlFileNameSpan.classList.add('file-status-default'); // 赤色に戻す
+
+                csvFileNameSpan.textContent = 'jennyportal_links.csvをアップロードしてください。';
+                csvFileNameSpan.classList.remove('file-status-uploaded');
+                csvFileNameSpan.classList.add('file-status-default'); // 赤色に戻す
+
+                if (files.length === 0) {
+                    console.warn('[All Files Upload] No files selected.');
+                    showMessage('ファイルが選択されていません。', 'info');
+                    return;
+                }
+
+                let htmlFileFound = false;
+                let csvFileFound = false;
+
+                for (const file of files) {
+                    if (file.name.endsWith('.html')) {
+                        htmlFileFound = true;
+                        // ファイル名表示を更新し、色を変更
+                        htmlFileNameSpan.textContent = `JennyPortal.htmlがアップロードされています。`;
+                        htmlFileNameSpan.classList.remove('file-status-default');
+                        htmlFileNameSpan.classList.add('file-status-uploaded');
+                        originalHtmlFileName = file.name; // HTMLファイル名を保存
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            htmlContent = e.target.result;
+                            console.log('[All Files Upload] HTML content loaded from:', file.name);
+                        };
+                        reader.onerror = (error) => {
+                            console.error('[All Files Upload] FileReader error during HTML read:', error);
+                            showMessage('HTMLファイルの読み込み中にエラーが発生しました。コンソールを確認してください。', 'error');
+                        };
+                        reader.readAsText(file);
+                    } else if (file.name.endsWith('.csv')) {
+                        csvFileFound = true;
+                        // ファイル名表示を更新し、色を変更
+                        csvFileNameSpan.textContent = `jennyportal_links.csvがアップロードされています。`;
+                        csvFileNameSpan.classList.remove('file-status-default');
+                        csvFileNameSpan.classList.add('file-status-uploaded');
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const text = e.target.result;
+                            console.log('[All Files Upload] CSV file content from:', file.name, '(first 200 chars):', text.substring(0, 200) + (text.length > 200 ? '...' : ''));
+                            try {
+                                const parsedData = parseCsv(text);
+                                csvData = parsedData;
+                                console.log('[All Files Upload] Parsed CSV Data (after assignment):', csvData);
+                                console.log('[All Files Upload] csvData length after assignment:', csvData.length);
+                            } catch (error) {
+                                console.error('[All Files Upload] CSVファイルのパース中にエラーが発生しました:', error);
+                                showMessage('CSVファイルの読み込みに失敗しました。形式を確認してください。コンソールを確認してください。', 'error');
+                                csvData = [];
+                            }
+                        };
+                        reader.onerror = (error) => {
+                            console.error('[All Files Upload] FileReader error during CSV read:', error);
+                            showMessage('ファイルの読み込み中にエラーが発生しました。コンソールを確認してください。', 'error');
+                        };
+                        reader.readAsText(file); // Keep it without encoding for UTF-8 BOM detection
+                    } else {
+                        console.warn(`[All Files Upload] Skipping unsupported file: ${file.name}`);
+                        showMessage(`サポートされていないファイル「${file.name}」はスキップされました。`, 'info');
+                    }
+                }
+
+                // Give a combined message after all files are processed (or attempted)
+                if (htmlFileFound && csvFileFound) {
+                    showMessage('HTMLファイルとCSVファイルの両方を読み込みました。', 'success');
+                } else if (htmlFileFound) {
+                    showMessage('HTMLファイルのみ読み込みました。CSVファイルも選択してください。', 'info');
+                } else if (csvFileFound) {
+                    showMessage('CSVファイルのみ読み込みました。HTMLファイルも選択してください。', 'info');
+                } else {
+                    showMessage('有効なHTMLまたはCSVファイルが見つかりませんでした。', 'error');
+                }
+            });
+
+            /**
+             * CSVテキストをパースしてオブジェクトの配列に変換する関数
+             * ヘッダー: セクション,カード名,URL,data-link-id
+             * @param {string} csvText - CSV形式のテキストデータ
+             * @returns {Array<Object>} パースされたCSVデータ
+             */
+            function parseCsv(csvText) {
+                const lines = csvText.split('\n').filter(line => line.trim() !== '');
+                console.log('[CSV Parse] CSV lines found:', lines.length);
+
+                if (lines.length < 2) { // ヘッダー行とデータ行が少なくとも1つ必要
+                    console.warn("[CSV Parse] CSV file has insufficient data (less than 2 lines).");
+                    throw new Error("CSVファイルに十分なデータがありません。");
+                }
+
+                const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '')); // ヘッダーをパース
+                console.log('[CSV Parse] CSV Headers:', headers);
+
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i];
+                    // Normalize line endings to just remove trailing carriage return before splitting
+                    // This is crucial for Windows-style \r\n line endings
+                    const normalizedLine = line.replace(/\r$/, ''); 
+
+                    // Split by comma, respecting quotes.
+                    // This regex splits by comma only if it's not inside double quotes.
+                    const parts = normalizedLine.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
+                    // Process each part: trim whitespace, remove surrounding quotes, and handle escaped quotes
+                    const processedParts = parts.map(part => {
+                        part = part.trim(); // Trim all whitespace, including potential \r
+                        if (part.startsWith('"') && part.endsWith('"')) {
+                            return part.slice(1, -1).replace(/""/g, '"'); // Remove quotes and handle "" (escaped quote)
+                        }
+                        return part;
+                    });
+
+                    console.log(`[CSV Parse] Processing CSV line ${i + 1}: "${line}"`);
+                    console.log('[CSV Parse] Processed parts:', processedParts);
+
+
+                    if (processedParts.length === headers.length) {
+                        const row = {};
+                        headers.forEach((header, index) => {
+                            row[header] = processedParts[index];
+                        });
+                        data.push(row);
+                    } else {
+                        console.warn(`[CSV Parse] Skipping malformed CSV line ${i + 1}: "${line}" (Expected ${headers.length} parts, found ${processedParts.length})`);
+                    }
+                }
+                return data;
+            }
+
+            /**
+             * HTML内のリンクをCSVデータに基づいて更新する関数
+             */
+            updateLinksButton.addEventListener('click', () => {
+                console.log('[HTML Update] Update links button clicked.');
+                
+                if (!htmlContent) {
+                    showMessage('HTMLファイルをアップロードしてください。', 'error');
+                    console.warn('[HTML Update] HTML content is empty. Please upload HTML file first.');
+                    return;
+                }
+                if (csvData.length === 0) {
+                    showMessage('CSVファイルをアップロードしてください。', 'error');
+                    console.warn('[HTML Update] CSV data is empty. Cannot proceed with update.');
+                    return;
+                }
+
+                console.log(`[HTML Update] Original HTML length: ${htmlContent.length} characters.`);
+                console.log(`[HTML Update] CSV data rows to process: ${csvData.length}.`);
+                console.log('[HTML Update] Current csvData length:', csvData.length, 'Content (first 5 rows):', csvData.slice(0, 5));
+
+
+                try {
+                    // HTML文字列をDOMオブジェクトにパース
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                    // エラーチェック: DOMParserがエラーを報告した場合
+                    const parseError = doc.querySelector('parsererror');
+                    if (parseError) {
+                        const errorMessage = parseError.textContent;
+                        console.error('[HTML Update] HTML parsing error:', errorMessage);
+                        showMessage(`HTMLのパース中にエラーが発生しました: ${errorMessage.substring(0, 100)}... コンソールを確認してください。`, 'error');
+                        return;
+                    }
+                    console.log('[HTML Update] HTML parsed into DOM object successfully.');
+
+                    let updatedCount = 0;
+                    
+                    // HTML内のdata-link-idをCSVに合わせて修正する処理を追加
+                    const htmlLinkElements = doc.querySelectorAll('a[data-link-id]');
+                    htmlLinkElements.forEach(linkElement => {
+                        let currentDataLinkId = linkElement.getAttribute('data-link-id');
+                        if (currentDataLinkId === 'comm-case') {
+                            linkElement.setAttribute('data-link-id', 'comm-cases');
+                            console.log(`[HTML Update] Corrected HTML data-link-id: 'comm-case' to 'comm-cases'`);
+                        } else if (currentDataLinkId === 'comm-event') {
+                            linkElement.setAttribute('data-link-id', 'comm-events');
+                            console.log(`[HTML Update] Corrected HTML data-link-id: 'comm-event' to 'comm-events'`);
+                        }
+                    });
+
+
+                    csvData.forEach((row, index) => {
+                        const dataLinkId = row['data-link-id'];
+                        const newUrl = row['URL'];
+
+                        console.log(`[HTML Update] Processing CSV row ${index + 1}: data-link-id="${dataLinkId}", newUrl="${newUrl}"`);
+
+                        if (dataLinkId && newUrl) {
+                            const linkElement = doc.querySelector(`a[data-link-id="${dataLinkId}"]`);
+                            if (linkElement) {
+                                console.log(`[HTML Update] Found link element for data-link-id="${dataLinkId}". Current href: "${linkElement.href}"`);
+                                if (linkElement.href !== newUrl) {
+                                    linkElement.href = newUrl;
+                                    updatedCount++;
+                                    console.log(`[HTML Update] UPDATED: link for data-link-id="${dataLinkId}" to: "${newUrl}"`);
+                                } else {
+                                    console.log(`[HTML Update] NO CHANGE: link for data-link-id="${dataLinkId}" already matches URL: "${newUrl}".`);
+                                }
+                            } else {
+                                console.warn(`[HTML Update] WARNING: Link element with data-link-id="${dataLinkId}" not found in HTML for CSV row ${index + 1}.`);
+                            }
+                        } else {
+                            console.warn(`[HTML Update] WARNING: Missing data-link-id or URL in CSV row ${index + 1}:`, row);
+                        }
+                    });
+
+                    // 更新されたDOMをHTML文字列に戻す
+                    const serializer = new XMLSerializer();
+                    // doc.documentElement.outerHTML を使用して、DOCTYPE宣言などを含めた完全なHTMLを取得
+                    // DOCTYPE宣言はXMLSerializerが含めないため、手動で追加
+                    updatedHtmlContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+
+
+                    showMessage(`リンクを更新しました。${updatedCount}件のリンクが変更されました。`, 'success');
+                    console.log(`[HTML Update] HTML links updated successfully. Total ${updatedCount} links changed.`);
+
+                } catch (error) {
+                    console.error('[HTML Update] HTMLリンクの更新中に致命的なエラーが発生しました:', error);
+                    showMessage('HTMLリンクの更新に失敗しました。HTMLコードまたはCSV形式を確認してください。コンソールを確認してください。', 'error');
+                }
+            });
+
+            /**
+             * 更新されたHTMLをファイルとしてダウンロードする関数
+             */
+            downloadHtmlButton.addEventListener('click', () => {
+                const htmlToDownload = updatedHtmlContent; // 更新されたHTMLコンテンツを使用
+                if (!htmlToDownload) {
+                    showMessage('更新結果のHTMLがありません。先にリンクを更新してください。', 'error');
+                    return;
+                }
+
+                const blob = new Blob([htmlToDownload], { type: 'text/html;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                // 元のHTMLファイル名があればそれを使用し、なければデフォルト名を使用
+                a.download = originalHtmlFileName || 'updated_JennyPortal.html'; 
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMessage('更新済みHTMLをダウンロードしました。', 'success');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部門横断課題</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-color: #1a202c;
+            --bg2-color: #2d3748;
+            --card-bg-color: #2a2a4a;
+            --text-color: #f0f0f0;
+            --accent-color: #00f0ff;
+            --secondary-accent-color: #ff00ff;
+            --border-color: #5a5a7a;
+            --shadow-color: rgba(0, 240, 255, 0.3);
+        }
+
+        /* ----------------------- グローバルスタイル ----------------------- */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        /* ----------------------- レイアウトと汎用コンポーネント ----------------------- */
+        .container {
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        
+        .card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px var(--secondary-accent-color);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            margin: 2rem 0;
+        }
+
+        /* ----------------------- テキストスタイル ----------------------- */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .font-extrabold { font-weight: 800; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-green-300 { color: #6ee7b7; }
+        .text-blue-300 { color: #93c5fd; }
+        .text-purple-300 { color: #c084fc; }
+        .text-teal-300 { color: #5eead4; }
+        .text-orange-300 { color: #fdba74; }
+        .text-white { color: #ffffff; }
+        .text-magenta { color: var(--secondary-accent-color); }
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .text-pink-300 { color: #f9a8d4; }
+
+        /* ----------------------- スペーシング ----------------------- */
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mt-12 { margin-top: 3rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .pl-5 { padding-left: 1.25rem; }
+        .pl-8 { padding-left: 2rem; }
+        .mr-2 { margin-right: 0.5rem; }
+        .mr-3 { margin-right: 0.75rem; }
+        .mr-4 { margin-right: 1rem; }
+
+        /* ----------------------- FlexboxとGrid ----------------------- */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .flex-row { flex-direction: row; }
+        .flex-wrap { flex-wrap: wrap; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .items-stretch { align-items: stretch; }
+        .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem; }
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+        .space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+        .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; }
+        .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 2rem; }
+        .space-y-12 > :not([hidden]) ~ :not([hidden]) { margin-top: 3rem; }
+        .space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: 2rem; }
+        .grid { display: grid; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .gap-8 { gap: 2rem; }
+        .grow { flex-grow: 1; }
+
+        /* ----------------------- その他ユーティリティ ----------------------- */
+        .list-disc { list-style-type: disc; }
+        .w-full { width: 100%; }
+        .min-w-0 { min-width: 0; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-md { border-radius: 0.375rem; }
+        .rounded-full { border-radius: 9999px; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .-bottom-4 { bottom: -1rem; }
+        .-right-4 { right: -1rem; }
+        .top-1\/2 { top: 50%; }
+        .left-1\/2 { left: 50%; }
+        .transform {
+            transform: translateX(var(--tw-translate-x, 0)) translateY(var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1));
+        }
+        .-translate-x-1\/2 { --tw-translate-x: -50%; }
+        .-translate-y-1\/2 { --tw-translate-y: -50%; }
+        .opacity-0 { opacity: 0; }
+        .hidden { display: none; }
+
+        /* ----------------------- 役割マーカー ----------------------- */
+        .neon-marker-ea {
+            background-color: rgba(255, 105, 180, 0.2);
+            border: 1px solid #ff69b4;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+        }
+
+        .neon-marker-ba {
+            background-color: rgba(65, 105, 225, 0.2);
+            border: 1px solid #4169e1;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+        }
+
+        .neon-marker-da {
+            background-color: rgba(255, 165, 0, 0.2);
+            border: 1px solid #ffa500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+        }
+
+        .neon-marker-ta {
+            background-color: rgba(64, 224, 208, 0.2);
+            border: 1px solid #40e0d0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+        }
+
+        /* ----------------------- テーブルスタイル ----------------------- */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-table th, .custom-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .custom-table thead th {
+            background-color: var(--card-bg-color);
+            color: var(--accent-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .custom-table tbody tr {
+            background-color: var(--bg2-color);
+        }
+
+        .custom-table tbody td {
+            vertical-align: top;
+        }
+        
+        /* ----------------------- フロー図スタイル ----------------------- */
+        .flex.flex-col > .relative { margin-bottom: 2rem; }
+        .flex.flex-col > .relative:last-child { margin-bottom: 0; }
+        .min-w-\[280px\] { min-width: 280px; }
+        .border-2 { border-width: 2px; }
+        .border-green-400 { border-color: #4ade80; }
+        .border-blue-400 { border-color: #60a5fa; }
+        .border-purple-400 { border-color: #c084fc; }
+        .bg-green-400 { background-color: #4ade80; }
+        .bg-blue-400 { background-color: #60a5fa; }
+        .bg-purple-400 { background-color: #c084fc; }
+        .text-green-900 { color: #064e3b; }
+        .text-blue-900 { color: #1e40af; }
+        .text-purple-900 { color: #581c87; }
+        .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
+        .from-green-900\/30 { --tw-gradient-from: rgba(6, 78, 59, 0.3); --tw-gradient-to: rgba(6, 78, 59, 0); }
+        .to-green-800\/30 { --tw-gradient-to: rgba(21, 128, 61, 0.3); }
+        .from-blue-900\/30 { --tw-gradient-from: rgba(30, 64, 175, 0.3); --tw-gradient-to: rgba(30, 64, 175, 0); }
+        .to-blue-800\/30 { --tw-gradient-to: rgba(30, 58, 138, 0.3); }
+        .from-purple-900\/30 { --tw-gradient-from: rgba(88, 28, 135, 0.3); --tw-gradient-to: rgba(88, 28, 135, 0); }
+        .to-purple-800\/30 { --tw-gradient-to: rgba(109, 40, 217, 0.3); }
+        .w-16 { width: 4rem; }
+        .h-16 { height: 4rem; }
+        .bg-green-900\/50 { background-color: rgba(6, 78, 59, 0.5); }
+        .bg-purple-900\/50 { background-color: rgba(88, 28, 135, 0.5); }
+        .border-l-3 { border-left-width: 3px; }
+        .border-blue-400 { border-color: #60a5fa; }
+        .border-purple-400 { border-color: #c084fc; }
+        .animate-bounce { animation: bounce 1s infinite; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ----------------------- sub-cardスタイル ----------------------- */
+        .sub-card-container {
+            display: grid;
+            gap: 20px;
+        }
+
+                .sub-card {
+            background-color: rgba(42, 42, 74, 0.7);
+            border: 1px solid;
+            border-radius: 8px;
+            padding: 0.75rem; /* Reduced */
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-sizing: border-box;
+            position: relative;
+            color: inherit;
+        }
+
+        .sub-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        .sub-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+
+        .sub-card h3 {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 0.5rem; /* Reduced */
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .sub-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 0.75rem; /* Reduced */
+        }
+
+        .sub-card ul li {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--card-border-color-var);
+            padding: 6px 12px; /* Reduced */
+            margin-bottom: 0.3rem; /* Reduced */
+            border-radius: 5px;
+            font-size: 0.9em; /* Reduced */
+            transition: background-color 0.3s ease;
+        }
+
+        .border-green { border-color: #22c55e; --card-border-color-var: #22c55e; }
+        .border-blue { border-color: #3b82f6; --card-border-color-var: #3b82f6; }
+        .border-teal { border-color: #14b8a6; --card-border-color-var: #14b8a6; }
+        .border-yellow { border-color: #f59e0b; --card-border-color-var: #f59e0b; }
+        .border-orange { border-color: #f97316; --card-border-color-var: #f97316; }
+        .border-pink { border-color: #ec4899; --card-border-color-var: #ec4899; }
+        .border-purple { border-color: #8b5cf6; --card-border-color-var: #8b5cf6; }
+        .border-red { border-color: #ef4444; --card-border-color-var: #ef4444; }
+
+        .gradient-green { background: linear-gradient(to right, #22c55e, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-blue { background: linear-gradient(to right, #3b82f6, #14b8a6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-teal { background: linear-gradient(to right, #14b8a6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-yellow { background: linear-gradient(to right, #f59e0b, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-orange { background: linear-gradient(to right, #f97316, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-pink { background: linear-gradient(to right, #ec4899, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-purple { background: linear-gradient(to right, #8b5cf6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .gradient-red { background: linear-gradient(to right, #ef4444, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        /* ----------------------- ツールチップスタイル ----------------------- */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 1000;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            max-width: calc(100vw - 40px);
+            pointer-events: none;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 0.75em;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* ----------------------- ナンバーリスト ----------------------- */
+        .numbered-list {
+            counter-reset: item;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .numbered-list li {
+            position: relative;
+            margin-left: 2.25rem;
+            line-height: 1.5;
+        }
+
+        .numbered-list li::before {
+            content: counter(item) ". ";
+            counter-increment: item;
+            position: absolute;
+            left: -2.25rem;
+        }
+
+        /* ----------------------- メディアクエリ ----------------------- */
+        @media (min-width: 1200px) {
+            .sub-card-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .lg\:flex-row { flex-direction: row; }
+            .lg\:space-y-0 { margin-top: 0; }
+            .lg\:space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: 2rem; }
+            .lg\:hidden { display: none; }
+            .lg\:block { display: block; }
+            .lg\:w-1\/4 { width: 25%; }
+            .lg\:grid-cols-4 {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 800px) {
+            .md\:flex-row { flex-direction: row; }
+            .md\:space-y-0 { margin-top: 0; }
+            .md\:space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: 2rem; }
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\:w-1\/2 { width: 50%; }
+        }
+        
+        @media (min-width: 800px) and (max-width: 1199px) {
+            .sub-card-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 799px) {
+            .sub-card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ea-ba-da-ta-container {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr)); /* Default for small screens */
+        }
+
+        @media (min-width: 800px) and (max-width: 1199px) {
+            .ea-ba-da-ta-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .ea-ba-da-ta-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .card h3, .card h4, .sub-card h3, .sub-card h4 {
+            margin-top: 0rem;
+            margin-bottom: 1rem;
+        }
+
+        .card ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .card > p, section > p {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+                .card ul li, .sub-card ul li {
+            line-height: 1.0; /* Adjust as needed */
+        }
+
+        .custom-table td {
+            line-height: 1.2; /* Adjust as needed */
+        }
+
+        /* Page Slider Styles */
+        .page-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden; /* Hide the other pages */
+        }
+
+        .page-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .page {
+            flex: 0 0 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 80px; /* Add horizontal padding for nav buttons */
+        }
+
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .slider-nav button {
+            pointer-events: all;
+            background-color: rgba(0, 240, 255, 0.5);
+            border: 1px solid var(--accent-color);
+            color: var(--text-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slider-nav button:hover {
+            background-color: rgba(0, 240, 255, 0.8);
+            transform: scale(1.1);
+        }
+        
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .pagination-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: var(--border-color);
+            color: var(--bg-color);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .pagination-number.active {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="container mx-auto p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold mb-2 gradient-text">【FY25目標】AI＋自動化ツール駆動ハイパフォーマー人財育成</h1>
+        </header>
+
+        <div class="page-slider">
+            <div class="page-container">
+                <div class="page">
+                    <div class="divider"></div>
+                    <section id="appendix" class="mb-16">
+                        <p class="text-4xl text-gray-300 text-center">
+                            キャリア
+                        </p>
+            
+                            <div class="grid grid-cols-1 gap-8">
+                                <div class="card rounded-lg">
+                                    <div class="card-content">
+                                        <h3 class="text-3xl font-bold mb-8 gradient-text">中</h3>
+                                        <ul class="list-disc pl-5 text-4xl text-gray-400 text-left">
+                                            <li>1989年～ 現場で設備の<span class="text-magenta font-bold">性能データ分析</span>（<span class="text-magenta font-bold">プログラミング独学</span>）</li>
+                                            <li>1998年～ <span class="text-magenta font-bold">海外７か国</span>で<span class="text-magenta font-bold">省エネ事業</span></li>
+                                            <li>2010年～ KISS（<span class="text-magenta font-bold">現OMK</span>）開発（協働）</li>
+                                            <li>2015年～ KISSデータ移行に<span class="text-magenta font-bold">RPA活用</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card rounded-lg">
+                                    <div class="card-content">
+                                        <h3 class="text-3xl font-bold mb-8 gradient-text">J</h3>
+                                        <ul class="list-disc pl-5 text-4xl text-gray-400 text-left">
+                                            <li>2022年～ <span class="text-magenta font-bold">RPA（Jenny）</span>全社展開（現場との橋渡し役）</li>
+                                            <li>2025年～ 支社U<span class="text-magenta font-bold">1名 ＋ 6名</span>（メンバー<span class="text-magenta font-bold">育成中</span>）</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                    </section>
+                </div>
+                <div class="page">
+                    <div class="divider"></div>
+                    <section id="appendix" class="mb-16">
+                        <p class="text-4xl text-gray-300 text-center">
+                            FY24課題とFY25対策
+                        </p>
+            
+                    <div class="card">
+                      <div class="card-content">
+                                <ul class="list-disc pl-5 text-4xl text-gray-400 text-left">
+                          <li>【FY24課題】Jennyユーザー<span class="text-magenta font-bold">1200名</span>、開発者<span class="text-magenta font-bold">90名</span>、本番ロボ<span class="text-magenta font-bold">120体</span></li>
+                          <li>【FY25対策】<span class="text-magenta font-bold">学習カリキュラム拡充</span>・<span class="text-magenta font-bold">サポート要員の育成</span></li>
+                        </ul>
+                      </div>
+                    </div>
+            
+                        <p class="text-4xl text-gray-300 text-center">
+                            部門横断課題
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="card rounded-lg">
+                                <div class="flex items-center justify-center mb-4">
+                                    <h3 class="text-3xl font-bold mb-8 gradient-text">ビジネスアライメント（部門間コラボ）</h3>
+                                </div>
+                                <ul class="list-disc pl-5 text-2xl text-gray-400 text-left">
+                                    <li>役職や組織の境界を超越</li>
+                                    <li>フラットでクロスファンクショナルな人的ネットワークを形成</li>
+                                    <li>このビジョン・ストーリーに<span class="text-magenta font-bold">共感</span>したら<span class="text-magenta font-bold">仲間</span>になろう！</li>
+                                </ul>
+                            </div>
+                            <div class="card rounded-lg">
+                                <div class="flex items-center justify-center mb-4">
+                                    <h3 class="text-3xl font-bold mb-8 gradient-text">人財育成（キャリア自律）</h3>
+                                </div>
+                                <ul class="list-disc pl-5 text-2xl text-gray-400 text-left">
+                                    <li>自分の意志で行動すれば、<span class="text-magenta font-bold">やらされ感</span>は皆無</li>
+                                    <li>日常の面倒なタスクを自動化、<span class="text-magenta font-bold">ワクワク楽しい</span>クリエイティブな時間を創出</li>
+                                    <li>互いに<span class="text-magenta font-bold">尊敬</span>し合い、<span class="text-magenta font-bold">貢献</span>し合える<span class="text-magenta font-bold">至福の時間</span>を共有しよう！</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="page">
+                    <div class="divider"></div>
+                        <!-- 市民開発の役割 -->
+                    <section id="appendix" class="mb-16">
+                        <p class="text-4xl text-gray-300 text-center">
+                            市民開発の役割
+                        </p>
+                        <div class="mt-12">
+                                <ul class="list-disc pl-5 text-4xl text-gray-400 text-left">
+                          <li>「②市民開発」が「①現場オンボーディング」と「③プロ開発」を橋渡し</h2></li>
+                                </ul>
+                            <div class="card rounded-lg">
+                                <!-- フロー図コンテナ -->
+                            <h3 class="text-3xl font-bold text-center mb-8 gradient-text">育成3層フロー</h3>
+                                <div class="flex flex-row items-stretch justify-center space-x-8">
+                                    
+                                    <!-- レベル1：現場オンボーディング研修 -->
+                                    <div class="card p-6 rounded-lg border-2 border-green-400 bg-gradient-to-br from-green-900/30 to-green-800/30 min-w-[280px] flex flex-col justify-center h-full relative">
+                                            <div class="text-center flex flex-col justify-center items-center">
+                                                <div class="w-16 h-16 mx-auto mb-4 bg-green-400 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-user-graduate text-2xl text-green-900"></i>
+                                                </div>
+                                                <h4 class="text-xl font-bold mb-2 text-green-300">①現場オンボーディング</h4>
+                                                <p class="text-m text-gray-300">業務遂行に向けて自走可能</p>
+                                                <ul class="text-sm space-y-1 text-left">
+                                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>自身の立ち位置の理解、自律的なAP設定</li>
+                                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>前提知識の入手方法把握</li>
+                                                    <li class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>業務遂行に必要なキーマンと相互に認識</li>
+                                                </ul>
+                                        <h4 class="text-xl font-bold mb-2 text-green-300">基礎理解</h4>
+                                            </div>
+                                        <div class="absolute top-1/2 -right-4 transform -translate-y-1\/2">
+                                            <i class="fas fa-arrow-right text-2xl text-accent-color animate-pulse"></i>
+                                        </div>
+                                        </div>
+            
+                                    <!-- レベル2：市民開発ハンズオン研修 -->
+                                    <div class="card p-6 rounded-lg border-2 border-blue-400 bg-gradient-to-br from-blue-900/30 to-blue-800/30 min-w-[280px] flex flex-col justify-center h-full relative">
+                                            <div class="text-center flex flex-col justify-center items-center">
+                                                <div class="w-16 h-16 mx-auto mb-4 bg-blue-400 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-laptop-code text-2xl text-blue-900"></i>
+                                                </div>
+                                                <h4 class="text-xl font-bold mb-2 text-blue-300">②市民開発ハンズオン</h4>
+                                                <p class="text-m text-gray-300">実践スキル習得</p>
+                                                <ul class="text-sm space-y-1 text-left">
+                                                    <li class="flex items-center"><i class="fas fa-check text-blue-400 mr-2"></i>非エンジニア向けローコード市民開発</li>
+                                                    <li class="flex items-center"><i class="fas fa-check text-blue-400 mr-2"></i>見習いエンジニア向けAI活用プロ開発</li>
+                                                    <li class="flex items-center"><i class="fas fa-check text-blue-400 mr-2"></i>全社員に展開</li>
+                                                </ul>
+                                        <h4 class="text-xl font-bold mb-2 text-blue-300">実践体験</h4>
+                                            </div>
+                                        <div class="absolute top-1/2 -right-4 transform -translate-y-1\/2">
+                                            <i class="fas fa-arrow-right text-2xl text-accent-color animate-pulse"></i>
+                                        </div>
+                                        </div>
+            
+                                    <!-- レベル3：プロ開発研修 -->
+                                    <div class="card p-6 rounded-lg border-2 border-purple-400 bg-gradient-to-br from-purple-900/30 to-purple-800/30 min-w-[280px] flex flex-col justify-center h-full relative">
+                                            <div class="text-center flex flex-col justify-center items-center">
+                                                <div class="w-16 h-16 mx-auto mb-4 bg-purple-400 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-crown text-2xl text-purple-900"></i>
+                                                </div>
+                                                <h4 class="text-xl font-bold mb-2 text-purple-300">③プロ開発</h4>
+                                                <p class="text-m text-gray-300">専門スキル・リーダーシップ</p>
+                                                <ul class="text-sm space-y-1 text-left">
+                                                    <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-2"></i>PM（プロジェクトマネジメント）</li>
+                                                    <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-2"></i>DevLead（開発リーダー）</li>
+                                                    <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-2"></i>非エンジニアに展開</li>
+                                                </ul>
+                                        <h4 class="text-xl font-bold mb-2 text-purple-300">専門化・リーダーシップ</h4>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- フロー説明 -->
+                                <div class="mt-8 text-center">
+                                    <p class="text-xl text-gray-400">段階的なスキルアップにより、全社員のデジタル変革を推進</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="page">
+                    <div class="divider"></div>
+                    <section id="appendix" class="mb-16">
+                        <p class="text-4xl text-gray-300 text-center">
+                            ハンズオン研修
+                        </p>
+                                <ul class="list-disc pl-5 text-3xl text-gray-400 text-left">
+                          <li>【FY25～】サポート要員スキル向上：支社U全メンバーを育成中</li>
+                          <li>【FY25上】Studio入門コース　　　：OME変革リーダー<span class="text-magenta font-bold">20名</span>＋中核者<span class="text-magenta font-bold">70名</span>（全メンバーが講師）</li>
+                          <li>【FY25下】AIモデル体感コース　　：見習いエンジニア</li>
+                                                        </ul>
+            
+                        <div class="flex flex-col space-y-8">
+                            <div id="workshops" class="card rounded-lg">
+                                <div class="sub-card-container mt-6">
+            
+                            <div class="sub-card border-green">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/%E3%83%8F%E3%83%B3%E3%82%BA%E3%82%AA%E3%83%B3_Studio%E5%85%A5%E9%96%80.aspx" target="_blank" data-link-id="training-intro" title="Studio入門コース">
+                                        <h3 class="gradient-green">Studio入門コース</h3>
+                                        <ul>
+                                            <li>ブラウザ操作</li>
+                                            <li>条件分岐</li>
+                                            <li>Excel操作</li>
+                                            <li>繰り返し</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-blue">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/%E3%83%8F%E3%83%B3%E3%82%BA%E3%82%AA%E3%83%B3_Studio%E5%88%9D%E7%B4%9A.aspx" target="_blank" data-link-id="training-beginner" title="Studio初級コース">
+                                        <h3 class="gradient-blue">Studio初級コース</h3>
+                                        <ul>
+                                            <li>変数</li>
+                                            <li>多分岐（スイッチ）</li>
+                                            <li>要素待機、動的セレクター利用</li>
+                                            <li>マクロ実行（引数なし/あり）</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-teal">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/%E3%83%8F%E3%83%B3%E3%82%BA%E3%82%AA%E3%83%B3_Studio%E4%B8%AD%E7%B4%9A.aspx" target="_blank" data-link-id="training-intermediate" title="Studio中級コース">
+                                        <h3 class="gradient-teal">Studio中級コース</h3>
+                                        <ul>
+                                            <li>EUC開発フレームワーク操作</li>
+                                            <li>アセットによるパスワードの管理</li>
+                                            <li>Sharepoint操作</li>
+                                            <li>例外処理</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-yellow">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/%E3%83%8F%E3%83%B3%E3%82%BA%E3%82%AA%E3%83%B3_Studio%E4%B8%8A%E7%B4%9A.aspx" target="_blank" data-link-id="training-advanced" title="Studio上級コース">
+                                        <h3 class="gradient-yellow">Studio上級コース</h3>
+                                        <ul>
+                                            <li>API連携</li>
+                                            <li>セキュリティ対策</li>
+                                            <li>Copilot連携</li>
+                                            <li>AI自動化</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-orange">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/%E3%83%8F%E3%83%B3%E3%82%BA%E3%82%AA%E3%83%B3_VM%E5%88%9D%E7%B4%9A.aspx" target="_blank" data-link-id="training-vm-beginner" title="VM初級コース">
+                                        <h3 class="gradient-orange">VM初級コース</h3>
+                                        <ul>
+                                            <li>VMシステム構成</li>
+                                            <li>プレ本番VM利用</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-pink">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/%E3%83%8F%E3%83%B3%E3%82%BA%E3%82%AA%E3%83%B3_OC%E5%88%9D%E7%B4%9A.aspx" target="_blank" data-link-id="training-vm-intermediate" title="Orchestrator初級コース">
+                                        <h3 class="gradient-pink">Orchestrator初級コース</h3>
+                                        <ul>
+                                            <li>ロボファイルのパブリッシュ</li>
+                                            <li>Orchestratorプロセス作成</li>
+                                            <li>Orchestratorロボ実行、ログ確認</li>
+                                            <li>本番適用と修正</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-purple">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/JE_Dep010_JA010_B070_D1010/SitePages/%E3%82%B3%E3%83%BC%E3%83%9D%E3%83%AC%E3%83%BC%E3%83%88%E3%83%87%E3%82%B8%E3%82%BF%E3%83%AB%E3%82%BD%E3%83%AA%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E9%83%A8%20%E6%94%AF%E7%A4%BEIT%E3%82%BD%E3%83%AA%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3U.aspx" target="_blank" data-link-id="training-internship" title="社内インターンシップ">
+                                        <h3 class="gradient-purple">社内インターンシップ</h3>
+                                        <ul>
+                                            <li>開発（正常系・異常系）</li>
+                                            <li>プレ本番VM環境テスト</li>
+                                            <li>受入テスト・設計書の作成</li>
+                                            <li>本番VM環境リリース</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                </div>
+                            </div>
+                            <div class="sub-card border-red">
+                                <div class="tooltip-container">
+                                    <a href="https://jeragroup.sharepoint.com/sites/Jenny1/SitePages/AI%E3%83%A2%E3%83%87%E3%83%AB%E4%BD%93%E6%84%9F%E3%82%B3%E3%83%BC%E3%82%B9.aspx" target="_blank" data-link-id="training-ai-dev" title="AI活用ローコード開発">
+                                        <h3 class="gradient-red">AIモデル体感コース</h3>
+                                        <ul>
+                                            <li>ワークフロー.xamlを作成</li>
+                                            <li>ワークフロー.xamlから設計書.mdを生成</li>
+                                            <li>設計書.mdからワークフロー.pyを生成</li>
+                                            <li>デモサイトからWebアプリ.htmlを生成</li>
+                                            <li>電力需要予測AIモデルを構築</li>
+                                        </ul>
+                                    </a>
+                                    <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="slider-nav">
+                <button id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+    <div id="pagination" class="pagination"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pageContainer = document.querySelector('.page-container');
+            if (!pageContainer) return;
+
+            const pages = Array.from(pageContainer.children);
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const paginationContainer = document.getElementById('pagination');
+
+            if (!pages.length || !prevBtn || !nextBtn || !paginationContainer) return;
+
+            let currentPage = 0;
+            const totalPages = pages.length;
+
+            // Create pagination numbers
+            for (let i = 0; i < totalPages; i++) {
+                const pageNum = document.createElement('span');
+                pageNum.classList.add('pagination-number');
+                pageNum.textContent = i + 1;
+                pageNum.dataset.index = i;
+                pageNum.addEventListener('click', () => goToPage(i));
+                paginationContainer.appendChild(pageNum);
+            }
+
+            const paginationNumbers = paginationContainer.querySelectorAll('.pagination-number');
+
+            function updatePagination() {
+                paginationNumbers.forEach((num, index) => {
+                    num.classList.toggle('active', index === currentPage);
+                });
+            }
+
+            function updateNavButtons() {
+                prevBtn.style.visibility = currentPage === 0 ? 'hidden' : 'visible';
+                nextBtn.style.visibility = currentPage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+
+            function goToPage(pageIndex) {
+                if (pageIndex < 0 || pageIndex >= totalPages) return;
+                currentPage = pageIndex;
+                pageContainer.style.transform = `translateX(${-currentPage * 100}%)`;
+                updatePagination();
+                updateNavButtons();
+            }
+
+            prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+            nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+
+            goToPage(0); // Initial setup
+        });
+    </script>
+</body>
+</html>

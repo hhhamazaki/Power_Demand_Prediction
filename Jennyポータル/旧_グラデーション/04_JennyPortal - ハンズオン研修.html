@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - ハンズオン研修</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn {
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">ハンズオン研修</h2>
+        <p class="text-gray-700 mb-6">RPAハンズオン研修カリキュラムの詳細はこちらからご確認ください。</p>
+
+        <div id="hands_on_training_overview_cards" class="content-section active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                    <p class="text-sm mb-4">RPAツールの基本操作を習得。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('hands_on_training_intro_course_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">初級コース</h4>
+                    <p class="text-sm mb-4">RPAの基礎知識と応用スキルを習得。</p>
+                    <button class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('hands_on_training_beginner_course_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">中級コース</h4>
+                    <p class="text-sm mb-4">複雑な業務プロセスの自動化スキルを習得。</p>
+                    <button class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('hands_on_training_intermediate_course_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-pink-500 to-red-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">上級コース</h4>
+                    <p class="text-sm mb-4">エンタープライズレベルのRPAプロジェクトを推進。</p>
+                    <button class="btn bg-white text-red-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('hands_on_training_advanced_course_detail')">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="hands_on_training_intro_course_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 入門コース</h3>
+                <p class="text-gray-700 mb-4">RPAツールの基本操作を習得し、RPA開発の第一歩を踏み出します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="http://example.com/hands_on_intro_learning" target="_blank" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">ブラウザ操作（デモ画面を開く、ボタンをクリック、文字を入力、項目を選択、テキストを取得）</li>
+                                <li class="mb-1">条件分岐（ファイルが存在しなければURLからダウンロード）</li>
+                                <li class="mb-1">Excel操作（範囲を読み込み、セルに書き込み）</li>
+                                <li>繰り返し（繰り返し各行）</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/hands_on_intro_skills" target="_blank" class="course-card bg-gradient-to-br from-purple-600 to-indigo-700 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">RPAツールの基本的なUI操作</li>
+                                <li class="mb-1">簡単なウェブサイトからのデータ取得</li>
+                                <li class="mb-1">Excelへのデータ書き込み</li>
+                                <li>条件に基づいた処理の分岐</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-indigo-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('hands_on_training_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="hands_on_training_beginner_course_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 初級コース</h3>
+                <p class="text-gray-700 mb-4">RPAの基礎知識と応用スキルを習得し、簡単な業務の自動化を実現します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="http://example.com/hands_on_beginner_learning" target="_blank" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">変数とデータ型（変数作成・型指定、配列/リスト利用、変数スコープ）</li>
+                                <li class="mb-1">Web操作応用（動的セレクター利用、要素待機、複雑な入力フォーム自動化）</li>
+                                <li class="mb-1">Excel操作応用（複数シート操作、データテーブル活用、Excel関数実行、データテーブル抽出/絞込、マクロ実行（引数なし/あり））</li>
+                                <li class="mb-1">データ加工（文字列処理（分割/結合/置換）、日付/時刻データ扱い）</li>
+                                <li>複雑な条件分岐設計（複雑なIf/Switch文活用）</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/hands_on_beginner_skills" target="_blank" class="course-card bg-gradient-to-br from-blue-600 to-teal-700 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">RPAにおけるデータ管理と変数利用</li>
+                                <li class="mb-1">動的なウェブコンテンツへの対応</li>
+                                <li class="mb-1">高度なExcel操作とデータ処理</li>
+                                <li class="mb-1">複雑な業務ロジックの自動化</li>
+                                <li>データ加工と整形</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-teal-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('hands_on_training_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="hands_on_training_intermediate_course_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 中級コース</h3>
+                <p class="text-gray-700 mb-4">より複雑な業務プロセスの自動化スキルを習得し、RPA適用範囲を拡大します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="http://example.com/hands_on_intermediate_learning" target="_blank" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">例外処理（Try-Catchによるエラー制御、カスタム例外作成、エラーログ出力、基本的なエラー処理）</li>
+                                <li class="mb-1">モジュール化（ワークフロー分割/再利用、引数設定/受渡、Configファイル利用）</li>
+                                <li>ファイル操作（ファイル/フォルダ一括処理、PDF読込/保存、SharePoint OnlineファイルDL/UL）</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/hands_on_intermediate_skills" target="_blank" class="course-card bg-gradient-to-br from-orange-600 to-red-700 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">堅牢なRPAロボットの設計と実装</li>
+                                <li class="mb-1">再利用可能なコンポーネントの作成</li>
+                                <li class="mb-1">ファイルシステムやPDF、SharePointとの連携</li>
+                                <li>エラー発生時の適切な対応</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-red-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('hands_on_training_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="hands_on_training_advanced_course_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 上級コース</h3>
+                <p class="text-gray-700 mb-4">エンタープライズレベルのRPAプロジェクトを推進できるスキルを習得し、RPA導入効果を最大化します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="http://example.com/hands_on_advanced_learning" target="_blank" class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">API連携（REST API呼出、外部サービス認証処理、JSONデータ解析/生成）</li>
+                                <li class="mb-1">セキュリティ対策（認証情報安全管理、アクセス権限設計、監査ログ実装、資格情報アセットの利用）</li>
+                                <li>Copilot連携（Copilot API連携、自然言語RPA制御、AIによる自動化）</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/hands_on_advanced_skills" target="_blank" class="course-card bg-gradient-to-br from-purple-600 to-pink-700 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">外部システムとの連携とデータ交換</li>
+                                <li class="mb-1">RPAにおけるセキュリティのベストプラクティス</li>
+                                <li class="mb-1">AIを活用した高度な自動化</li>
+                                <li>エンタープライズRPAプロジェクトの推進</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-pink-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('hands_on_training_overview_cards')">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // すべてのコンテンツセクションを非表示にし、指定されたセクションを表示する関数
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に概要カードを表示
+            showSection('hands_on_training_overview_cards');
+        });
+    </script>
+</body>
+</html>

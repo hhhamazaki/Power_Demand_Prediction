@@ -1,0 +1,54 @@
+- [ ] .NET Install Tool
+- [ ] Auto Rename Tag
+- [ ] Better Comments
+- [ ] Blockman - Highlight Nested Code Blocks
+- [ ] C#
+- [ ] Code Spell Checker
+- [x] CodeToHTML
+- [ ] Container Tools
+- [ ] Dev Containers
+- [ ] Docker
+- [ ] Docker DX
+- [ ] Draw.io Integration
+- [ ] Gemini Code Assist
+- [ ] GitHub Copilot
+- [ ] GitHub Copilot Chat
+- [ ] indent-rainbow
+- [ ] IntelliCode
+- [ ] IntelliCode API Usage Examples
+- [ ] Japanese Language Pack for Visual Studio Code
+- [ ] Live Server
+- [ ] Markdown All in One
+- [ ] Markdown PDF
+- [ ] Markdown Preview Enhanced
+- [ ] Markdown Preview Mermaid Support
+- [ ] Markdown Snapshot PDF
+- [ ] Markuplint
+- [ ] Marp for VS Code
+- [ ] Mermaid Preview
+- [ ] Office Viewer
+- [ ] Path Autocomplete
+- [ ] Path Intellisense
+- [ ] Phind.com - Chat with your Codebase
+- [ ] PowerShell
+- [ ] Prettier - Code formatter
+- [ ] Pylance
+- [ ] Python
+- [ ] Python Debugger
+- [ ] Python Environments
+- [ ] Rainbow CSV
+- [ ] Trailing Spaces
+- [ ] UiPath Code Support
+- [ ] vscode-pdf
+- [ ] Windsurf Plugin (formerly Codeium): AI Coding Autocomplete and Chat for Python, JavaScript, TypeScript, and more
+- [ ] WSL
+- [ ] zenkaku
+- [ ] Gemini Code Assist
+- [ ] Markuplint
+- [ ] Windsurf Plugin (formerly Codeium): AI Coding Autocomplete and Chat for Python, JavaScript, TypeScript, and more
+
+
+- **Bracket Pair Colorizer** (coenraads.bracket-pair-colorizer) - 括弧の色分け
+- **HTML CSS Support** (ecmel.vscode-html-css) - HTML/CSS補完
+- **JavaScript (ES6) code snippets** (xabikos.javascriptsnippets) - JavaScript補完
+| GitLens | バージョン管理支援 | 全プロジェクト |

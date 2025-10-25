@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ctrl+クリックで新タブ表示</title>
+    <!-- Tailwind CSSを読み込みます -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Interフォントを適用 */
+        body {
+            font-family: "Inter", sans-serif;
+        }
+        /* カスタムツールチップのスタイル */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* リンクの上に表示 */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap; /* テキストが折り返されないようにする */
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">リンクの動作確認</h1>
+
+        <!-- ツールチップ付きリンクの例 -->
+        <div class="tooltip-container inline-block">
+            <a href="https://www.google.com" class="text-blue-600 hover:underline text-lg" target="_self" id="myLink">
+                Googleを開く
+            </a>
+            <span class="tooltip-text">Ctrl+クリックで新タブ表示</span>
+        </div>
+
+        <p class="mt-4 text-gray-600">
+            上記のリンクをクリックしてみてください。通常は同じタブで開きます。<br>
+            <span class="font-semibold">Ctrlキーを押しながらクリック</span>すると、新しいタブで開きます。
+        </p>
+    </div>
+
+    <script>
+        // ページが完全に読み込まれた後に実行
+        document.addEventListener('DOMContentLoaded', function() {
+            const myLink = document.getElementById('myLink');
+
+            // リンクがクリックされたときのイベントリスナー
+            myLink.addEventListener('click', function(event) {
+                // Ctrlキーが押されているかチェック
+                if (event.ctrlKey) {
+                    // デフォルトのリンク動作をキャンセル
+                    event.preventDefault();
+                    // 新しいタブでリンクを開く
+                    window.open(this.href, '_blank');
+                }
+                // Ctrlキーが押されていない場合は、target="_self" の動作（同じタブで開く）がそのまま適用される
+            });
+        });
+    </script>
+</body>
+</html>

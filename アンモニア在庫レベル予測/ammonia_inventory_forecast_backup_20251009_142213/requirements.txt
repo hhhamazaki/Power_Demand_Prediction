@@ -1,0 +1,22 @@
+# アンモニア在庫レベル予測システム - 依存関係
+# AI機械学習・データ分析用ライブラリ
+
+# データ処理・分析
+pandas>=1.5.0
+numpy>=1.23.0
+
+# 機械学習・AI
+scikit-learn>=1.2.0
+joblib>=1.2.0
+
+# 可視化
+matplotlib>=3.6.0
+
+# 時系列・特徴量エンジニアリング
+holidays>=0.30
+
+# 高性能機械学習（オプション）
+lightgbm>=3.3.0
+
+# Webサーバー・API（標準ライブラリ使用のため不要）
+# http.server, socketserver, json, subprocess

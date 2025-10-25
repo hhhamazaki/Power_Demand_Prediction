@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電力需要AI予測ダッシュボード</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%); color: #e0e0e0; min-height: 100vh; overflow-x: auto; color-scheme: dark; }
+        .container { max-width: 1600px; width:100%; min-height: 700px; margin: 0 auto; padding: 20px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); border-radius: 15px; box-shadow: 0 8px 32px rgba(0,255,255,0.1); }
+    .header { text-align: center; margin-bottom: 30px; }
+    .title { font-size: 2.6rem; font-weight: bold; text-align: center; margin-bottom: 18px; background: linear-gradient(45deg, #00ffff, #00ff88, #ff00ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+    /* 4カードを均等幅にする */
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        
+        
+        .card { background: rgba(0,255,255,0.03); border: 1px solid rgba(0,255,255,0.12); border-radius: 10px; padding: 16px; }
+    .card h3 { color: #00ffff; margin-bottom: 12px; font-size: 1.1rem; }
+    .btn { background: linear-gradient(45deg,#00ffff,#00ff88); border: none; padding: 8px 12px; border-radius:6px; cursor:pointer; color:#000; font-weight:bold }
+        .btn.primary.active { box-shadow: 0 0 18px rgba(0,255,136,0.9); background: linear-gradient(45deg,#00ff88,#00ffb3); color:#002200 }
+        /* 未選択かつ実行中でないボタンを反転表示（視覚的に目立たせる） */
+        /* 未選択かつ実行中でないボタンを反転表示 (全ボタン対象) */
+            .btn:not(.active):not(.running) {
+                background: linear-gradient(45deg, rgba(0,255,136,0.28), rgba(0,255,136,0.12));
+                color: #00ff88; /* 反転時の文字色を緑基調に合わせる */
+                border: 1px solid rgba(0,255,136,0.75); /* 枠線をやや濃く */
+                box-shadow: 0 0 12px rgba(0,255,136,0.32), inset 0 0 10px rgba(0,255,136,0.08);
+                transform: none;
+            }
+        
+        /* JS が付ける inverted クラス用（互換） */
+            /* .btn.inverted: JSから付与する互換クラス（緑ネオン） */
+            .btn.inverted {
+                background: linear-gradient(45deg, rgba(0,255,136,0.28), rgba(0,255,136,0.12));
+                color: #00ff88; /* 反転時の文字色を緑基調に合わせる */
+                border: 1px solid rgba(0,255,136,0.85); /* 枠線をやや濃く */
+                box-shadow: 0 0 12px rgba(0,255,136,0.32), inset 0 0 10px rgba(0,255,136,0.08);
+            }
+        /* 実行中はマゼンタ/ピンク系ネオンで強調 */
+        .btn.running {
+            box-shadow: 0 0 18px rgba(0,255,136,0.9), 0 0 40px rgba(0,255,136,0.4);
+            background: linear-gradient(45deg,#00ff88,#00ffb3);
+            color: #002200;
+            transform: scale(1.04);
+            border-color: rgba(0,255,136,0.9);
+        }
+        /* 特定の実行系ボタンをマゼンタ基調にする（処理/学習/取得/予測/組み合わせ検証） */
+        #dataProcessBtn, #trainBtn, #getLatestBtn, #predictBtn, #optimizeYearsBtn {
+            background: linear-gradient(45deg,#ff00ff,#ff88ff);
+            color: #fff;
+            border: none;
+            box-shadow: 0 0 8px rgba(255,0,255,0.18);
+        }
+        /* これら特定ボタンの反転（未選択・未実行）時は淡いマゼンタ背景にする。一般の緑反転より優先される */
+        #dataProcessBtn:not(.active):not(.running), #trainBtn:not(.active):not(.running), #getLatestBtn:not(.active):not(.running), #predictBtn:not(.active):not(.running), #optimizeYearsBtn:not(.active):not(.running) {
+            /* 緑反転と同等の濃さに調整 */
+            background: linear-gradient(45deg, rgba(255,0,255,0.28), rgba(255,0,255,0.12));
+            color: #ff66ff; /* 反転時はマゼンタ系テキスト */
+            border: 1px solid rgba(255,0,255,0.75);
+            box-shadow: 0 0 12px rgba(255,0,255,0.32), inset 0 0 10px rgba(255,0,255,0.08);
+        }
+        /* JS で .inverted クラスがつく場合の上書き（互換） */
+        #dataProcessBtn.inverted, #trainBtn.inverted, #getLatestBtn.inverted, #predictBtn.inverted, #optimizeYearsBtn.inverted {
+            background: linear-gradient(45deg, rgba(255,0,255,0.28), rgba(255,0,255,0.12)) !important;
+            color: #ff66ff !important; /* JS 互換時の文字色 */
+            border: 1px solid rgba(255,0,255,0.75) !important;
+            box-shadow: 0 0 12px rgba(255,0,255,0.32) !important;
+        }
+        /* デフォルト（実行中でない）状態は反転で濃めのマゼンタに調整 */
+        #dataProcessBtn:not(.running), #trainBtn:not(.running), #getLatestBtn:not(.running), #predictBtn:not(.running), #optimizeYearsBtn:not(.running) {
+            background: linear-gradient(45deg, rgba(255,0,255,0.28), rgba(255,0,255,0.12));
+            color: #ff66ff;
+            border: 1px solid rgba(255,0,255,0.75);
+            box-shadow: 0 0 12px rgba(255,0,255,0.32), inset 0 0 10px rgba(255,0,255,0.08);
+        }
+        /* Fine-grained running styles:
+           - 最新データ取得・データ処理: 実行中でも縮小/拡大しない
+           - 学習・予測・組み合わせ検証: 実行中はスケールで強調し、そのサイズを維持（遷移なし） */
+        /* Data process & get-latest: no transform to avoid layout shift */
+    #dataProcessBtn.running, #getLatestBtn.running {
+            box-shadow: 0 0 20px rgba(255,0,255,0.95), 0 0 44px rgba(255,0,255,0.45);
+            background: linear-gradient(45deg,#ff00ff,#ff66ff);
+            color: #fff;
+            transform: none !important;
+            border-color: rgba(255,0,255,0.9);
+            transition: none !important;
+        }
+        /* Train & Predict & Optimize Years: apply scaled appearance while running and keep it fixed (no transition) */
+    #trainBtn.running, #predictBtn.running, #optimizeYearsBtn.running {
+            box-shadow: 0 0 20px rgba(255,0,255,0.95), 0 0 44px rgba(255,0,255,0.45);
+            background: linear-gradient(45deg,#ff00ff,#ff66ff);
+            color: #fff;
+            transform: scale(1.04) !important;
+            border-color: rgba(255,0,255,0.9);
+            transition: none !important;
+        }
+
+        /* ツールチップスタイル */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 12px;
+            position: absolute;
+            z-index: 9999;
+            bottom: 12%; /* default: show slightly above the element */
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0; /* use transform for centering */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.95) transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* キーボード操作でもツールチップを表示できるようにする */
+        .tooltip:focus-within .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tooltip .tooltiptext strong {
+            color: #00ffff;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .tooltip .tooltiptext .formula {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin: 4px 0;
+            font-size: 12px;
+        }
+
+        /* Ensure main action buttons keep a stable width when their text changes (e.g. '実行中...') */
+        #dataProcessBtn, #trainBtn, #getLatestBtn, #predictBtn, #optimizeYearsBtn {
+            min-width: 140px; /* adjust if you prefer wider/narrower */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            padding-left: 10px; padding-right: 10px;
+            box-sizing: border-box;
+        }
+        /* Disabled appearance should not collapse width */
+        #dataProcessBtn[disabled], #trainBtn[disabled], #getLatestBtn[disabled], #predictBtn[disabled], #optimizeYearsBtn[disabled] {
+            opacity: 0.95;
+            cursor: not-allowed;
+        }
+     .controls { display:flex; gap:8px; flex-wrap:wrap }
+     /* アクション行: ボタン（左）と指標（右）を横並びにする
+         学習カードではボタンの下に指標を横並びで置くため、左カラムを縦積みにする */
+     .actions-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-top:10px }
+     .actions-row .left { display:flex; flex-direction:column; gap:8px; align-items:flex-start }
+     .actions-row .left .btn-row { display:flex; gap:8px }
+     .actions-row .right { display:flex; gap:12px; align-items:center }
+    /* 年ボタンと処理/学習ボタンを同一行にするラッパー */
+    .year-action-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:6px }
+    .year-action-row > div:first-child { flex:1 }
+    .btn-col, .year-action-row .btn-col { display:flex; flex-direction:column; align-items:flex-end }
+    /* モデル選択ボタンは 2カラム×2行 のグリッドにする */
+    #modelButtons { display: grid; grid-template-columns: repeat(2, 1fr); gap:8px; align-items: stretch; }
+    #modelButtons .btn { width: 100%; text-align: center; padding: 10px 12px; }
+
+    /* Make .btn-row a no-wrap flex container so buttons inside are always side-by-side and equally sized */
+    .btn-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+    .btn-row .btn {
+        flex: 1 1 0;
+        max-width: 50%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    /* ボタンに被らないよう、ボタンラッパー用ツールチップはボタンの上方に表示する */
+    .btn-row .tooltip { display: inline-block; }
+    .btn-row .tooltip .tooltiptext {
+        bottom: calc(100% + 8px); /* ボタンの上方に出す（ボタンに重ならない） */
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none; /* ツールチップでボタン操作を妨げない */
+        max-width: 320px;
+    }
+
+    /* 学習年カードの組み合わせ検証ボタンのツールチップも上方に表示 */
+    #optimizeYearsBtn + .tooltiptext {
+        bottom: calc(100% + 8px) !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        top: auto !important;
+        pointer-events: none;
+    }
+
+        .year-buttons { display:flex; gap:6px; flex-wrap:wrap }
+            /* Year buttons: default glow, deselected => inverted. Use #yearContainer scoped rules to override globals */
+            /* make glow match primary.active neon appearance */
+            #yearContainer .btn.glow {
+                background: linear-gradient(45deg,#00ff88,#00ffb3) !important;
+                color: #002200 !important;
+                border: 1px solid rgba(0,255,136,0.9) !important;
+                box-shadow: 0 0 18px rgba(0,255,136,0.9), 0 0 40px rgba(0,255,136,0.4) !important;
+            }
+            #yearContainer .btn.inverted {
+                background: linear-gradient(45deg, rgba(0,255,136,0.18), rgba(0,255,136,0.06)) !important;
+                color: #00ff88 !important;
+                border: 1px solid rgba(0,255,136,0.6) !important;
+                box-shadow: 0 0 10px rgba(0,255,136,0.18) !important;
+            }
+    .chart-area { margin-top: 12px; height: 420px; }
+    /* chart-area specific tooltip: show near bottom center of image to avoid being too high */
+    .chart-area .tooltip .tooltiptext {
+        bottom: 8%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 320px;
+            pointer-events: none; /* avoid blocking clicks on image */
+    }
+        /* When modal is open, hide all tooltips to avoid blocking controls */
+        .modal-open .tooltip .tooltiptext { display: none !important; visibility: hidden !important; opacity: 0 !important; }
+    /* Ensure PNG images sit above the canvas and receive pointer events so clicks open modal */
+    .chart-area { position: relative; }
+    .chart-area img { position: relative; z-index: 2; pointer-events: auto; }
+    .chart-area canvas { position: relative; z-index: 1; }
+    /* modal for enlarged PNG */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center; z-index: 9999 }
+    .modal-overlay.show { display: flex; }
+    .modal-img { max-width: 96%; max-height: 92%; box-shadow: 0 8px 40px rgba(0,0,0,0.6); border-radius: 6px; background: #000 }
+    .modal-close { position: absolute; top: 18px; right: 22px; color: #fff; font-size: 22px; cursor: pointer; background: rgba(0,0,0,0.25); padding:6px 10px; border-radius:6px }
+    .modal-controls { position: absolute; top: 18px; left: 22px; display:flex; gap:8px; z-index: 10000 }
+    .modal-btn { background: rgba(0,0,0,0.35); color: #fff; border: none; padding:6px 10px; border-radius:6px; cursor:pointer; font-weight:bold }
+    .modal-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.6) }
+    #trainImage, #predImage { cursor: zoom-in }
+        .stats { display:flex; gap:12px; margin-top:12px }
+        .stat { flex:1; background: rgba(0,0,0,0.25); padding:10px; border-radius:6px; text-align:center }
+        @media (max-width: 1200px) {
+            .title { font-size: 2rem; }
+            .container { max-width: 95%; }
+        }
+        @media (max-width: 768px) {
+            .title { font-size: 1.5rem; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">電力需要AI予測ダッシュボード</h1>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>モデル</h3>
+                <div class="controls" id="modelButtons">
+                    <button class="btn primary" data-model="Keras">Keras</button>
+                    <button class="btn primary active" data-model="LightGBM">LightGBM</button>
+                    <button class="btn primary" data-model="PyCaret">PyCaret</button>
+                    <button class="btn primary" data-model="RandomForest">RandomForest</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>予測</h3>
+                <div class="btn-row" style="margin-bottom:8px">
+                    <div class="tooltip" style="display:inline-block">
+                        <button id="getLatestBtn" class="btn">最新データ取得</button>
+                        <span class="tooltiptext" role="tooltip">
+                            <strong>最新データ取得</strong>
+                            予測を実行する前に1回だけ実行してください（全モデル共通）。
+                        </span>
+                    </div>
+                    <div class="tooltip" style="display:inline-block">
+                        <button id="predictBtn" class="btn">予測</button>
+                        <span class="tooltiptext" role="tooltip">
+                            <strong>予測</strong>
+                            選択したモデルで予測を実行します（事前に1回だけ最新データ取得を実行してください）。
+                        </span>
+                    </div>
+                </div>
+                <div class="stats" style="margin-top:10px">
+                    <div class="stat tooltip">
+                        RMSE<br><span id="predRmse">-</span>
+                        <span class="tooltiptext">
+                            <strong>RMSE (Root Mean Squared Error)</strong>
+                            二乗平均平方根誤差。予測値と実際値の差の平方平均の平方根です。
+                            <div class="formula">√(Σ(予測値 - 実際値)² / n)</div>
+                            値が小さいほど予測精度が高いことを示します。単位は予測対象と同じ（この場合はkW）です。
+                        </span>
+                    </div>
+                    <div class="stat tooltip">
+                        R2<br><span id="predR2">-</span>
+                        <span class="tooltiptext">
+                            <strong>R² (決定係数)</strong>
+                            モデルの予測性能を表す指標で、0〜1の値を取ります。
+                            <div class="formula">1 - (残差平方和 / 全平方和)</div>
+                            1に近いほど予測精度が高く、0.9以上なら非常に良好な予測性能を示します。
+                        </span>
+                    </div>
+                    <div class="stat tooltip">
+                        MAE<br><span id="predMae">-</span>
+                        <span class="tooltiptext">
+                            <strong>MAE (Mean Absolute Error)</strong>
+                            平均絶対誤差。予測値と実際値の差の絶対値の平均です。
+                            <div class="formula">Σ|予測値 - 実際値| / n</div>
+                            外れ値の影響を受けにくく、平均的な予測誤差を表します。値が小さいほど良好です。
+                        </span>
+                    </div>
+                    <div class="stat">モデル<br><span id="predModelName">-</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>学習</h3>
+                <div style="margin-bottom:8px">
+                    <div class="btn-row">
+                        <div class="tooltip" style="display:inline-block">
+                            <button id="dataProcessBtn" class="btn">データ処理</button>
+                            <span class="tooltiptext" role="tooltip">
+                                <strong>データ処理</strong>
+                                学習年を更新する場合のみ1回だけ実行してください（全モデル共通）。
+                            </span>
+                        </div>
+                        <div class="tooltip" style="display:inline-block">
+                            <button id="trainBtn" class="btn">学習</button>
+                            <span class="tooltiptext" role="tooltip">
+                                <strong>学習</strong>
+                                選択したモデルを学習します（学習年を更新する場合、事前に1回だけデータ処理を実行ください）。
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats" style="margin-top:10px">
+                    <div class="stat tooltip">
+                        RMSE<br><span id="trainRmse">-</span>
+                        <span class="tooltiptext">
+                            <strong>RMSE (Root Mean Squared Error)</strong>
+                            二乗平均平方根誤差。予測値と実際値の差の平方平均の平方根です。
+                            <div class="formula">√(Σ(予測値 - 実際値)² / n)</div>
+                            値が小さいほど予測精度が高いことを示します。単位は予測対象と同じ（この場合はkW）です。
+                        </span>
+                    </div>
+                    <div class="stat tooltip">
+                        R2<br><span id="trainR2">-</span>
+                        <span class="tooltiptext">
+                            <strong>R² (決定係数)</strong>
+                            モデルの予測性能を表す指標で、0〜1の値を取ります。
+                            <div class="formula">1 - (残差平方和 / 全平方和)</div>
+                            1に近いほど予測精度が高く、0.9以上なら非常に良好な予測性能を示します。
+                        </span>
+                    </div>
+                    <div class="stat tooltip">
+                        MAE<br><span id="trainMae">-</span>
+                        <span class="tooltiptext">
+                            <strong>MAE (Mean Absolute Error)</strong>
+                            平均絶対誤差。予測値と実際値の差の絶対値の平均です。
+                            <div class="formula">Σ|予測値 - 実際値| / n</div>
+                            外れ値の影響を受けにくく、平均的な予測誤差を表します。値が小さいほど良好です。
+                        </span>
+                    </div>
+                    <div class="stat">モデル<br><span id="trainModelName">-</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>学習年</h3>
+                <div>
+                    <div id="yearContainer" class="year-buttons"></div>
+                </div>
+                <div style="margin-top:12px">
+                    <div class="tooltip" style="display:inline-block">
+                        <button id="optimizeYearsBtn" class="btn">組み合わせ検証シミュレーション</button>
+                        <span class="tooltiptext" role="tooltip">
+                            <strong>組み合わせ検証</strong>
+                            選択したモデルで最適な組み合わせ学習年を検証します（※Kerasは十数分、それ以外は数分で処理）。
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid" style="margin-top:16px; grid-template-columns: 1fr 1fr;">
+            <div class="card">
+                <h3>予測グラフ</h3>
+                <div class="chart-area">
+                    <div id="predChartWrapper" class="tooltip" tabindex="0" role="button" aria-label="予測グラフを拡大表示">
+                        <img id="predImage" src="" alt="pred graph" style="display:none; width:100%; height:100%; object-fit:contain;" />
+                        <span class="tooltiptext" role="tooltip">
+                            <strong>クリックで拡大</strong>
+                            画像を拡大表示します。モーダル内でダウンロードできます。
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>学習グラフ</h3>
+                <div class="chart-area">
+                    <div id="trainChartWrapper" class="tooltip" tabindex="0" role="button" aria-label="学習グラフを拡大表示">
+                        <img id="trainImage" src="" alt="train graph" style="display:none; width:100%; height:100%; object-fit:contain;" />
+                        <span class="tooltiptext" role="tooltip">
+                            <strong>クリックで拡大</strong>
+                            画像を拡大表示します。モーダル内でダウンロードできます。
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal overlay for enlarged images (placed before script so elements exist when JS runs) -->
+    <div id="imgModal" class="modal-overlay" role="dialog" aria-hidden="true">
+        <div class="modal-close" id="imgModalClose">✕</div>
+        <div class="modal-controls" role="toolbar" aria-label="Image controls">
+            <button id="modalZoomIn" class="modal-btn" title="ズームイン">＋</button>
+            <button id="modalZoomOut" class="modal-btn" title="ズームアウト">－</button>
+            <button id="modalFullscreen" class="modal-btn" title="全画面">⤢</button>
+            <button id="modalDownload" class="modal-btn" title="ダウンロード">⬇</button>
+        </div>
+        <img id="imgModalImg" class="modal-img" src="" alt="enlarged graph" />
+    </div>
+
+    <script>
+        // 初期化
+        const modelButtons = document.querySelectorAll('#modelButtons .btn');
+        let selectedModel = 'LightGBM';
+        modelButtons.forEach(b => b.addEventListener('click', async () => {
+            modelButtons.forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            selectedModel = b.dataset.model;
+            console.log(`[モデル変更] 新しいモデル: ${selectedModel}`);
+            
+            // 選択モデル名を UI に表示（存在すれば）
+            const selEl = document.getElementById('selectedModelName');
+            if(selEl) selEl.textContent = selectedModel;
+            // 学習/予測のモデル名表示を更新し、指標はクリアして古い値を残さない
+            const trainNameEl = document.getElementById('trainModelName');
+            const predNameEl = document.getElementById('predModelName');
+            if(trainNameEl) trainNameEl.textContent = selectedModel;
+            if(predNameEl) predNameEl.textContent = selectedModel;
+            ['trainRmse','trainR2','trainMae','predRmse','predR2','predMae'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='-'; });
+            
+            // モデル変更時に保存された学習年を復元（ボタンは既にレンダリング済み）
+            console.log(`[モデル変更] 学習年を復元します`);
+            const availableYears = await loadAvailableYears();
+            if(availableYears.length > 0){
+                // 即座に復元処理を実行
+                restoreSelectedYears(availableYears);
+                updateSelectedYearsDisplay();
+            }
+            
+            // update charts when model changes
+            try{ await loadTrainChart(selectedModel); }catch(e){ console.warn('train chart update failed', e); }
+            try{ await loadPredChart(selectedModel); }catch(e){ console.warn('pred chart update failed', e); }
+            // 選択変更時にクライアント側で指標を再計算して表示
+            try{ await updateTrainMetrics(selectedModel); }catch(e){ console.warn('updateTrainMetrics failed', e); }
+            try{ await updatePredMetrics(selectedModel); }catch(e){ console.warn('updatePredMetrics failed', e); }
+        }));
+
+        // 年の自動検出: サーバーの /available-years エンドポイントを呼び出す
+        async function loadAvailableYears(){
+            try{
+                const res = await fetch(buildUrl('/available-years'));
+                if(!res.ok) return [];
+                const j = await res.json();
+                return Array.isArray(j.years) ? j.years : [];
+            }catch(e){
+                console.warn('available-years fetch failed', e);
+                return [];
+            }
+        }
+
+        // Build absolute URL to project root resources so requests don't get prefixed by /dashboard/
+        function buildUrl(path){
+            try{
+                if(!path) return path;
+                // If already absolute (starts with http), return as-is
+                if(path.startsWith('http://') || path.startsWith('https://')) return path;
+                // Ensure leading slash
+                const rel = path.startsWith('/') ? path : '/' + path;
+                return window.location.origin + rel;
+            }catch(e){ return path; }
+        }
+
+        function renderYearButtons(years){
+            const cont = document.getElementById('yearContainer');
+            cont.innerHTML = '';
+            years.forEach(y=>{
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.textContent = y;
+                btn.dataset.year = y;
+                // default: glow
+                btn.classList.add('glow');
+                btn.onclick = async ()=>{ 
+                    // toggle active state
+                    btn.classList.toggle('active');
+                    if(btn.classList.contains('active')){
+                        // selected -> show glow (keep glow), remove inverted
+                        btn.classList.remove('inverted');
+                        btn.classList.add('glow');
+                    } else {
+                        // deselected -> inverted, remove glow
+                        btn.classList.remove('glow');
+                        btn.classList.add('inverted');
+                    }
+                    updateSelectedYearsDisplay();
+                    // 学習年選択を保存
+                    saveSelectedYears();
+                    // update train chart when year selection changes
+                    try{ await loadTrainChart(selectedModel); }catch(e){ console.warn('train chart update failed', e); }
+                };
+                cont.appendChild(btn);
+            });
+        }
+
+        function updateSelectedYearsDisplay(){
+            const yearBtns = Array.from(document.querySelectorAll('#yearContainer .btn'));
+            const selected = yearBtns.filter(b=>b.classList.contains('active')).map(b=>b.dataset.year);
+            const el = document.getElementById('selectedYears');
+            if(!el) return;
+            el.textContent = selected.length ? selected.join(',') : 'なし';
+        }
+
+        // 学習年をlocalStorageに保存する関数（モデル別）
+        function saveSelectedYears(){
+            try{
+                const yearBtns = Array.from(document.querySelectorAll('#yearContainer .btn'));
+                console.log(`[保存] 検出された年ボタン数: ${yearBtns.length}`);
+                
+                const selected = yearBtns.filter(b=>b.classList.contains('active')).map(b=>b.dataset.year);
+                console.log(`[保存] 選択されている年: ${selected}`);
+                
+                const storageKey = `ai_training_years_${selectedModel}`;
+                console.log(`[保存] ストレージキー: ${storageKey}`);
+                
+                localStorage.setItem(storageKey, JSON.stringify(selected));
+                console.log(`[保存] 学習年を保存しました (${selectedModel}):`, selected);
+                
+                // 保存後すぐに確認
+                const verification = localStorage.getItem(storageKey);
+                console.log(`[保存] 保存確認 - localStorageの値:`, verification);
+            }catch(e){
+                console.error('[保存] 学習年の保存に失敗しました:', e);
+            }
+        }
+
+        // 学習年をlocalStorageから復元する関数（モデル別）
+        function restoreSelectedYears(availableYears){
+            try{
+                const storageKey = `ai_training_years_${selectedModel}`;
+                console.log(`[復元] ストレージキー: ${storageKey}`);
+                
+                const savedYearsJson = localStorage.getItem(storageKey);
+                console.log(`[復元] localStorageから取得した値:`, savedYearsJson);
+                
+                const yearBtns = Array.from(document.querySelectorAll('#yearContainer .btn'));
+                console.log(`[復元] 検出された年ボタン数: ${yearBtns.length}`);
+                
+                if(savedYearsJson){
+                    const savedYears = JSON.parse(savedYearsJson);
+                    console.log(`[復元] 学習年を復元しました (${selectedModel}):`, savedYears);
+                    
+                    // 保存された年に基づいてボタンの状態を設定
+                    yearBtns.forEach(btn=>{
+                        const year = btn.dataset.year;
+                        if(savedYears.includes(year)){
+                            // 選択状態
+                            btn.classList.add('active');
+                            btn.classList.remove('inverted');
+                            btn.classList.add('glow');
+                            console.log(`[復元] ${year}を選択状態にしました`);
+                        } else {
+                            // 非選択状態
+                            btn.classList.remove('active');
+                            btn.classList.remove('glow');
+                            btn.classList.add('inverted');
+                            console.log(`[復元] ${year}を非選択状態にしました`);
+                        }
+                    });
+                } else {
+                    // 保存データがない場合はデフォルト全選択
+                    console.log(`[復元] 保存データなし (${selectedModel}) - デフォルト全選択`);
+                    yearBtns.forEach(btn=>{
+                        btn.classList.add('active');
+                        btn.classList.remove('inverted');
+                        btn.classList.add('glow');
+                    });
+                }
+                console.log(`[復元] 復元処理完了`);
+            }catch(e){
+                console.error('[復元] 学習年の復元に失敗しました:', e);
+                // エラー時はデフォルト全選択
+                const yearBtns = Array.from(document.querySelectorAll('#yearContainer .btn'));
+                yearBtns.forEach(btn=>{
+                    btn.classList.add('active');
+                    btn.classList.remove('inverted');
+                    btn.classList.add('glow');
+                });
+            }
+        }
+
+        async function init(){
+            console.log('=== 初期化開始 ===');
+            console.log('[初期化] selectedModel:', selectedModel);
+            console.log('[初期化] localStorage利用可能:', typeof localStorage !== 'undefined');
+            
+            // localStorageの内容を確認
+            if(typeof localStorage !== 'undefined'){
+                console.log('[初期化] localStorage全体:', {...localStorage});
+                for(let i = 0; i < localStorage.length; i++){
+                    const key = localStorage.key(i);
+                    if(key && key.startsWith('ai_training_years_')){
+                        console.log(`[初期化] ${key} = ${localStorage.getItem(key)}`);
+                    }
+                }
+            }
+            
+            const years = await loadAvailableYears();
+            console.log('[初期化] 利用可能な年:', years);
+            
+            renderYearButtons(years);
+            console.log('[初期化] 年ボタンレンダリング完了');
+            
+            // ボタンレンダリング後に復元処理を実行（DOMへの追加完了を待つ）
+            // requestAnimationFrameを使ってより確実にDOMの更新を待つ
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    console.log('[初期化] 学習年復元処理開始');
+                    restoreSelectedYears(years);
+                    updateSelectedYearsDisplay();
+                    console.log('[初期化] 学習年復元処理完了');
+                }, 50);
+            });
+            
+            // initial chart loads for default model
+            try{ await loadTrainChart(selectedModel); }catch(e){ console.warn('initial train chart failed', e); }
+            try{ await loadPredChart(selectedModel); }catch(e){ console.warn('initial pred chart failed', e); }
+            
+            // 初期化時にも指標を読み込む(モデル変更時と同様)
+            try{ await updateTrainMetrics(selectedModel); }catch(e){ console.warn('initial updateTrainMetrics failed', e); }
+            try{ await updatePredMetrics(selectedModel); }catch(e){ console.warn('initial updatePredMetrics failed', e); }
+            
+            console.log('=== 初期化完了 ===');
+        }
+        
+        // DOMが完全に準備できてから初期化を実行
+        if(document.readyState === 'loading'){
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // ヘルパ: stdout から各種表記のスコアを抽出する（強化版v2）
+        function extractMetric(txt, names){
+            if(!txt) return null;
+            
+            // パターン1: 統一フォーマット「最終結果 - RMSE: X kW, R2スコア: Y, MAE: Z kW」を優先
+            // R2の表記バリエーション: R2スコア | R2 | R²スコア | R2 score | R² score
+            const finalPattern = /最終結果[^0-9]*(?:RMSE|REG\s*RMSE)[:\s]*([0-9.]+)[^,]*,\s*(?:R2スコア|R2|R²スコア|R2\s*score|R²\s*score|R\^2)[:\s]*([+-]?[0-9.]+)[^,]*,\s*(?:MAE)[:\s]*([0-9.]+)/i;
+            const finalMatch = txt.match(finalPattern);
+            if(finalMatch){
+                const lowerNames = names.map(n => n.toLowerCase());
+                if(lowerNames.some(n => ['rmse', 'root mean squared error', 'reg rmse'].includes(n.toLowerCase()))) return finalMatch[1];
+                if(lowerNames.some(n => ['r2', 'r2スコア', 'r2 score', 'r^2', 'r²スコア', 'r² score', 'reg score', 'スコア'].includes(n.toLowerCase()))) return finalMatch[2];
+                if(lowerNames.some(n => ['mae', 'mean absolute error'].includes(n.toLowerCase()))) return finalMatch[3];
+            }
+            
+            // パターン2: 個別行パターン「RMSE: X」「R2 Score: Y」「MAE: Z」(Keras tomorrowレガシー形式対応)
+            // 各指標が別行で出力される場合に対応
+            const lowerNames = names.map(n => n.toLowerCase());
+            if(lowerNames.some(n => ['rmse', 'root mean squared error', 'reg rmse'].includes(n.toLowerCase()))){
+                const rmseLinePattern = /^(?:RMSE|REG\s*RMSE)[:\s]*([+-]?[0-9.]+)/im;
+                const rmseLineMatch = txt.match(rmseLinePattern);
+                if(rmseLineMatch) return rmseLineMatch[1];
+            }
+            if(lowerNames.some(n => ['r2', 'r2スコア', 'r2 score', 'r^2', 'r²スコア', 'r² score', 'reg score', 'スコア'].includes(n.toLowerCase()))){
+                const r2LinePattern = /^(?:R2|R2\s*score|R2スコア|R²スコア|R²\s*score|R\^2)[:\s]*([+-]?[0-9.]+)/im;
+                const r2LineMatch = txt.match(r2LinePattern);
+                if(r2LineMatch) return r2LineMatch[1];
+            }
+            if(lowerNames.some(n => ['mae', 'mean absolute error'].includes(n.toLowerCase()))){
+                const maeLinePattern = /^(?:MAE|Mean\s*Absolute\s*Error)[:\s]*([+-]?[0-9.]+)/im;
+                const maeLineMatch = txt.match(maeLinePattern);
+                if(maeLineMatch) return maeLineMatch[1];
+            }
+            
+            // パターン3: 汎用パターン（既存の柔軟マッチング）
+            const esc = names.map(s => s.replace(/[\\/\^$*+?.()|[\]{}]/g,'\\$&'));
+            const alt = esc.join('|');
+            const re = new RegExp('(?:' + alt + ')\\s*(?:[:：=\\-]|is)?\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)(?:\\s*(?:kW|%)?)?', 'i');
+            const m = txt.match(re);
+            if(m && m[1]) return m[1];
+            
+            return null;
+        }
+
+        // 実行ボタンハンドラ
+        async function postJson(path, body, button=null){
+            try{
+                if(button){ button.classList.add('running'); }
+                const res = await fetch(buildUrl(path), { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+                const j = await res.json();
+                return j;
+            }catch(e){
+                throw e;
+            }finally{
+                if(button){ setTimeout(()=>{ button.classList.remove('running'); }, 800); }
+                // update inverted style for model buttons
+                updateInvertedModelButtons();
+            }
+        }
+
+        document.getElementById('dataProcessBtn').addEventListener('click', async ()=>{
+            const btn = document.getElementById('dataProcessBtn');
+            const years = Array.from(document.querySelectorAll('#yearContainer .btn.active')).map(b=>b.dataset.year);
+            btn.textContent = '実行中...'; btn.disabled = true; btn.classList.add('running');
+            try{
+                // データ処理実行前に選択された学習年を保存
+                saveSelectedYears();
+                
+                const res = await postJson('/run-data', { years }, btn);
+                alert('データ処理終了: ' + (res.status||res.message));
+            }catch(e){ alert('エラー: '+e); }
+            btn.textContent = 'データ処理'; btn.disabled = false; btn.classList.remove('running');
+        });
+
+    document.getElementById('trainBtn').addEventListener('click', async ()=>{
+            const btn = document.getElementById('trainBtn');
+            btn.textContent='実行中...'; btn.disabled=true; btn.classList.add('running');
+            let metricsExtractedFromStdout = false;  // stdoutから抽出成功フラグ
+            try{
+    // include selected years so server/data pipeline can filter
+        const yearBtns = Array.from(document.querySelectorAll('#yearContainer .btn'));
+        const selectedYears = yearBtns.filter(b=>b.classList.contains('active')).map(b=>b.dataset.year);
+    
+                // 学習実行前に選択された学習年を保存
+                saveSelectedYears();
+    
+    const res = await postJson('/run-train', { model: selectedModel, years: selectedYears }, btn);
+                console.log('Train response:', res);
+                alert('学習終了: ' + (res.status||res.message));
+                // 簡易的に出力からスコアを抽出（より頑健に）
+                if(res.stdout){
+                    const txt = res.stdout;
+                    console.log('Extracting metrics from stdout:', txt.substring(0, 500));
+                    const rmse = extractMetric(txt, ['RMSE','Root Mean Squared Error','REG RMSE']);
+                    const r2 = extractMetric(txt, ['R2','R2スコア','R2 score','R^2','REG SCORE','スコア','テスト精度']);
+                    const mae = extractMetric(txt, ['MAE','Mean Absolute Error','MAE:','Mean Abs Error']);
+                    console.log('Extracted metrics - RMSE:', rmse, 'R2:', r2, 'MAE:', mae);
+                    if(rmse !== null) {
+                        document.getElementById('trainRmse').textContent = rmse;
+                        metricsExtractedFromStdout = true;
+                    }
+                    if(r2 !== null) {
+                        document.getElementById('trainR2').textContent = r2;
+                        metricsExtractedFromStdout = true;
+                    }
+                    if(mae !== null) {
+                        document.getElementById('trainMae').textContent = mae;
+                        metricsExtractedFromStdout = true;
+                    }
+                    // 学習したモデル名を表示
+                    if(metricsExtractedFromStdout) {
+                        document.getElementById('trainModelName').textContent = selectedModel;
+                        // stdoutから抽出した指標をlocalStorageに保存(リロード時に使用)
+                        try {
+                            const trainMetrics = {
+                                rmse: rmse,
+                                r2: r2,
+                                mae: mae,
+                                timestamp: Date.now()
+                            };
+                            localStorage.setItem(`ai_train_metrics_${selectedModel}`, JSON.stringify(trainMetrics));
+                            console.log(`[学習] 指標をlocalStorageに保存: ${selectedModel}`, trainMetrics);
+                        } catch(e) {
+                            console.warn('localStorage保存失敗:', e);
+                        }
+                    }
+                }
+            }catch(e){ alert('エラー: '+e); }
+            btn.textContent='学習'; btn.disabled=false; btn.classList.remove('running');
+            // 学習完了後に学習グラフを更新
+            try{ await loadTrainChart(selectedModel); }catch(e){ console.warn('train chart load failed', e); }
+            // Only update metrics from CSV if stdout extraction failed
+            if(!metricsExtractedFromStdout){
+                console.log('stdout extraction failed, trying CSV for train metrics...');
+                try{ await updateTrainMetrics(selectedModel); }catch(e){ console.warn('updateTrainMetrics post-train failed', e); }
+            } else {
+                console.log('Train metrics successfully extracted from stdout, skipping CSV update');
+            }
+        });
+
+    document.getElementById('getLatestBtn').addEventListener('click', async ()=>{
+            const btn = document.getElementById('getLatestBtn'); btn.textContent='実行中...'; btn.disabled=true; btn.classList.add('running');
+            try{
+                const res = await postJson('/run-tomorrow-data', {}, btn);
+                alert('最新データ取得: ' + (res.status||res.message));
+            }catch(e){ alert('エラー: '+e); }
+            btn.textContent='最新データ取得'; btn.disabled=false; btn.classList.remove('running');
+            // refresh pred chart after latest data fetched
+            try{ await loadPredChart(selectedModel); }catch(e){ console.warn('pred chart load after latest data failed', e); }
+        });
+
+    document.getElementById('predictBtn').addEventListener('click', async ()=>{
+            const btn = document.getElementById('predictBtn'); btn.textContent='実行中...'; btn.disabled=true; btn.classList.add('running');
+            let metricsExtractedFromStdout = false;  // stdoutから抽出成功フラグ
+            try{
+    // include selected years to control data selection if needed
+        const yearBtns = Array.from(document.querySelectorAll('#yearContainer .btn'));
+        const selectedYears = yearBtns.filter(b=>b.classList.contains('active')).map(b=>b.dataset.year);
+    const res = await postJson('/run-tomorrow', { model: selectedModel, years: selectedYears }, btn);
+                alert('予測終了: ' + (res.status||res.message));
+                if(res.stdout){
+                    const txt = res.stdout;
+                    console.log('Predict response stdout:', txt.substring(0, 500));
+                    const rmse = extractMetric(txt, ['RMSE','Root Mean Squared Error','REG RMSE']);
+                    const r2 = extractMetric(txt, ['R2','R2スコア','R2 score','R^2','REG SCORE','スコア','テスト精度']);
+                    const mae = extractMetric(txt, ['MAE','Mean Absolute Error','MAE:','Mean Abs Error']);
+                    console.log('Extracted predict metrics - RMSE:', rmse, 'R2:', r2, 'MAE:', mae);
+                    if(rmse !== null) {
+                        document.getElementById('predRmse').textContent = rmse;
+                        metricsExtractedFromStdout = true;
+                    }
+                    if(r2 !== null) {
+                        document.getElementById('predR2').textContent = r2;
+                        metricsExtractedFromStdout = true;
+                    }
+                    if(mae !== null) {
+                        document.getElementById('predMae').textContent = mae;
+                        metricsExtractedFromStdout = true;
+                    }
+                    // どのモデルで予測したかを表示
+                    if(metricsExtractedFromStdout) {
+                        document.getElementById('predModelName').textContent = selectedModel;
+                        // stdoutから抽出した指標をlocalStorageに保存(リロード時に使用)
+                        try {
+                            const predMetrics = {
+                                rmse: rmse,
+                                r2: r2,
+                                mae: mae,
+                                timestamp: Date.now()
+                            };
+                            localStorage.setItem(`ai_pred_metrics_${selectedModel}`, JSON.stringify(predMetrics));
+                            console.log(`[予測] 指標をlocalStorageに保存: ${selectedModel}`, predMetrics);
+                        } catch(e) {
+                            console.warn('localStorage保存失敗:', e);
+                        }
+                    }
+                }
+            }catch(e){ alert('エラー: '+e); }
+            btn.textContent='予測'; btn.disabled=false; btn.classList.remove('running');
+                // 予測完了後に予測グラフを更新
+                // そして UI 上の選択モデル名を確定表示（サーバーで実行されたモデル）
+                const selEl2 = document.getElementById('selectedModelName');
+                if(selEl2) selEl2.textContent = selectedModel;
+                try{ await loadPredChart(selectedModel); }catch(e){ console.warn('pred chart load failed', e); }
+                // After prediction, only update metrics from CSV if stdout extraction failed
+                if(!metricsExtractedFromStdout){
+                    console.log('stdout extraction failed, trying CSV...');
+                    try{
+                        const predPath = buildUrl(`/tomorrow/${selectedModel}/${selectedModel}_tomorrow.csv`);
+                        const resp = await fetch(predPath);
+                        if(resp.ok){ await updatePredMetrics(selectedModel); }
+                        else {
+                            ['predRmse','predR2','predMae','predModelName'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='-'; });
+                        }
+                    }catch(e){ console.warn('post-predict CSV check failed', e); }
+                } else {
+                    console.log('Metrics successfully extracted from stdout, skipping CSV update');
+                }
+        });
+
+        document.getElementById('optimizeYearsBtn').addEventListener('click', async ()=>{
+            const btn = document.getElementById('optimizeYearsBtn'); 
+            btn.textContent='実行中...'; 
+            btn.disabled=true; 
+            btn.classList.add('running');
+            try{
+                const res = await postJson('/run-optimize-years', { model: selectedModel }, btn);
+                alert('組み合わせ検証終了: ' + (res.status||res.message));
+                if(res.stdout){
+                    console.log('Optimize years response stdout:', res.stdout.substring(0, 500));
+                }
+            }catch(e){ alert('エラー: '+e); }
+            btn.textContent='組み合わせ検証'; 
+            btn.disabled=false; 
+            btn.classList.remove('running');
+        });
+
+        // Helper to invert non-selected model buttons when not running
+        function updateInvertedModelButtons(){
+            const modelBtns = document.querySelectorAll('#modelButtons .btn');
+            modelBtns.forEach(b=>{
+                if(!b.classList.contains('active') && !b.classList.contains('running')){
+                    b.classList.add('inverted');
+                } else {
+                    b.classList.remove('inverted');
+                }
+            });
+        }
+
+        // Ensure inverted state is set initially
+        updateInvertedModelButtons();
+
+        // --- Chart.js 初期化 ---
+        let trainChartObj = null;
+        let predChartObj = null;
+
+        function createCharts(){
+            // Only initialize charts if canvas elements exist
+            const trainCanvasEl = document.getElementById('trainChart');
+            const predCanvasEl = document.getElementById('predChart');
+            try{
+                if(trainCanvasEl && !trainChartObj){
+                    const tctx = trainCanvasEl.getContext('2d');
+                    trainChartObj = new Chart(tctx, {
+                        type: 'line',
+                        data: { labels: [], datasets: [{ label: 'Predict', data: [], borderColor: '#00ff88', backgroundColor: 'rgba(0,255,136,0.06)' }] },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: { y: { display: false, grid: { display: false }, ticks: { display: false } }, x: { grid: { color: 'rgba(255,255,255,0.03)' } } }
+                        }
+                    });
+                }
+                if(predCanvasEl && !predChartObj){
+                    const pctx = predCanvasEl.getContext('2d');
+                    predChartObj = new Chart(pctx, {
+                        type: 'line',
+                        data: { labels: [], datasets: [ { label: 'Predict', data: [], borderColor: '#ff66ff', backgroundColor: 'rgba(255,0,255,0.06)' }, { label: 'Actual', data: [], borderColor: '#00ffff', backgroundColor: 'rgba(0,255,255,0.04)' } ]},
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: { y: { display: false, grid: { display: false }, ticks: { display: false } }, x: { grid: { color: 'rgba(255,255,255,0.03)' } } }
+                        }
+                    });
+                }
+            }catch(e){ console.warn('Chart init skipped or failed (no canvas?):', e); }
+        }
+
+        // Helper: try loading an image several times with a short delay (cache-busted)
+        async function loadImageWithRetry(basePath, imgEl, attempts=6, delayMs=400){
+            for(let i=0;i<attempts;i++){
+                const cb = '?v=' + Date.now();
+                const url = buildUrl(basePath) + cb;
+                const ok = await new Promise((resolve)=>{
+                    const t = new Image();
+                    t.onload = ()=> resolve(true);
+                    t.onerror = ()=> resolve(false);
+                    t.src = url;
+                });
+                if(ok){ imgEl.src = url; imgEl.style.display = 'block'; return true; }
+                // wait before retry
+                await new Promise(r=>setTimeout(r, delayMs));
+            }
+            imgEl.style.display = 'none';
+            return false;
+        }
+
+        async function fetchCSVNumbers(url){
+            try{
+                const res = await fetch(buildUrl(url));
+                if(!res.ok) throw new Error('not found');
+                const txt = await res.text();
+                const lines = txt.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length>0);
+                const values = [];
+                for(const line of lines){
+                    const cols = line.split(',').map(c=>c.trim());
+                    // find first numeric column from left
+                    let found = null;
+                    for(const c of cols){
+                        const m = c.match(/[+-]?\d*\.?\d+(?:[eE][+-]?\d+)?/);
+                        if(m){ found = Number(m[0]); break; }
+                    }
+                    if(found !== null) values.push(found);
+                }
+                return values;
+            }catch(e){ return null; }
+        }
+
+        // juyo CSV を読み、[{label: 'YYYY/M/D H:MM', value: number}, ...] を返す
+        async function fetchJuyoData(year){
+            const url = buildUrl(`/data/juyo-${year}.csv`);
+            try{
+                const res = await fetch(url);
+                if(!res.ok) return null;
+                const txt = await res.text();
+                const lines = txt.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length>0);
+                const rows = [];
+                for(const line of lines){
+                    // data lines look like: 2019/1/1,0:00,3017
+                    const m = line.match(/^(\d{4}\/\d{1,2}\/\d{1,2}),\s*(\d{1,2}:\d{2}),\s*([0-9\.]+)$/);
+                    if(m){ rows.push({label: `${m[1]} ${m[2]}`, value: Number(m[3])}); }
+                }
+                return rows;
+            }catch(e){ return null; }
+        }
+
+        // --- Metric utilities: compute RMSE, R2, MAE on the client from actuals and preds ---
+        function computeMetrics(actuals, preds){
+            if(!actuals || !preds) return {rmse:null, r2:null, mae:null};
+            const n = Math.min(actuals.length, preds.length);
+            if(n === 0) return {rmse:null, r2:null, mae:null};
+            let ssRes = 0.0, ssTot = 0.0, sumActual = 0.0, sumAbs = 0.0;
+            for(let i=0;i<n;i++) sumActual += actuals[i];
+            const meanActual = sumActual / n;
+            for(let i=0;i<n;i++){
+                const a = actuals[i];
+                const p = preds[i];
+                const err = a - p;
+                ssRes += err*err;
+                ssTot += (a - meanActual)*(a - meanActual);
+                sumAbs += Math.abs(err);
+            }
+            const mse = ssRes / n;
+            const rmse = Math.sqrt(mse);
+            const mae = sumAbs / n;
+            const r2 = (ssTot === 0) ? 0 : (1 - ssRes/ssTot);
+            return { rmse: rmse, r2: r2, mae: mae };
+        }
+
+        async function updateTrainMetrics(model){
+            try{
+                // まずlocalStorageから最新の指標を取得(stdoutから抽出されたもの)
+                let metricsLoaded = false;
+                try {
+                    const stored = localStorage.getItem(`ai_train_metrics_${model}`);
+                    if(stored) {
+                        const metrics = JSON.parse(stored);
+                        console.log(`[学習指標読込] localStorageから復元: ${model}`, metrics);
+                        if(metrics.rmse !== null && metrics.rmse !== undefined) {
+                            document.getElementById('trainRmse').textContent = metrics.rmse;
+                            metricsLoaded = true;
+                        }
+                        if(metrics.r2 !== null && metrics.r2 !== undefined) {
+                            document.getElementById('trainR2').textContent = metrics.r2;
+                            metricsLoaded = true;
+                        }
+                        if(metrics.mae !== null && metrics.mae !== undefined) {
+                            document.getElementById('trainMae').textContent = metrics.mae;
+                            metricsLoaded = true;
+                        }
+                        if(metricsLoaded) {
+                            const tname = document.getElementById('trainModelName'); 
+                            if(tname) tname.textContent = model;
+                            return; // localStorageから読み込めたのでCSV計算はスキップ
+                        }
+                    }
+                } catch(e) {
+                    console.warn('localStorage読込失敗:', e);
+                }
+                
+                // localStorageに無い場合のみCSVから計算
+                console.log(`[学習指標読込] localStorageに無いためCSVから計算: ${model}`);
+                
+                // 学習時のテストデータ(data/Ytest.csv)から実測値を取得
+                // 注意: juyo CSVの全データではなく、data.pyで分割されたテストデータを使用
+                const actualPath = buildUrl('/data/Ytest.csv');
+                const predPath = buildUrl(`/train/${model}/${model}_Ypred.csv`);
+                
+                // if prediction CSV not present, clear train metrics to avoid stale values
+                try{
+                    const chk = await fetch(predPath);
+                    if(!chk.ok){ ['trainRmse','trainR2','trainMae','trainModelName'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='-'; }); return; }
+                }catch(e){ ['trainRmse','trainR2','trainMae','trainModelName'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='-'; }); return; }
+                
+                // 実測値と予測値を取得
+                const actuals = await fetchCSVNumbers(actualPath) || [];
+                const preds = await fetchCSVNumbers(predPath) || [];
+                
+                // 指標を計算
+                const metrics = computeMetrics(actuals, preds);
+                if(metrics.rmse !== null) document.getElementById('trainRmse').textContent = metrics.rmse.toFixed(2);
+                if(metrics.r2 !== null) document.getElementById('trainR2').textContent = metrics.r2.toFixed(3);
+                if(metrics.mae !== null) document.getElementById('trainMae').textContent = metrics.mae.toFixed(3);
+                const tname = document.getElementById('trainModelName'); if(tname) tname.textContent = model;
+            }catch(e){ console.warn('updateTrainMetrics failed', e); }
+        }
+
+        async function updatePredMetrics(model){
+            try{
+                // まずlocalStorageから最新の指標を取得(stdoutから抽出されたもの)
+                let metricsLoaded = false;
+                try {
+                    const stored = localStorage.getItem(`ai_pred_metrics_${model}`);
+                    if(stored) {
+                        const metrics = JSON.parse(stored);
+                        console.log(`[予測指標読込] localStorageから復元: ${model}`, metrics);
+                        if(metrics.rmse !== null && metrics.rmse !== undefined) {
+                            document.getElementById('predRmse').textContent = metrics.rmse;
+                            metricsLoaded = true;
+                        }
+                        if(metrics.r2 !== null && metrics.r2 !== undefined) {
+                            document.getElementById('predR2').textContent = metrics.r2;
+                            metricsLoaded = true;
+                        }
+                        if(metrics.mae !== null && metrics.mae !== undefined) {
+                            document.getElementById('predMae').textContent = metrics.mae;
+                            metricsLoaded = true;
+                        }
+                        if(metricsLoaded) {
+                            const pname = document.getElementById('predModelName'); 
+                            if(pname) pname.textContent = model;
+                            return; // localStorageから読み込めたのでCSV計算はスキップ
+                        }
+                    }
+                } catch(e) {
+                    console.warn('localStorage読込失敗:', e);
+                }
+                
+                // localStorageに無い場合のみCSVから計算
+                console.log(`[予測指標読込] localStorageに無いためCSVから計算: ${model}`);
+                
+                const predPath = buildUrl(`/tomorrow/${model}/${model}_tomorrow.csv`);
+                const actualPath = buildUrl('/tomorrow/Ytest.csv');
+                // ensure pred CSV exists; if not, clear pred metrics to avoid stale display
+                try{
+                    const chk = await fetch(predPath);
+                    if(!chk.ok){ ['predRmse','predR2','predMae','predModelName'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='-'; }); return; }
+                }catch(e){ ['predRmse','predR2','predMae','predModelName'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='-'; }); return; }
+                const preds = await fetchCSVNumbers(predPath) || [];
+                const actuals = await fetchCSVNumbers(actualPath) || [];
+                // align to same length from start (use shorter length)
+                const minLength = Math.min(actuals.length, preds.length);
+                const metrics = computeMetrics(actuals.slice(0, minLength), preds.slice(0, minLength));
+                if(metrics.rmse !== null) document.getElementById('predRmse').textContent = metrics.rmse.toFixed(2);
+                if(metrics.r2 !== null) document.getElementById('predR2').textContent = metrics.r2.toFixed(3);
+                if(metrics.mae !== null) document.getElementById('predMae').textContent = metrics.mae.toFixed(3);
+                const pname = document.getElementById('predModelName'); if(pname) pname.textContent = model;
+            }catch(e){ console.warn('updatePredMetrics failed', e); }
+        }
+
+        async function loadTrainChart(model){
+            createCharts();
+            // 表示する学習モデル名を確実にセット
+            const tname = document.getElementById('trainModelName'); if(tname) tname.textContent = model;
+            // Prefer to show pre-rendered PNG if it exists (use Image onload/onerror)
+            const trainImg = document.getElementById('trainImage');
+            const imgPath = buildUrl(`/train/${model}/${model}_Ypred.png`);
+            // try to load with retries to avoid race where script returns before file written
+            await loadImageWithRetry(imgPath, trainImg, 6, 400);
+
+            // 学習時のテストデータ(data/Ytest.csv)から実測値を取得
+            // 注意: juyo CSVの全データではなく、data.pyで分割されたテストデータを使用
+            const actualPath = buildUrl('/data/Ytest.csv');
+            const predPath = buildUrl(`/train/${model}/${model}_Ypred.csv`);
+            
+            const actuals = await fetchCSVNumbers(actualPath) || [];
+            const preds = await fetchCSVNumbers(predPath) || [];
+            
+            // ラベルは単純なインデックスで生成（時系列データのため）
+            const labels = [];
+            const dataLength = Math.max(actuals.length, preds.length);
+            for(let i = 0; i < dataLength; i++) {
+                labels.push(`t+${i}`);
+            }
+
+            if(trainChartObj){
+                trainChartObj.data.labels = labels;
+                trainChartObj.data.datasets[0].data = preds;
+                if(trainChartObj.data.datasets.length < 2){
+                    trainChartObj.data.datasets.push({ label: 'Actual', data: actuals, borderColor: '#00ffff', backgroundColor: 'rgba(0,255,255,0.04)' });
+                } else {
+                    trainChartObj.data.datasets[1].data = actuals;
+                }
+                trainChartObj.update();
+            }
+        }
+
+        async function loadPredChart(model){
+            createCharts();
+            // 表示する予測モデル名を確実にセット
+            const pname = document.getElementById('predModelName'); if(pname) pname.textContent = model;
+            // Prefer to show pre-rendered PNG for predictions
+            const predImg = document.getElementById('predImage');
+            const predImgPath = buildUrl(`/tomorrow/${model}/${model}_tomorrow.png`);
+            await loadImageWithRetry(predImgPath, predImg, 6, 400);
+            const predPath = buildUrl(`/tomorrow/${model}/${model}_tomorrow.csv`);
+            const actualPath = buildUrl('/tomorrow/Ytest.csv');
+            const pvals = await fetchCSVNumbers(predPath);
+            const avals = await fetchCSVNumbers(actualPath);
+            // show past 7 days actuals (7*24 = 168) if available
+            const PAST = 7*24;
+            const pastActuals = (avals && avals.length>0) ? avals.slice(-PAST) : [];
+            const predVals = pvals || [];
+
+            // labels: past hours then prediction hours
+            const labels = [];
+            for(let i=0;i<pastActuals.length;i++) labels.push(`t-${pastActuals.length-i}`);
+            for(let i=0;i<predVals.length;i++) labels.push(`pred+${i+1}`);
+
+            if(predChartObj){
+                predChartObj.data.labels = labels;
+                predChartObj.data.datasets[0].data = predVals.length ? Array(pastActuals.length).fill(null).concat(predVals) : Array(labels.length).fill(null);
+                predChartObj.data.datasets[1].data = pastActuals.concat(Array(Math.max(0, predVals.length - 0)).fill(null));
+                predChartObj.update();
+            }
+        }
+
+        // 初期チャート描画（空）
+        createCharts();
+
+    // Ensure legends are hidden even if Chart.js default differs
+    if(trainChartObj){ trainChartObj.options = trainChartObj.options || {}; trainChartObj.options.plugins = trainChartObj.options.plugins || {}; trainChartObj.options.plugins.legend = { display: false }; trainChartObj.update(); }
+    if(predChartObj){ predChartObj.options = predChartObj.options || {}; predChartObj.options.plugins = predChartObj.options.plugins || {}; predChartObj.options.plugins.legend = { display: false }; predChartObj.update(); }
+
+        // --- Modal for enlarged PNG handling ---
+        // create modal elements (already in DOM appended below)
+        const modalOverlay = document.getElementById('imgModal');
+        const modalImg = document.getElementById('imgModalImg');
+        const modalClose = document.getElementById('imgModalClose');
+
+        let _lastFocusedElement = null;
+        function openImageModal(src){
+            if(!src) return;
+            _lastFocusedElement = document.activeElement;
+            modalImg.src = src;
+            modalOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
+            // focus the modal download button for keyboard users
+            const md = document.getElementById('modalDownload');
+            if(md) md.focus();
+        }
+        function closeImageModal(){
+            modalOverlay.classList.remove('show');
+            modalImg.src = '';
+            document.body.style.overflow = '';
+            document.body.classList.remove('modal-open');
+            // restore focus
+            try{ if(_lastFocusedElement && typeof _lastFocusedElement.focus === 'function') _lastFocusedElement.focus(); }catch(e){}
+            _lastFocusedElement = null;
+        }
+
+        // Delegate clicks on images to document to ensure handlers work even if elements are swapped dynamically
+        document.addEventListener('click', (e)=>{
+            const t = e.target;
+            if(!t) return;
+            // train image clicked
+                if(t.id === 'trainImage'){
+                e.stopPropagation();
+                const src = t.getAttribute('src') || '';
+                if(src && src.trim() && t.style.display !== 'none') return openImageModal(src);
+                const expected = buildUrl(`/train/${selectedModel}/${selectedModel}_Ypred.png`);
+                const tmp = new Image(); tmp.onload = ()=> openImageModal(expected); tmp.onerror = ()=>{}; tmp.src = expected;
+                return;
+            }
+            // pred image clicked
+            if(t.id === 'predImage'){
+                e.stopPropagation();
+                const src = t.getAttribute('src') || '';
+                if(src && src.trim() && t.style.display !== 'none') return openImageModal(src);
+                const expected = buildUrl(`/tomorrow/${selectedModel}/${selectedModel}_tomorrow.png`);
+                const tmp2 = new Image(); tmp2.onload = ()=> openImageModal(expected); tmp2.onerror = ()=>{}; tmp2.src = expected;
+                return;
+            }
+        });
+
+        // Chart wrapper click/keyboard -> open modal (pre-click tooltip instructs user)
+        const predWrapper = document.getElementById('predChartWrapper');
+        const trainWrapper = document.getElementById('trainChartWrapper');
+        if(predWrapper){
+            predWrapper.addEventListener('click', (e)=>{
+                // prefer showing image src if loaded
+                const img = document.getElementById('predImage');
+                const src = img && img.getAttribute('src') ? img.getAttribute('src') : buildUrl(`/tomorrow/${selectedModel}/${selectedModel}_tomorrow.png`);
+                openImageModal(src);
+            });
+            predWrapper.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); predWrapper.click(); } });
+        }
+        if(trainWrapper){
+            trainWrapper.addEventListener('click', (e)=>{
+                const img = document.getElementById('trainImage');
+                const src = img && img.getAttribute('src') ? img.getAttribute('src') : buildUrl(`/train/${selectedModel}/${selectedModel}_Ypred.png`);
+                openImageModal(src);
+            });
+            trainWrapper.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trainWrapper.click(); } });
+        }
+
+        // Note: Chart.js canvases removed; canvas click handlers are no longer necessary.
+
+        // overlay click to close (but clicking the image itself should not close)
+        modalOverlay.addEventListener('click', (e)=>{ if(e.target === modalOverlay) closeImageModal(); });
+        modalClose.addEventListener('click', closeImageModal);
+        // ESC to close
+        document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeImageModal(); });
+
+        // Modal image interaction: zoom, wheel zoom, dblclick reset, fullscreen
+        const modalZoomIn = document.getElementById('modalZoomIn');
+        const modalZoomOut = document.getElementById('modalZoomOut');
+        const modalFullscreen = document.getElementById('modalFullscreen');
+        let modalScale = 1;
+        function applyModalTransform(){ modalImg.style.transform = `scale(${modalScale})`; }
+        modalZoomIn.addEventListener('click', ()=>{ modalScale = Math.min(4, modalScale + 0.25); applyModalTransform(); });
+        modalZoomOut.addEventListener('click', ()=>{ modalScale = Math.max(0.25, modalScale - 0.25); applyModalTransform(); });
+        modalImg.addEventListener('wheel', (ev)=>{
+            ev.preventDefault();
+            const delta = ev.deltaY > 0 ? -0.15 : 0.15;
+            modalScale = Math.min(6, Math.max(0.25, modalScale + delta));
+            applyModalTransform();
+        }, { passive:false });
+        modalImg.addEventListener('dblclick', ()=>{ modalScale = 1; applyModalTransform(); });
+        modalFullscreen.addEventListener('click', async ()=>{
+            try{
+                if(!document.fullscreenElement){
+                    await modalOverlay.requestFullscreen();
+                } else { await document.exitFullscreen(); }
+            }catch(e){ console.warn('fullscreen failed', e); }
+        });
+
+        // ダウンロードボタン: モーダルに表示されている画像を取得して保存
+        const modalDownload = document.getElementById('modalDownload');
+        // Allow click and keyboard activation (Enter/Space) for accessibility
+        const modalDownloadHandler = async ()=>{
+            try{
+                const src = modalImg.getAttribute('src');
+                if(!src) return alert('ダウンロードする画像がありません');
+
+                // fetch the image as blob (avoid CORS issues with same-origin files served by our server)
+                const resp = await fetch(src);
+                if(!resp.ok) throw new Error('画像取得に失敗しました');
+                const blob = await resp.blob();
+
+                // Create a temporary anchor to trigger download
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                // derive filename from src
+                const parts = src.split('/');
+                let filename = parts[parts.length-1].split('?')[0] || 'download.png';
+                // Ensure filename has extension
+                if(!filename.match(/\.[a-zA-Z]{2,4}$/)) filename += '.png';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            }catch(err){
+                console.warn('download failed', err);
+                alert('ダウンロードに失敗しました: ' + err.message);
+            }
+        };
+        modalDownload.addEventListener('click', modalDownloadHandler);
+        modalDownload.addEventListener('keydown', async (e)=>{
+            if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); await modalDownloadHandler(); }
+        });
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg-color: #2a2a4a;
+            --text-color: #e0e0e0;
+            --accent-color: #00f0ff; /* Cyan */
+            --secondary-accent-color: #ff00ff; /* Magenta */
+            --border-color: #4a4a6a;
+            --shadow-color: rgba(0, 240, 255, 0.3);
+            --glow-filter: drop-shadow(0 0 5px var(--accent-color)) drop_shadow(0 0 10px var(--accent-color));
+        }
+
+        html {
+            scroll-behavior: smooth; /* スムーズスクロール */
+            /* scroll-padding-top は JavaScript で動的に設定されます */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            font-size: 1.05em; /* Increased base font size */
+        }
+
+        header {
+            background-color: var(--card-bg-color);
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            position: sticky; /* ヘッダーを固定 */
+            top: 0; /* 画面の上部に配置 */
+            z-index: 1001; /* ナビゲーションバーより前面に表示 */
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            margin: 0;
+            text-shadow: 0 0 10px var(--accent-color);
+            filter: var(--glow-filter);
+        }
+
+        nav {
+            background-color: #111122;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            position: sticky; /* ナビゲーションバーを固定 */
+            /* top は JavaScript で動的に設定されます */
+            z-index: 1000; /* 他の要素の上に表示 */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            text-shadow: 0 0 8px var(--accent-color);
+        }
+
+        main {
+            width: 100%;
+            max-width: 1600px; /* コンテナの最大幅 */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        section {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 0 20px var(--shadow-color);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--accent-color);
+        }
+
+        section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--secondary-accent-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 15px; /* h2の下にスペースを確保 */
+            font-size: 1.8em; /* Increased font size */
+            text-shadow: 0 0 10px var(--secondary-accent-color), 0 0 20px rgba(255, 0, 255, 0.2); /* Stronger glow */
+        }
+
+        /* 大見出しカード内の説明文のスタイル */
+        section > p {
+            line-height: 1.7;
+            margin-bottom: 25px; /* 説明文の下にスペースを確保 */
+        }
+
+
+        /* 小見出しごとのカードを囲むコンテナ */
+        .sub-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* カード間のスペース */
+            justify-content: flex-start; /* カードを左寄せに配置 */
+        }
+
+        /* 小見出しごとのカードスタイル */
+        .sub-card {
+            background-color: rgba(42, 42, 74, 0.7); /* card-bg-colorの少し透明なバージョン */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); /* 軽いシャドウ */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            flex: 1 1 300px; /* 各カードが少なくとも300pxの幅を維持し、利用可能なスペースに応じて自動的に折り返す */
+            box-sizing: border-box; /* パディングとボーダーを幅に含める */
+            /* min-widthはflex-basisでカバーされるため不要になりました */
+        }
+
+        /* sub-card内のリンクのスタイルをリセットし、カード全体がリンクのように振る舞うようにする */
+        .sub-card a {
+            text-decoration: none; /* 下線を削除 */
+            color: inherit; /* 親要素の色を継承 */
+            display: block; /* カード全体をリンクにする */
+        }
+
+        .sub-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        .sub-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            margin-top: 0; /* sub-card内のh3のトップマージンを削除 */
+            margin-bottom: 15px; /* sub-card内のh3の下マージン */
+            font-size: 1.3em; /* Increased font size */
+            text-shadow: 0 0 8px var(--accent-color), 0 0 15px rgba(0, 240, 255, 0.2); /* Stronger glow */
+        }
+
+        /* sub-card内のpタグのスタイル */
+        .sub-card p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        section ul li {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        .news-item {
+            font-size: 0.9em;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-date {
+            color: var(--secondary-accent-color);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        footer {
+            width: 100%;
+            background-color: #111122;
+            color: var(--text-color);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 5px 0;
+            }
+
+            main {
+                padding: 10px;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            /* 小画面ではsub-cardを1カラムにする */
+            .sub-card {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JennyPortal</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#introduction">はじめに</a></li>
+            <li><a href="#preparation">準備</a></li>
+            <li><a href="#try">試行したい</a></li>
+            <li><a href="#training">ハンズオン研修</a></li>
+            <li><a href="#development">開発したい</a></li>
+            <li><a href="#community">コミュニティ</a></li>
+            <li><a href="#news">ニュース・お知らせ</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="introduction">
+            <h2>はじめに</h2>
+            <p>理念、サポート体制、規約、稼働状況など</p>
+            <div class="sub-card-container">
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>RPAとは</h3>
+                        <p>理念、パーパス、ミッション、ビジョン、バリュー</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>サポート体制</h3>
+                        <p>ローコード市民開発の効果</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>規約ガイド</h3>
+                        <p>市民開発における規約とガイド</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>稼働状況</h3>
+                        <p>最新の稼働状況と開発者ランキング</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="preparation">
+            <h2>準備</h2>
+            <p>利用申請や環境構築など</p>
+            <div class="sub-card-container">
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>Step 1: 利用申請</h3>
+                        <p>オンラインフォームから申請</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>Step 2: 環境構築</h3>
+                        <p>ソフトウェアのインストールガイド</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>Step 3: 初期設定</h3>
+                        <p>学習環境の最適化と設定</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="try">
+            <h2>試行したい</h2>
+            <p>自動化する実務が無い場合の教育コンテンツやサンプルロボ</p>
+            <div class="sub-card-container">
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>ミニロボ</h3>
+                        <p>独学に最適な数分でマスターできる超入門ミニロボ事例集</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>サンプルロボ</h3>
+                        <p>すぐに業務に適用できるサンプルロボット事例集</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>教育コンテンツ</h3>
+                        <p>業務効率化の基礎概念から応用まで、段階的に学習できるコンテンツ</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="training">
+            <h2>ハンズオン研修</h2>
+            <p>ハンズオン研修カリキュラム</p>
+            <div class="sub-card-container">
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>入門コース</h3>
+                        <p>RPAツールの基本操作を習得</p>
+                        <ul>
+                            <li>ブラウザ操作</li>
+                            <li>条件分岐</li>
+                            <li>Excel操作</li>
+                            <li>繰り返し処理</li>
+                        </ul>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>初級コース</h3>
+                        <p>基礎知識と応用スキルを習得</p>
+                        <ul>
+                            <li>変数とデータ型</li>
+                            <li>Web操作応用</li>
+                            <li>Excel操作応用</li>
+                            <li>データ加工</li>
+                        </ul>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>中級コース</h3>
+                        <p>複雑な業務プロセスの自動化</p>
+                        <ul>
+                            <li>例外処理</li>
+                            <li>モジュール化</li>
+                            <li>ファイル操作</li>
+                            <li>SharePoint連携</li>
+                        </ul>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>上級コース</h3>
+                        <p>エンタープライズレベルのRPA</p>
+                        <ul>
+                            <li>API連携</li>
+                            <li>セキュリティ対策</li>
+                            <li>Copilot連携</li>
+                            <li>AI自動化</li>
+                        </ul>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="development">
+            <h2>開発したい</h2>
+            <p>自動化したい実務が有る場合の開発フロー</p>
+            <div class="sub-card-container">
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>開発フェーズ</h3>
+                        <p>要件定義・設計<br>業務分析から自動化対象の特定、システム設計まで</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>プレ本番フェーズ</h3>
+                        <p>テスト・検証<br>開発したロボットの動作確認とパフォーマンステスト</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>本番フェーズ</h3>
+                        <p>運用・保守<br>本番環境での運用開始と継続的な改善</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="community">
+            <h2>コミュニティ</h2>
+            <p>質問・相談、事例共有、勉強会など</p>
+            <div class="sub-card-container">
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>質問フォーラム</h3>
+                        <p>技術的な疑問や学習に関する質問を投稿</p>
+                        <p>最新の質問:<br>Q: "【ダミー】xxx操作でxxxを取得する方法は？"</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>事例共有</h3>
+                        <p>成功事例や失敗談を共有</p>
+                        <p>事例:<br>"【ダミー】xxx処理の自動化で月xx時間削減に成功"</p>
+                    </a>
+                </div>
+                <div class="sub-card">
+                    <a href="https://www.yahoo.co.jp/" target="_blank">
+                        <h3>勉強会・イベント</h3>
+                        <p>勉強会やウェビナーの開催</p>
+                        <p>【ダミー】次回: RPAセキュリティベストプラクティス<br>20xx年xx月xx日 14:00-</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="news">
+            <h2>ニュース・お知らせ</h2>
+            <div class="news-item">
+                <span class="news-date">2025.07.15</span>
+                【ダミー】新機能リリース: AI支援開発機能<br>Copilot連携による自然言語でのRPA開発が可能になりました。
+            </div>
+            <div class="news-item">
+                <span class="news-date">2025.07.10</span>
+                【ダミー】メンテナンス予定のお知らせ<br>xx月xx日（日）2:00-6:00にシステムメンテナンスを実施いたします。
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 JennyPortal. All rights reserved.</p>
+        <p>
+            <a href="#">プライバシーポリシー</a> |
+            <a href="#">利用規約</a> |
+            <a href="#">お問い合わせ</a>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('header');
+            const nav = document.querySelector('nav');
+            const html = document.documentElement;
+
+            function updateFixedElementPositions() {
+                const headerHeight = header.offsetHeight;
+                nav.style.top = `${headerHeight}px`; // ナビゲーションバーの位置をヘッダーの高さに基づいて設定
+
+                const navHeight = nav.offsetHeight;
+                // 固定要素の合計高さにさらに20pxのオフセットを追加
+                const totalFixedHeight = headerHeight + navHeight + 20;
+                html.style.scrollPaddingTop = `${totalFixedHeight}px`; // スクロール位置のオフセットを設定
+            }
+
+            // 初期計算
+            updateFixedElementPositions();
+
+            // ウィンドウのリサイズ時に再計算
+            window.addEventListener('resize', updateFixedElementPositions);
+
+            // ロード後にも再計算（フォントのロードなどで高さが変わる可能性があるため）
+            window.addEventListener('load', updateFixedElementPositions);
+        });
+    </script>
+</body>
+</html>

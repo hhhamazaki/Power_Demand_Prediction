@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - 開発したい</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn {
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">開発したい</h2>
+        <p class="text-gray-700 mb-6">自動化したい実務がある場合の開発フローとサポートをご紹介します。</p>
+
+        <div id="development_overview_cards" class="content-section active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">開発フロー</h4>
+                    <p class="text-sm mb-4">要件定義から運用保守まで。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('development_flow_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">サポート</h4>
+                    <p class="text-sm mb-4">開発中の疑問や課題を解決。</p>
+                    <button class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('development_support_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">コミュニティ</h4>
+                    <p class="text-sm mb-4">開発者同士で情報交換。</p>
+                    <button class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('development_community_detail')">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="development_flow_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">開発フロー</h3>
+                <p class="text-gray-700 mb-6">自動化する実務がある場合の開発フローとサポートについて説明します。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="http://example.com/development_phase" target="_blank" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">開発フェーズ</h4>
+                            <p class="text-sm mb-4">要件定義・設計</p>
+                            <p class="text-xs">業務分析から自動化対象の特定、システム設計まで</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/pre_production_phase" target="_blank" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">プレ本番フェーズ</h4>
+                            <p class="text-sm mb-4">テスト・検証</p>
+                            <p class="text-xs">開発したロボットの動作確認とパフォーマンステスト</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/production_phase" target="_blank" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">本番フェーズ</h4>
+                            <p class="text-sm mb-4">運用・保守</p>
+                            <p class="text-xs">本番環境での運用開始と継続的な改善</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('development_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="development_support_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">サポート</h3>
+                <p class="text-gray-700 mb-6">開発中の疑問や課題を解決するためのサポート体制をご紹介します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="http://example.com/support_faq" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">よくある質問 (FAQ)</h4>
+                            <p class="text-sm">一般的な疑問を解決</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/support_contact" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">お問い合わせ</h4>
+                            <p class="text-sm">個別の質問や相談</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/support_training" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">個別トレーニング</h4>
+                            <p class="text-sm">専門家による指導</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/support_docs" class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">ドキュメント</h4>
+                            <p class="text-sm">技術資料やガイド</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('development_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="development_community_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">コミュニティ</h3>
+                <p class="text-gray-700 mb-6">開発者同士で情報交換やノウハウを共有できるコミュニティをご紹介します。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="http://example.com/community_forum" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">フォーラム</h4>
+                            <p class="text-sm">質問や議論</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/community_events" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">イベント</h4>
+                            <p class="text-sm">勉強会や交流会</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/community_blog" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">ブログ</h4>
+                            <p class="text-sm">開発ノウハウや事例</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/community_github" class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">GitHub</h4>
+                            <p class="text-sm">コード共有や貢献</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('development_overview_cards')">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // すべてのコンテンツセクションを非表示にし、指定されたセクションを表示する関数
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に概要カードを表示
+            showSection('development_overview_cards');
+        });
+    </script>
+</body>
+</html>

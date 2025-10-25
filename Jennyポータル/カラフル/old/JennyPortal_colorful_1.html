@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        /* Define Cyber theme root variables */
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg-color: #2a2a4a;
+            --text-color: #e0e0e0;
+            --accent-color: #00f0ff; /* Cyan */
+            --secondary-accent-color: #ff00ff; /* Magenta */
+            --border-color: #4a4a6a;
+            --shadow-color: rgba(0, 240, 255, 0.3);
+            --glow-filter: drop-shadow(0 0 5px var(--accent-color)) drop_shadow(0 0 10px var(--accent-color));
+        }
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', sans-serif; /* Prioritize Noto Sans JP */
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%); /* Keep Colorful gradient background */
+            color: var(--text-color); /* Use Cyber text color */
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.05em; /* Reverted to original Cyber base font size */
+        }
+
+        /* Main content area - now acts as the primary container */
+        main {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto; /* Removed top margin, center horizontally */
+            padding: 20px; /* Reverted to original Cyber padding */
+            background-color: rgba(26, 32, 44, 0.9); /* Background from Colorful container */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            flex-grow: 1; /* Allow main to grow and push footer down */
+            box-sizing: border-box;
+        }
+
+        /* Section styles - Reverted to Cyber style with consistent border */
+        section {
+            margin-bottom: 35px; /* Revert to Cyber's specific margin */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            background-color: var(--card-bg-color); /* Use Cyber card background color */
+            border: 1px solid var(--border-color); /* Revert to Cyber border */
+            border-radius: 10px; /* Revert to Cyber border-radius */
+            padding: 35px; /* Keep original padding */
+            box-shadow: 0 0 20px var(--shadow-color); /* Revert to Cyber shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add Cyber hover transition */
+        }
+
+        section:hover {
+            transform: translateY(-5px); /* Revert to Cyber hover transform */
+            box-shadow: 0 0 25px var(--accent-color); /* Revert to Cyber hover shadow */
+        }
+
+        section.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Section title - Keep Orbitron font for Cyber feel, Colorful gradients */
+        .section-title {
+            font-size: 1.8em; /* Adjusted to original Cyber font size */
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            color: #667eea; /* Keep Colorful section title color */
+            border-bottom: 2px solid #667eea; /* Keep Colorful section title border */
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Section description */
+        .section-description {
+            margin-bottom: 1.5rem;
+            color: #a0aec0; /* Keep Colorful description color */
+        }
+
+        /* Grid layout */
+        .grid {
+            display: grid;
+            gap: 20px; /* Revert to Cyber's specific gap */
+            /* Default for larger screens */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Base for 4 columns */
+        }
+
+        /* Responsive grid adjustments */
+        /* For screens smaller than 1200px (example breakpoint for 3 columns from 4) */
+        @media (max-width: 1200px) {
+            #introduction .grid,
+            #training .grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjust to 3 columns */
+            }
+        }
+
+        /* For screens smaller than 768px (2 columns) */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(auto-fit, minmax(calc(50% - 10px), 1fr)); /* 2 columns, accounting for gap */
+                gap: 20px; /* Ensure gap is consistent */
+            }
+        }
+
+        /* For screens smaller than 480px (1 column) */
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr; /* 1 column */
+                gap: 20px; /* Ensure gap is consistent */
+            }
+        }
+
+        /* Card styles - Reverted to Cyber style, keeping colorful borders/gradients */
+        .card {
+            background-color: rgba(42, 42, 74, 0.7); /* Revert to Cyber transparent background */
+            border-radius: 8px; /* Revert to Cyber border-radius */
+            padding: 20px; /* Revert to Cyber padding */
+            border: 1px solid; /* Keep border, color set by border-* classes */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Revert to Cyber transition */
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); /* Revert to Cyber light shadow */
+            position: relative;
+            overflow: hidden;
+            color: inherit;
+            flex: 1 1 300px; /* Revert to Cyber flex properties */
+            box-sizing: border-box;
+        }
+
+        /* Remove Colorful specific hover effects */
+        .card::before, .card::after {
+            content: none;
+        }
+
+        .card:hover {
+            transform: translateY(-3px); /* Revert to Cyber hover transform */
+            box-shadow: 0 0 15px var(--accent-color); /* Revert to Cyber hover shadow */
+        }
+
+        /* When the card itself is a link (e.g., preparation, try sections) */
+        a.card { /* Target <a> tags that are also .card */
+            text-decoration: none; /* Explicitly remove underline */
+        }
+
+        /* Card border colors - Keep Colorful colors and define custom property for list items */
+        .border-blue { border-color: #3b82f6; --card-border-color-var: #3b82f6; }
+        .border-green { border-color: #10b981; --card-border-color-var: #10b981; }
+        .border-yellow { border-color: #f59e0b; --card-border-color-var: #f59e0b; }
+        .border-pink { border-color: #ec4899; --card-border-color-var: #ec4899; }
+        .border-red { border-color: #ef4444; --card-border-color-var: #ef4444; }
+        .border-teal { border-color: #14b8a6; --card-border-color-var: #14b8a6; }
+        .border-purple { border-color: #8b5cf6; --card-border-color-var: #8b5cf6; }
+        .border-orange { border-color: #f97316; --card-border-color-var: #f97316; }
+        .border-indigo { border-color: #6366f1; --card-border-color-var: #6366f1; }
+
+        /* Card title - Keep Orbitron font for Cyber feel, Colorful gradients */
+        .card-title {
+            font-size: 1.3em; /* Adjusted to original Cyber font size */
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Gradient text colors for card titles - Keep Colorful gradients */
+        .gradient-blue {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-green {
+            background: linear-gradient(to right, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-yellow {
+            background: linear-gradient(to right, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-pink {
+            background: linear-gradient(to right, #ec4899, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-red {
+            background: linear-gradient(to right, #ef4444, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-teal {
+            background: linear-gradient(to right, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-purple {
+            background: linear-gradient(to right, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-orange {
+            background: linear-gradient(to right, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card text */
+        .card-text {
+            color: var(--text-color); /* Revert to Cyber text color */
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Card list styles - Reverted to Cyber list item style, using custom property for border color */
+        .card-list {
+            margin-bottom: 1rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-list-item {
+            font-size: 0.95em; /* Reverted to original Cyber font size */
+            color: var(--text-color);
+            margin-bottom: 8px;
+            background-color: rgba(0, 0, 0, 0.2); /* Revert to original Cyber list item bg */
+            border-left: 3px solid var(--card-border-color-var); /* Use custom property for dynamic border color */
+            padding: 10px 15px;
+            border-radius: 5px;
+            /* Removed transform transition */
+            transition: background-color 0.3s ease; /* Only background transition */
+        }
+
+        .card-list-item:hover {
+            background-color: rgba(0, 0, 0, 0.4); /* Slightly darker on hover */
+            /* Removed transform: translateX(3px); */
+        }
+
+        .card-list-item a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Download button specific styles - Reverted to Cyber style */
+        .download-button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        .download-button:hover {
+            background-color: #00b3cc; /* Darker cyan on hover */
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* Mini link card styles - Adjusted for wrapping text */
+        .mini-link-card-container {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping of mini-link-cards themselves */
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mini-link-card {
+            background-color: rgba(42, 42, 74, 0.5); /* Lighter transparency of Cyber card bg */
+            border: 1px solid var(--border-color); /* Revert to Cyber border */
+            border-radius: 6px;
+            padding: 10px 15px;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.15); /* Revert to Cyber like shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            flex: 0 0 auto; /* Prevent shrinking, take content width */
+            max-width: 100%; /* Ensure mini-link-card itself wraps within its container */
+            box-sizing: border-box;
+        }
+
+        .mini-link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 12px var(--accent-color); /* Revert to Cyber like hover shadow */
+            background-color: rgba(42, 42, 74, 0.7); /* Slightly darker on hover */
+        }
+
+        .mini-link-card a {
+            color: var(--text-color); /* Revert to Cyber text color */
+            text-decoration: none;
+            display: block;
+            font-size: 0.9em; /* Reverted to original Cyber font size */
+            font-family: 'Orbitron', sans-serif; /* Revert to Cyber font */
+            text-shadow: 0 0 5px var(--accent-color); /* Revert to Cyber glow */
+            /* Allow text wrapping */
+            white-space: normal; /* Allow text to wrap */
+            overflow: visible; /* Ensure content is not hidden */
+            text-overflow: clip; /* Remove ellipsis */
+        }
+
+        .mini-link-card a:hover {
+            color: var(--accent-color); /* Revert to Cyber accent color on hover */
+        }
+
+        /* Footer styles - Minimal Cyber style for download button container */
+        footer {
+            width: 100%;
+            max-width: 1600px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            background-color: transparent; /* No background */
+            border-top: none; /* No border */
+        }
+
+        /* Remove other Colorful footer elements if they were present */
+        .footer-text, .footer-links, .footer-link {
+            display: none; /* Hide other footer elements */
+        }
+
+        /* Scrollbar styles from JennyPortal_colorful.html */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #667eea;
+        }
+
+        /* Animations from JennyPortal_colorful.html */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-delayed {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Original Cyber did not have these, so remove them */
+        /* .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.8s ease;
+        }
+
+        .card:hover::after {
+            transform: translateX(100%);
+        } */
+
+        /* Responsive adjustments for main content and sections */
+        @media (max-width: 768px) {
+            main {
+                padding: 10px; /* Adjust padding for smaller screens */
+                /* Removed specific top margin, relying on auto margins */
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.5em; /* Adjusted for responsive Cyber font size */
+            }
+
+            /* .grid is handled by global media queries above */
+
+            .card {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.25em; /* Adjusted for responsive Cyber font size */
+            }
+
+            .card-title {
+                font-size: 1.125em; /* Adjusted for responsive Cyber font size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section id="introduction" class="fade-in">
+            <h2 class="section-title">はじめに</h2>
+            <p class="section-description">このポータルサイトは、RPA（Robotic Process Automation）活用の理念からサポート体制、各種規約、そして現在の稼働状況まで、RPA開発に関する基本的な情報を網羅しています。<br>RPA活用の第一歩として、まずはこちらのセクションをご覧ください。</p>
+            <div class="grid grid-cols-4">
+                <div class="card border-blue">
+                    <h3 class="card-title gradient-blue">RPAとは</h3>
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://1drv.ms/u/c/04d75a8d40ea301c/ERF66KVye-VDnDjSDGfc8VsBLxmr4rs-a0c14_lS5AnQTg?e=6UOeMQ" target="_blank" data-link-id="intro-rpa-philosophy">
+                                理念（パーパス、ミッション、ビジョン）
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://1drv.ms/u/c/04d75a8d40ea301c/EcO5w0XyO5lEjq1URhZvLZcBZX-XuzHZY2yrhQ5DllesQQ?e=v9aIgO" target="_blank" data-link-id="intro-rpa-value">
+                                バリュー
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-green">
+                    <h3 class="card-title gradient-green">サポート体制</h3>
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://1drv.ms/u/c/04d75a8d40ea301c/EWMVbL1UOdlLlVHCuOHSt8YBZgiN2cpQi0hUmvUOsd2jmQ?e=h7g5oc" target="_blank" data-link-id="intro-support-lowcode">
+                                ローコード市民開発の効果
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-yellow">
+                    <h3 class="card-title gradient-yellow">規約ガイド</h3>
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-terms-policy">
+                                開発方針
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-terms-guideline">
+                                開発ガイドライン
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-terms-coding">
+                                コーディング規約
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-pink">
+                    <h3 class="card-title gradient-pink">稼働状況</h3>
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-status-ranking">
+                                稼働状況と開発者ランキング
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-status-schedule">
+                                本番VM稼働スケジュール（昨日実績）
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="preparation" class="fade-in">
+            <h2 class="section-title">準備</h2>
+            <p class="section-description">RPA開発を始めるための準備ステップです。<br>利用申請から開発環境の構築、初期設定まで、スムーズにスタートできるようガイドします。<br>各ステップに従って、あなたの開発環境を整えましょう。</p>
+            <div class="grid grid-cols-3">
+                <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="prep-step1" class="card border-red">
+                    <h3 class="card-title gradient-red">Step 1: 利用申請</h3>
+                    <p class="card-text">オンラインフォームから申請</p>
+                </a>
+                <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="prep-step2" class="card border-teal">
+                    <h3 class="card-title gradient-teal">Step 2: 環境構築</h3>
+                    <p class="card-text">ソフトウェアのインストールガイド</p>
+                </a>
+                <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="prep-step3" class="card border-purple">
+                    <h3 class="card-title gradient-purple">Step 3: 初期設定</h3>
+                    <p class="card-text">学習環境の最適化と設定</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="try" class="fade-in">
+            <h2 class="section-title">試行したい</h2>
+            <p class="section-description">具体的な自動化対象がまだ見つかっていない方でも、RPAの世界を体験できるコンテンツを用意しました。<br>数分で完成するミニロボから、すぐに使えるサンプルロボまで、まずは試してみることから始めましょう。</p>
+            <div class="grid grid-cols-3">
+                <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="try-mini" class="card border-yellow">
+                    <h3 class="card-title gradient-yellow">ミニロボ</h3>
+                    <p class="card-text">独学に最適な数分でマスターできる超入門ミニロボ事例集</p>
+                </a>
+                <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="try-sample" class="card border-indigo">
+                    <h3 class="card-title gradient-blue">サンプルロボ</h3>
+                    <p class="card-text">すぐに業務に適用できるサンプルロボット事例集</p>
+                </a>
+                <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="try-edu" class="card border-orange">
+                    <h3 class="card-title gradient-orange">教育コンテンツ</h3>
+                    <p class="card-text">業務効率化の基礎概念から応用まで、段階的に学習できるコンテンツ</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="training" class="fade-in">
+            <h2 class="section-title">ハンズオン研修</h2>
+            <p class="section-description">手を動かしながら実践的にスキルを習得するためのハンズオン研修カリキュラムです。<br>入門から上級まで、あなたのレベルに合わせたコースを選択し、AI連携やRPA開発のエキスパートを目指しましょう。</p>
+            <div class="grid grid-cols-4">
+                <div class="card border-green">
+                    <h3 class="card-title gradient-green">入門コース</h3>
+                    <p class="card-text">RPAツールの基本操作を習得</p>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-browser">ブラウザ操作</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-condition">条件分岐</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-excel">Excel操作</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-loop">繰り返し処理</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card border-blue">
+                    <h3 class="card-title gradient-blue">初級コース</h3>
+                    <p class="card-text">基礎知識と応用スキルを習得</p>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-variables">変数とデータ型</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-web">Web操作応用</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-excel">Excel操作応用</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-data">データ加工</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card border-yellow">
+                    <h3 class="card-title gradient-yellow">中級コース</h3>
+                    <p class="card-text">複雑な業務プロセスの自動化</p>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-exception">例外処理</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-module">モジュール化</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-file">ファイル操作</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-sharepoint">SharePoint連携</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card border-purple">
+                    <h3 class="card-title gradient-purple">上級コース</h3>
+                    <p class="card-text">エンタープライズレベルのRPA</p>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-api">API連携</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-security">セキュリティ対策</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-copilot">Copilot連携</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-ai">AI自動化</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="development" class="fade-in">
+            <h2 class="section-title">開発したい</h2>
+            <p class="section-description">自動化したい具体的な業務がある方向けの開発フローです。<br>要件定義から設計、テスト、そして本番運用まで、各フェーズで必要なタスクと注意点を解説します。</p>
+            <div class="grid grid-cols-3">
+                <div class="card border-teal">
+                    <h3 class="card-title gradient-teal">開発フェーズ</h3>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-phase-requirements">要件定義・設計</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-phase-analysis">業務分析から自動化対象の特定</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-phase-systemdesign">システム設計</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card border-orange">
+                    <h3 class="card-title gradient-orange">プレ本番フェーズ</h3>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-preprod-testing">テスト・検証</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-preprod-verification">開発したロボットの動作確認</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-preprod-performance">パフォーマンステスト</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card border-green">
+                    <h3 class="card-title gradient-green">本番フェーズ</h3>
+                    <ul class="card-list">
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-prod-operation">運用・保守</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-prod-start">本番環境での運用開始</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-prod-improvement">継続的な改善</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <button class="download-button" onclick="downloadLinksCSV()">リンクCSVダウンロード</button>
+    </footer>
+
+    <script>
+        // 段階的フェードイン効果
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+
+            // Intersection Observer for better performance
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // 段階的にアニメーションを適用
+                        setTimeout(() => {
+                            entry.target.classList.add('fade-in');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // カードの微細なホバーエフェクト（新しい.cardスタイルで上書きされるため、ここでは不要だが残しておく）
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    // this.style.transform = 'translateY(-8px) scale(1.02)'; // colorful.htmlのスタイルで処理される
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    // this.style.transform = 'translateY(0) scale(1)'; // colorful.htmlのスタイルで処理される
+                });
+            });
+        });
+
+        function downloadLinksCSV() {
+            // CSVヘッダーを定義します。
+            const headers = ["セクション名", "カード名", "URL", "data-link-id"];
+            let csvContent = "\uFEFF" + headers.join(",") + "\n"; // UTF-8 BOMを追加
+
+            // すべてのセクションを取得します。
+            const sections = document.querySelectorAll('section');
+
+            sections.forEach(section => {
+                const sectionNameElement = section.querySelector('.section-title');
+                const sectionName = sectionNameElement ? sectionNameElement.textContent.trim() : '';
+                const cards = section.querySelectorAll('.card');
+
+                cards.forEach(card => {
+                    // カード自体がリンクの場合 (aタグの.card)
+                    const directLink = card.tagName === 'A' ? card : null;
+                    if (directLink) {
+                        const cardTitleElement = directLink.querySelector('.card-title');
+                        const cardName = cardTitleElement ? cardTitleElement.textContent.trim() : '';
+                        const url = directLink.href;
+                        const dataLinkId = directLink.getAttribute('data-link-id');
+                        const row = [
+                            `"${sectionName.replace(/"/g, '""')}"`,
+                            `"${cardName.replace(/"/g, '""')}"`,
+                            `"${url.replace(/"/g, '""')}"`,
+                            `"${dataLinkId.replace(/"/g, '""')}"`
+                        ];
+                        csvContent += row.join(",") + "\n";
+                    }
+
+                    // mini-link-card内のリンクを取得
+                    const miniLinkCards = card.querySelectorAll('.mini-link-card a');
+                    miniLinkCards.forEach(linkElement => {
+                        const cardTitleElement = card.querySelector('.card-title');
+                        const cardName = cardTitleElement ? cardTitleElement.textContent.trim() : ''; // 親カード名
+                        const miniCardText = linkElement.textContent.trim(); // ミニカード内のテキスト
+                        const url = linkElement.href;
+                        const dataLinkId = linkElement.getAttribute('data-link-id');
+
+                        const row = [
+                            `"${sectionName.replace(/"/g, '""')}"`,
+                            `"${cardName.replace(/"/g, '""')} - ${miniCardText.replace(/"/g, '""')}"`, // 親カード名とミニカードテキストを結合
+                            `"${url.replace(/"/g, '""')}"`,
+                            `"${dataLinkId.replace(/"/g, '""')}"`
+                        ];
+                        csvContent += row.join(",") + "\n";
+                    });
+
+                    // card-list内のリンクを取得
+                    const listItems = card.querySelectorAll('.card-list-item'); // <li>要素を取得
+                    listItems.forEach(listItem => {
+                        const cardTitleElement = listItem.closest('.card').querySelector('.card-title'); /* Get title from closest parent card */
+                        const cardName = cardTitleElement ? cardTitleElement.textContent.trim() : '';
+                        const linkElement = listItem.querySelector('a'); // <li>内の<a>タグを取得
+                        const listItemText = linkElement ? linkElement.textContent.trim() : listItem.textContent.trim().replace(/^•\s*/, '');
+                        const url = linkElement ? linkElement.href : '';
+                        const dataLinkId = linkElement ? linkElement.getAttribute('data-link-id') : '';
+
+                        const row = [
+                            `"${sectionName.replace(/"/g, '""')}"`,
+                            `"${cardName.replace(/"/g, '""')} - ${listItemText.replace(/"/g, '""')}"`,
+                            `"${url.replace(/"/g, '""')}"`,
+                            `"${dataLinkId.replace(/"/g, '""')}"`
+                        ];
+                        csvContent += row.join(",") + "\n";
+                    });
+                });
+            });
+
+            // Blobを作成し、ダウンロードリンクを生成します。
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', 'JennyPortal_links.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
+
+</body></html>

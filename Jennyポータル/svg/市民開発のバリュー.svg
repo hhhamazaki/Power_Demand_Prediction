@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700">
+  <!-- 背景 -->
+  <rect width="0" height="0" fill="#f8f9fa" />
+  
+  <!-- タイトル -->
+  <rect x="150" y="20" width="600" height="60" rx="10" fill="#2c3e50" />
+  <text x="450" y="60" font-family="'Noto Sans JP', sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">市民開発のバリュー（価値観）</text>
+  
+  <!-- バリュー概要 -->
+  <rect x="150" y="100" width="600" height="60" rx="10" fill="#F1C40F" />
+  <text x="450" y="140" font-family="'Noto Sans JP', sans-serif" font-size="22" font-weight="bold" fill="#2c3e50" text-anchor="middle">私たちが大切にする5つの価値観</text>
+  
+  <!-- バリュー項目1：革新 -->
+  <rect x="150" y="170" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+  <rect x="150" y="170" width="120" height="90" rx="10" fill="#F1C40F" />
+  <text x="210" y="220" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">革新</text>
+  <foreignObject x="280" y="185" width="450" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+      既存の業務に疑問を持ち、<br/>最新テクノロジーで変革を生み出す姿勢を大切にします
+    </div>
+  </foreignObject>
+  
+  <!-- バリュー項目2：実践 -->
+  <rect x="150" y="270" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+  <rect x="150" y="270" width="120" height="90" rx="10" fill="#F1C40F" />
+  <text x="210" y="320" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">実践</text>
+  <foreignObject x="280" y="285" width="450" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+      知識だけでなく行動に移し、<br/>実務に即した価値ある自動化を実現します
+    </div>
+  </foreignObject>
+  
+  <!-- バリュー項目3：共創 -->
+  <rect x="150" y="370" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+  <rect x="150" y="370" width="120" height="90" rx="10" fill="#F1C40F" />
+  <text x="210" y="420" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">共創</text>
+  <foreignObject x="280" y="385" width="450" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+      部門を超えて知恵を出し合い、<br/>互いに学び合いながら最適解を見出します
+    </div>
+  </foreignObject>
+  
+  <!-- バリュー項目4：誠実 -->
+  <rect x="150" y="470" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+  <rect x="150" y="470" width="120" height="90" rx="10" fill="#F1C40F" />
+  <text x="210" y="520" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">誠実</text>
+  <foreignObject x="280" y="485" width="450" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+      透明性を持って問題に向き合い、<br/>信頼される市民開発の文化を築きます
+    </div>
+  </foreignObject>
+  
+  <!-- バリュー項目5：挑戦 -->
+  <rect x="150" y="570" width="600" height="90" rx="10" fill="#fffacd" stroke="#F1C40F" stroke-width="3" />
+  <rect x="150" y="570" width="120" height="90" rx="10" fill="#F1C40F" />
+  <text x="210" y="620" font-family="'Noto Sans JP', sans-serif" font-size="24" font-weight="bold" fill="#2c3e50" text-anchor="middle">挑戦</text>
+  <foreignObject x="280" y="585" width="450" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Noto Sans JP', sans-serif; font-size: 20px; color: #333;">
+      失敗を学びの機会と捉え、<br/>常に新たな可能性に挑戦し続けます
+    </div>
+  </foreignObject>
+  
+</svg>

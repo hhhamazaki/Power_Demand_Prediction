@@ -1,0 +1,29 @@
+{
+  "Workflows": [
+    {
+      "Path": null,
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Main.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "CurrentDirectory&Sequence_1",
+        "Path&Sequence_1",
+        "FileName&Sequence_1",
+        "SheetName&Sequence_1",
+        "MacroBook&Sequence_1",
+        "RetryCount&Sequence_1",
+        "MacroReturnValue&Sequence_1",
+        "MacroFileName&Sequence_1"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [],
+      "AddedNamespaces": null
+    }
+  ]
+}

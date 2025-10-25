@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>機械学習モデル構築ガイド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is structured as a single-page, vertical-scrolling guide, mirroring the 7-step process from the source report. A sticky stepper navigation bar allows users to jump between steps and track their progress. This linear, guided structure was chosen because the source content is fundamentally a tutorial, making a sequential flow the most intuitive and effective for a beginner audience. Key interactions, such as a live feature-engineering demo and an interactive model comparison chart, are embedded within the relevant steps to transform abstract concepts into tangible experiences, directly enhancing comprehension. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: 7-step ML process -> Goal: Guide User -> Presentation: Sticky stepper navigation & vertical sections -> Interaction: Click to scroll, active state highlights -> Justification: Provides clear, persistent navigation for a tutorial format. (HTML/JS)
+        - Report Info: Feature Engineering Concept -> Goal: Explain -> Presentation: Interactive text transformation -> Interaction: JS splits date string into components on screen -> Justification: Demystifies an abstract data prep step visually. (HTML/JS)
+        - Report Info: Model Comparison -> Goal: Compare -> Presentation: Tabbed content for model details -> Interaction: Click tabs to switch content -> Justification: Organizes model information neatly. (HTML/JS)
+        - Report Info: Model Evaluation (R² score & graph) -> Goal: Visualize Performance -> Presentation: Line chart with controls -> Interaction: Buttons to switch displayed model's prediction data on the chart & update R² score text -> Justification: Directly links visual chart performance with the key quantitative metric (R²). (Chart.js/Canvas)
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .step-item.active {
+            background-color: #4A5568;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+        .step-item.active .step-circle {
+            background-color: #FFFFFF;
+            color: #4A5568;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div id="app" class="container mx-auto px-4 md:px-6 py-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">機械学習モデル構築入門</h1>
+            <p class="text-lg text-gray-600">電力使用量予測を例に、7つのステップをインタラクティブに学ぼう！</p>
+        </header>
+
+        <nav id="stepper-nav" class="sticky top-0 z-10 bg-white/80 backdrop-blur-sm py-4 mb-12 rounded-lg shadow-md">
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+            </div>
+        </nav>
+
+        <main id="content" class="space-y-20">
+        </main>
+
+        <footer class="text-center mt-20 pt-8 border-t border-gray-200">
+            <p class="text-gray-500">このガイドはAIが生成しました。</p>
+        </footer>
+    </div>
+
+    <script>
+        const STEPS = [
+            { id: 'step1', title: '目的設定' },
+            { id: 'step2', title: 'データ収集' },
+            { id: 'step3', title: 'データ前処理' },
+            { id: 'step4', title: 'モデル選択' },
+            { id: 'step5', title: '学習' },
+            { id: 'step6', title: '評価' },
+            { id: 'step7', title: '実践・改善' },
+        ];
+
+        const CONTENT = {
+            step1: {
+                title: "Step 1: 目的を決める（何を知りたいのか？）",
+                concept: "機械学習プロジェクトの出発点は、常に「何を達成したいのか？」という問いです。目的が明確であればあるほど、その後のデータ収集やモデル選択がスムーズになります。これは、旅の目的地を決めるようなものです。",
+                exampleTitle: "例：電力使用量予測",
+                exampleText: "今回のプロジェクトの目的は、「明日の特定の時間帯における電力使用量を、過去のデータに基づいて予測する」ことです。この目的があるからこそ、電力会社のデータや気象データが必要だと判断できます。"
+            },
+            step2: {
+                title: "Step 2: データを集める（予測のための材料）",
+                concept: "目的を達成するために必要な「材料」=データを収集します。データの質と量が、最終的な予測精度に直接影響を与えるため、非常に重要なステップです。信頼できる情報源から、適切なデータを集めることが求められます。",
+                exampleTitle: "例：公開データの活用",
+                exampleText: `
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><b>過去の電力使用量データ:</b> 東京電力などが公開している実績値。これが予測したい「答え」のデータになります。</li>
+                        <li><b>過去の気象データ:</b> 気象庁が公開している気温や天気。電力使用量は気温に大きく影響されるため、予測の重要な「ヒント」になります。</li>
+                    </ul>
+                    <p class="mt-4 text-sm p-3 bg-blue-50 rounded-lg">ポイント：国や自治体、企業が公開しているデータ（オープンデータ）を探してみると、面白いテーマが見つかるかもしれません。</p>
+                `
+            },
+            step3: {
+                title: "Step 3: データを整える（料理のための下ごしえ）",
+                concept: "収集した生データは、多くの場合そのままでは使えません。コンピュータが理解し、学習できるように「下ごしらえ」をする必要があります。これをデータの前処理と呼び、モデルの性能を大きく左右する地味ながらも重要な作業です。",
+                exampleTitle: "例：特徴量エンジニアリングを体験する",
+                exampleText: `
+                    <div class="space-y-4">
+                        <p>元のデータから、予測に役立ちそうな新しい情報（特徴量）を作り出します。下の例を見てみましょう。</p>
+                        <div class="p-4 border rounded-lg bg-gray-50">
+                            <p class="font-mono text-center text-lg">「2023/10/26 15:00」</p>
+                        </div>
+                        <div class="text-center text-2xl font-bold">↓</div>
+                        <div id="feature-engineering-output" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                            <div class="p-3 bg-green-100 rounded-lg">
+                                <p class="text-sm font-semibold text-green-800">月</p>
+                                <p class="text-2xl font-bold text-green-900">10</p>
+                            </div>
+                            <div class="p-3 bg-yellow-100 rounded-lg">
+                                <p class="text-sm font-semibold text-yellow-800">曜日</p>
+                                <p class="text-2xl font-bold text-yellow-900">木</p>
+                            </div>
+                            <div class="p-3 bg-purple-100 rounded-lg">
+                                <p class="text-sm font-semibold text-purple-800">時間</p>
+                                <p class="text-2xl font-bold text-purple-900">15</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-sm">このように一つの日時情報から、季節性や生活サイクルを反映する複数の特徴量を作り出すことで、モデルはより多くのパターンを学習できます。</p>
+                    </div>
+                `
+            },
+            step4: {
+                title: "Step 4: モデルを選ぶ（どの予測方法を使うか？）",
+                concept: "データの下ごしらえが完了したら、予測を行う「機械学習モデル」を選びます。モデルには様々な種類があり、問題の種類やデータの特性に応じて最適なものを選択します。初心者はまず、シンプルで汎用性の高いモデルから試すのが良いでしょう。",
+                exampleTitle: "例：様々な予測モデル",
+                exampleText: `
+                    <div class="space-y-4">
+                        <div class="p-4 border rounded-lg hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-gray-800">ランダムフォレスト (RandomForest)</h4>
+                            <p class="text-sm text-gray-600">比較的シンプルで、多くのケースで高い性能を発揮する人気のモデル。まずはここから試すのがおすすめです。</p>
+                        </div>
+                        <div class="p-4 border rounded-lg hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-gray-800">ディープラーニング (Keras/TensorFlow)</h4>
+                            <p class="text-sm text-gray-600">より複雑なパターンを学習できる強力なモデル。しかし、設定が少し難しい上級者向けです。</p>
+                        </div>
+                        <div class="p-4 border rounded-lg hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-gray-800">AutoML (自動機械学習)</h4>
+                            <p class="text-sm text-gray-600">複数のモデルを自動で試し、最適なものを選んでくれる便利なツール。初学者でも高い精度のモデルを簡単に作れます。</p>
+                        </div>
+                    </div>
+                `
+            },
+            step5: {
+                title: "Step 5: モデルを学習させる（データからパターンを学ばせる）",
+                concept: "選んだモデルに、準備したデータを入力して「学習」させます。この過程で、モデルはデータ内に潜む「答え（電力使用量）」と「ヒント（気温や時間など）」の関係性やパターンを自動で見つけ出します。これは、コンピュータが大量の問題集を解いて、解き方の法則を自分で見つけていくイメージです。",
+                exampleTitle: "例：学習プロセス",
+                exampleText: "電力使用量予測の例では、過去数年分の「気温、曜日、時間」などのデータセットと、その時の「実際の電力使用量」をモデルに与えます。モデルはこれらの関係を学習し、「気温が高く、平日の昼間は電力使用量が増える」といったパターンを内部に構築していきます。"
+            },
+            step6: {
+                title: "Step 6: モデルを評価する（予測の精度を採点）",
+                concept: "学習が完了したモデルが、どれだけ賢いか（予測精度が高いか）を評価します。この評価には、モデルが学習中に一度も見ていない「未知のデータ（テストデータ）」を使います。これにより、モデルが未知の状況にどれだけ対応できるか（汎化性能）を客観的に測ることができます。",
+                exampleTitle: "例：予測結果をインタラクティブに評価",
+                exampleText: `
+                    <p class="mb-4">モデルの評価には、数値指標と視覚的な確認の両方が重要です。下のグラフで、異なるモデルの予測精度を比較してみましょう。</p>
+                    <div class="text-center mb-4 space-x-2">
+                        <button id="btn-rf" class="model-btn bg-blue-500 text-white px-4 py-2 rounded-lg shadow">RandomForest</button>
+                        <button id="btn-automl" class="model-btn bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">AutoML</button>
+                    </div>
+                    <div class="flex justify-center items-center mb-4">
+                        <p class="text-lg">決定係数 (R²スコア): <span id="r2-score" class="font-bold text-2xl text-blue-600">0.916</span></p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-center text-gray-500">R²スコアは1.0に近いほど精度が高いことを示します。AutoMLの方が実績値の細かな変動によく追従できていることがわかります。</p>
+                `
+            },
+            step7: {
+                title: "Step 7: 実践・改善（使ってみて、さらに良くする）",
+                concept: "満足のいく精度のモデルが完成したら、実際の業務やサービスに組み込んで活用します。しかし、それで終わりではありません。現実世界のデータは常に変化するため、モデルの予測精度は時間とともに低下することがあります。定期的に性能を監視し、新しいデータで再学習させたり、モデルを改良したりするサイクルが重要です。",
+                exampleTitle: "例：予測値の公開と継続的な改善",
+                exampleText: "電力予測の例では、構築したモデルを使って毎日未来の電力使用量を予測し、その結果をウェブサイトで公開するという実践的な試みが行われました。これにより、予測と実際の結果を日々比較し、モデルがどのような状況で予測を外しやすいかを発見できます。その知見を元に、新しい特徴量を追加したり、モデルを更新したりすることで、継続的に精度を改善していくことができます。"
+            },
+        };
+
+        const chartData = {
+            labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+            actual: [2800, 2700, 2650, 2600, 2750, 3000, 3500, 4000, 4300, 4500, 4600, 4650, 4600, 4550, 4500, 4600, 4800, 5000, 4900, 4500, 4000, 3600, 3200, 2900],
+            predictions: {
+                randomForest: {
+                    r2: 0.916,
+                    data: [2850, 2760, 2700, 2680, 2800, 3100, 3600, 4050, 4300, 4450, 4500, 4550, 4520, 4500, 4480, 4550, 4700, 4850, 4800, 4450, 4050, 3700, 3300, 3000]
+                },
+                autoML: {
+                    r2: 0.957,
+                    data: [2810, 2710, 2660, 2620, 2760, 3020, 3530, 4010, 4320, 4510, 4620, 4660, 4610, 4560, 4510, 4610, 4820, 4980, 4890, 4510, 4020, 3630, 3210, 2920]
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepperNav = document.getElementById('stepper-nav').querySelector('div');
+            const contentContainer = document.getElementById('content');
+            let predictionChart = null;
+
+            function createContent() {
+                STEPS.forEach((step, index) => {
+                    const stepData = CONTENT[step.id];
+                    
+                    const navItem = document.createElement('a');
+                    navItem.href = `#${step.id}`;
+                    navItem.id = `nav-${step.id}`;
+                    navItem.className = 'step-item flex-grow md:flex-grow-0 text-center cursor-pointer p-2 rounded-lg transition-colors duration-300 text-gray-600 hover:bg-gray-200';
+                    navItem.innerHTML = `<span class="step-circle inline-block bg-gray-300 text-white w-6 h-6 rounded-full mr-2 text-sm leading-6">${index + 1}</span>${step.title}`;
+                    stepperNav.appendChild(navItem);
+
+                    const section = document.createElement('section');
+                    section.id = step.id;
+                    section.className = 'pt-16 -mt-16';
+                    section.innerHTML = `
+                        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">${stepData.title}</h2>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="prose max-w-none">
+                                    <h3 class="text-xl font-semibold text-gray-700 mb-2 border-b-2 border-gray-200 pb-2">コンセプト</h3>
+                                    <p>${stepData.concept}</p>
+                                </div>
+                                <div class="bg-gray-50 p-6 rounded-lg border">
+                                    <h3 class="text-xl font-semibold text-gray-700 mb-2 border-b-2 border-gray-200 pb-2">${stepData.exampleTitle}</h3>
+                                    <div>${stepData.exampleText}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    contentContainer.appendChild(section);
+                });
+            }
+
+            function setupChart() {
+                const ctx = document.getElementById('predictionChart');
+                if (!ctx) return;
+                const chartCtx = ctx.getContext('2d');
+                
+                predictionChart = new Chart(chartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [
+                            {
+                                label: '実績値',
+                                data: chartData.actual,
+                                borderColor: 'rgba(59, 130, 246, 0.8)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: '予測値 (RandomForest)',
+                                data: chartData.predictions.randomForest.data,
+                                borderColor: 'rgba(234, 179, 8, 0.8)',
+                                backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                title: { display: true, text: '電力使用量 (万kW)' }
+                            },
+                            x: {
+                                title: { display: true, text: '時刻' }
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.parsed.y} 万kW`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function setupChartInteractions() {
+                const btnRf = document.getElementById('btn-rf');
+                const btnAutoML = document.getElementById('btn-automl');
+                const r2ScoreEl = document.getElementById('r2-score');
+                const buttons = [btnRf, btnAutoML];
+                
+                if (!btnRf || !btnAutoML || !r2ScoreEl || !predictionChart) return;
+
+                function updateChart(modelKey) {
+                    const modelData = chartData.predictions[modelKey];
+                    let modelName = modelKey === 'randomForest' ? 'RandomForest' : 'AutoML';
+                    
+                    predictionChart.data.datasets[1].data = modelData.data;
+                    predictionChart.data.datasets[1].label = `予測値 (${modelName})`;
+                    predictionChart.update();
+                    
+                    r2ScoreEl.textContent = modelData.r2;
+                    
+                    buttons.forEach(btn => btn.classList.remove('bg-blue-500', 'text-white'));
+                    buttons.forEach(btn => btn.classList.add('bg-gray-300', 'text-gray-700'));
+                    
+                    if (modelKey === 'randomForest') {
+                        btnRf.classList.add('bg-blue-500', 'text-white');
+                        btnRf.classList.remove('bg-gray-300', 'text-gray-700');
+                        r2ScoreEl.classList.remove('text-green-600');
+                        r2ScoreEl.classList.add('text-blue-600');
+                    } else {
+                        btnAutoML.classList.add('bg-blue-500', 'text-white');
+                        btnAutoML.classList.remove('bg-gray-300', 'text-gray-700');
+                        r2ScoreEl.classList.remove('text-blue-600');
+                        r2ScoreEl.classList.add('text-green-600');
+                    }
+                }
+
+                btnRf.addEventListener('click', () => updateChart('randomForest'));
+                btnAutoML.addEventListener('click', () => updateChart('autoML'));
+            }
+
+            function setupScrollSpy() {
+                const sections = STEPS.map(step => document.getElementById(step.id));
+                const navItems = STEPS.map(step => document.getElementById(`nav-${step.id}`));
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            navItems.forEach(item => {
+                                if (item.getAttribute('href').substring(1) === entry.target.id) {
+                                    item.classList.add('active');
+                                } else {
+                                    item.classList.remove('active');
+                                }
+                            });
+                        }
+                    });
+                }, { rootMargin: '-50% 0px -50% 0px' });
+
+                sections.forEach(section => observer.observe(section));
+            }
+
+            createContent();
+            setupChart();
+            setupChartInteractions();
+            setupScrollSpy();
+        });
+    </script>
+</body>
+</html>

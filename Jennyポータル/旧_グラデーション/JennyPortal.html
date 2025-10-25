@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* タブコンテンツのアニメーション */
+        .tab-content.active {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn, .nav-tab { /* .sub-nav-btn を削除 */
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active, .nav-tab:active { /* .sub-nav-btn:active を削除 */
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <nav class="mb-8">
+            <div class="flex flex-wrap justify-center gap-3">
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('portal')">ポータル</button>
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('hajimeni')">はじめに</button>
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('preparation')">準備</button>
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('trial')">試行したい</button>
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('hands_on_training')">ハンズオン研修</button>
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('development')">開発したい</button>
+                <button class="nav-tab px-6 py-3 rounded-full text-gray-800 font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 active:scale-95" onclick="showTab('community')">コミュニティ</button>
+            </div>
+        </nav>
+
+        <div id="portal" class="tab-content active">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">Jennyポータルへようこそ</h2>
+                <p class="text-gray-700 mb-6">Jennyの各主要セクションへはこちらからアクセスできます。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">はじめに</h4>
+                        <p class="text-sm mb-4">Jennyの理念、サポート体制、規約、稼働状況について。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hajimeni', 'introduction')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">準備</h4>
+                        <p class="text-sm mb-4">Jennyの利用申請や環境構築に関する情報。</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('preparation', 'application')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">試行したい</h4>
+                        <p class="text-sm mb-4">自動化する実務がない場合のミニロボやサンプルロボ。</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('trial', 'education')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-pink-500 to-red-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">ハンズオン研修</h4>
+                        <p class="text-sm mb-4">RPAハンズオン研修カリキュラムの詳細はこちら。</p>
+                        <a href="#" class="btn bg-white text-red-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hands_on_training', 'intro_course')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">開発したい</h4>
+                        <p class="text-sm mb-4">自動化する実務がある場合の開発フローとサポート。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('development', 'development_flow')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-teal-500 to-cyan-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">コミュニティ</h4>
+                        <p class="text-sm mb-4">質問、相談、事例共有、勉強会などのコミュニティ活動。</p>
+                        <a href="#" class="btn bg-white text-cyan-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('community', 'qa_forum')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="hajimeni" class="tab-content hidden">
+            <div id="hajimeni-main" class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">はじめに</h2>
+                <p class="text-gray-700 mb-6">Jennyの理念、サポート体制、規約、稼働状況について。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">理念</h4>
+                        <p class="text-sm">RPAを通じて全社員のデジタル能力を引き出し、業務革新と企業価値向上を実現する。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hajimeni', 'introduction')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">サポート体制</h4>
+                        <p class="text-sm">全社員の自発的な業務Kaizenと変革スキル強化。</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hajimeni', 'support')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">規約ガイド</h4>
+                        <p class="text-sm">安全で効率的な開発を促進するための重要な指針。</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hajimeni', 'guidelines')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">稼働状況</h4>
+                        <p class="text-sm">Jennyの最新の稼働状況と、今後の本番稼働スケジュール。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hajimeni', 'status')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hajimeni-introduction-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-4 border-b-2 border-indigo-300 pb-2">理念</h2>
+                    <p class="text-gray-700 mb-6">全社員が市民開発を通じて目指すものです。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">パーパス</h4>
+                            <p class="text-sm">RPAを通じて全社員のデジタル能力を引き出し、業務革新と企業価値向上を実現する。</p>
+                            <a href="http://example.com/purpose" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">ミッション<span class="text-base font-normal"> 私たちの使命</span></h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">全社員のDXマインド醸成とRPAスキル向上の促進</li>
+                                <li class="mb-1">業務効率化・自動化による生産性と企業価値の向上</li>
+                                <li>市民開発者を支援するCoE（Center of Excellence）体制の確立と強化</li>
+                            </ul>
+                            <a href="http://example.com/mission" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">ビジョン<span class="text-base font-normal"> 目指す未来像</span></h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">すべての部門に市民開発の文化が浸透し、自律的にDXを推進する組織</li>
+                                <li class="mb-1">RPAスキルを持つ人材が社内で活躍し、継続的な業務改善が実現する環境</li>
+                                <li>高度な技術サポートと知識共有が行われる市民開発者コミュニティの形成</li>
+                            </ul>
+                            <a href="http://example.com/vision" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">バリュー<span class="text-base font-normal"> 項目説明</span></h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">革新: 既存の業務に疑問を持ち、最新テクノロジーで変革を生み出す姿勢を大切にします</li>
+                                <li class="mb-1">実践: 知識だけでなく行動に移し、実務に即した価値ある自動化を実現します</li>
+                                <li class="mb-1">共創: 部門を超えて知恵を出し合い、互いに学び合いながら最適解を見出します</li>
+                                <li class="mb-1">誠実: 透明性を持って問題に向き合い、信頼される市民開発の文化を築きます</li>
+                                <li>挑戦: 失敗を学びの機会と捉え、常に新たな可能性に挑戦し続けます</li>
+                            </ul>
+                            <a href="http://example.com/value" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hajimeni')">戻る</button>
+                </div>
+            </div>
+
+            <div id="hajimeni-support-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">ローコード市民開発の効果</h2>
+                    <p class="text-gray-700 mb-6">2025年5月更新</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">💫 全社員の主体的な行動・自己効力感の向上</h4>
+                            <p class="text-sm mb-2">全社員の自発的な業務Kaizenと変革スキル強化</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">非IT人材アプリ開発</li>
+                                <li class="mb-1">自己効力感（自分にもできる自信）の獲得</li>
+                                <li>主体的な行動の活性化</li>
+                            </ul>
+                            <a href="http://example.com/effect1" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">🚀 現場ニーズに合致したスピーディーな業務Kaizen</h4>
+                            <p class="text-sm mb-2">業務効率化と競争力の強化、現場課題スピード解決</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">現場主導ツール開発</li>
+                                <li class="mb-1">業務Kaizenスピード向上</li>
+                                <li>柔軟な変化への対応</li>
+                            </ul>
+                            <a href="http://example.com/effect2" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">💰 低コスト・短期間で内製システム開発・改修</h4>
+                            <p class="text-sm mb-2">開発コスト削減とスピーディーなシステム運用</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">低コスト・短期間で開発・改修</li>
+                                <li class="mb-1">内製化の推進</li>
+                                <li>アジャイルなKaizenサイクル定着</li>
+                            </ul>
+                            <a href="http://example.com/effect3" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">🧠 言語化スキル向上・AIプロンプト高度化</h4>
+                            <p class="text-sm mb-2">業務ナレッジ言語化とAI（言語モデル）活用による業務高度化</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">業務の構造化・言語化</li>
+                                <li class="mb-1">ナレッジ共有</li>
+                                <li>AI自動化の業務への応用</li>
+                            </ul>
+                            <a href="http://example.com/effect4" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-teal-500 to-cyan-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">👥 部門間コラボレーション・他者への貢献で幸福度アップ</h4>
+                            <p class="text-sm mb-2">部門横断コラボレーション促進と従業員満足度・幸福度の向上</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">部門間ナレッジ共有</li>
+                                <li class="mb-1">協働による組織力の強化</li>
+                                <li>貢献実感の醸成</li>
+                            </ul>
+                            <a href="http://example.com/effect5" target="_blank" class="btn bg-white text-cyan-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-pink-500 to-red-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">🌟 キャリア自律・市場価値・内発的モチベーション・エンゲージメント向上</h4>
+                            <p class="text-sm mb-2">優秀な人財の成長サポート・定着、エンゲージメント向上</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">新たなスキル習得サポート</li>
+                                <li class="mb-1">自己実現の促進</li>
+                                <li>エンゲージメント向上</li>
+                            </ul>
+                            <a href="http://example.com/effect6" target="_blank" class="btn bg-white text-red-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-indigo-500 to-purple-500 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">📚 外部ベンダー依存・ノウハウ流出・属人化の防止</h4>
+                            <p class="text-sm mb-2">ノウハウ流出の防止と組織ナレッジ蓄積・共有</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">内製化によるノウハウ蓄積・共有</li>
+                                <li class="mb-1">属人化の防止</li>
+                                <li>ナレッジ共有の強化</li>
+                            </ul>
+                            <a href="http://example.com/effect7" target="_blank" class="btn bg-white text-purple-500 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-orange-500 to-yellow-500 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">📊 投資収益率（ROI）検証・専門システム開発への昇華</h4>
+                            <p class="text-sm mb-2">IT投資効果の検証とリスクを抑えた段階的成長</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">小規模開発によるROI検証</li>
+                                <li class="mb-1">専門開発への段階的昇華</li>
+                                <li>リスク抑制と投資判断の精度向上</li>
+                            </ul>
+                            <a href="http://example.com/effect8" target="_blank" class="btn bg-white text-yellow-500 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hajimeni')">戻る</button>
+                </div>
+            </div>
+
+            <div id="hajimeni-guidelines-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">規約ガイド</h2>
+                    <p class="text-gray-700 mb-6">Jennyの市民開発における規約とガイドラインについて説明します。安全で効率的な開発を促進するための重要な指針です。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">開発方針</h4>
+                            <p class="text-sm">市民開発を推進するための基本的な方向性を示します。ユーザー中心のアプローチを重視し、継続的な改善を目指します。</p>
+                            <a href="http://example.com/policy" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">開発ガイドライン</h4>
+                            <p class="text-sm">ロボット開発における具体的な手順、推奨されるツール、およびセキュリティに関するガイドラインを提供します。</p>
+                            <a href="http://example.com/guideline" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">コーディング規約</h4>
+                            <p class="text-sm">品質と保守性を確保するためのコーディング標準とベストプラクティスを定義します。可読性の高いコード作成を推奨します。</p>
+                            <a href="http://example.com/coding" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hajimeni')">戻る</button>
+                </div>
+            </div>
+
+            <div id="hajimeni-status-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">稼働状況</h2>
+                    <p class="text-gray-700 mb-6">Jennyの最新の稼働状況と、今後の本番稼働スケジュールをご確認いただけます。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-purple-500 to-indigo-500 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">開発者トップ10ランキング</h4>
+                            <p class="text-sm mb-2">現在の学習進捗と成果をランキング形式で表示：</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">2024年5月更新</li>
+                                <li class="mb-1">月間アクティブユーザー: 1,500名</li>
+                                <li class="mb-1">完了プロジェクト数: 850件</li>
+                                <li>平均学習時間: 週3時間</li>
+                            </ul>
+                            <a href="http://example.com/ranking" target="_blank" class="btn bg-white text-indigo-500 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-teal-500 to-cyan-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">本番稼働スケジュール</h4>
+                            <p class="text-sm mb-2">主要なロボットやシステムの今後の稼働予定：</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">2025年6月: 経理業務自動化ロボット v2.0 リリース</li>
+                                <li class="mb-1">2025年7月: 人事データ連携システム 本番稼働開始</li>
+                                <li class="mb-1">2025年8月: AIレコメンデーション機能 β版公開</li>
+                                <li>2025年Q4: 全社RPA導入プロジェクト フェーズ2開始</li>
+                            </ul>
+                            <a href="http://example.com/schedule" target="_blank" class="btn bg-white text-cyan-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hajimeni')">戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="preparation" class="tab-content hidden">
+            <div id="preparation-main" class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">準備</h2>
+                <p class="text-gray-700 mb-6">Jennyの利用申請や環境構築に関する情報。</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">利用申請・インストール</h4>
+                        <p class="text-sm mb-4">Jennyを始めるための準備手順をご案内します。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('preparation', 'application')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">環境設定ガイド</h4>
+                        <p class="text-sm mb-4">スムーズに構築するための詳細ガイド。</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('preparation', 'environment')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">よくある質問</h4>
+                        <p class="text-sm mb-4">利用開始前や学習中に頻繁に寄せられる質問。</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('preparation', 'faq')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="preparation-application-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">利用申請・インストール</h2>
+                    <h3 class="text-xl font-semibold text-purple-700 mb-3">Jennyを始めるための準備手順をご案内します。</h3>
+                    <p class="text-gray-700 mb-6">Jennyを始めるための準備手順をご案内します。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">Step 1: 利用申請</h4>
+                            <p class="text-sm mb-4">オンラインフォームから簡単に申請可能</p>
+                            <a href="http://example.com/apply" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">Step 2: 環境構築</h4>
+                            <p class="text-sm mb-4">必要なソフトウェアのインストールガイド</p>
+                            <a href="http://example.com/setup" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">Step 3: 初期設定</h4>
+                            <p class="text-sm mb-4">学習環境の最適化と設定</p>
+                            <a href="http://example.com/initial" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('preparation')">戻る</button>
+                </div>
+            </div>
+
+            <div id="preparation-environment-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">環境設定ガイド</h2>
+                    <p class="text-gray-700 mb-6">Jennyの学習環境をスムーズに構築するための詳細ガイドです。必要なソフトウェアのダウンロードから初期設定まで、ステップバイステップで解説します。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">環境設定手順</h4>
+                            <p class="text-sm">詳細なセットアップ手順とトラブルシューティング。</p>
+                            <a href="http://example.com/env-guide" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('preparation')">戻る</button>
+                </div>
+            </div>
+
+            <div id="preparation-faq-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">よくある質問</h2>
+                    <p class="text-gray-700 mb-4">Jennyの利用開始前や学習中に頻繁に寄せられる質問とその回答をまとめました。</p>
+                    <ul class="list-disc list-inside ml-4 text-gray-700 mb-6">
+                        <li class="mb-2"><strong class="text-indigo-600">Q:</strong> Jennyは初心者でも利用できますか？<br><strong class="text-purple-600">A:</strong> はい、プログラミング経験がなくても、基礎から学べるカリキュラムを用意しています。</li>
+                        <li class="mb-2"><strong class="text-indigo-600">Q:</strong> 利用料金はかかりますか？<br><strong class="text-purple-600">A:</b> 基本的なコンテンツは無料でご利用いただけますが、一部の高度なコースや個別サポートは有料プランとなります。</li>
+                        <li><strong class="text-indigo-600">Q:</strong> どのようなサポート体制がありますか？<br><strong class="text-purple-600">A:</strong> オンラインフォーラムでの質問対応、定期的なウェビナー、個別相談会など、多岐にわたるサポートを提供しています。</li>
+                    </ul>
+                    <a href="http://example.com/faq" target="_blank" class="btn bg-white text-indigo-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('preparation')">戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="trial" class="tab-content hidden">
+            <div id="trial-main" class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">試行したい</h2>
+                <p class="text-gray-700 mb-6">自動化する実務がない場合のミニロボやサンプルロボ。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">ミニロボ</h4>
+                        <p class="text-sm">業務効率化の基礎概念を学習。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('trial', 'education')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">サンプルロボ</h4>
+                        <p class="text-sm">基本的なメール自動送信の実装。</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('trial', 'sample')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">アカデミー</h4>
+                        <p class="text-sm">業務効率化の理論と実践。</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('trial', 'academy')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="trial-education-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">ミニロボ</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                            <p class="text-sm">業務効率化の基礎概念を学習</p>
+                            <a href="http://example.com/edu-intro" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">初級コース</h4>
+                            <p class="text-sm">基本的なRPAツールの使い方</p>
+                            <a href="http://example.com/edu-beginner" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">中級コース</h4>
+                            <p class="text-sm">ChatGPTとExcelの連携活用</p>
+                            <a href="http://example.com/edu-intermediate" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">上級コース</h4>
+                            <p class="text-sm">AI活用による高度な自動化</p>
+                            <a href="http://example.com/edu-advanced" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('trial')">戻る</button>
+                </div>
+            </div>
+
+            <div id="trial-sample-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">サンプルロボ</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                            <p class="text-sm">シンプルなデータ処理ロボット</p>
+                            <a href="http://example.com/sample-intro" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">メール自動送信ロボット</h4>
+                            <p class="text-sm">基本的なメール自動送信の実装。</p>
+                            <a href="http://example.com/sample-mail" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">Webスクレイピングロボット</h4>
+                            <p class="text-sm">特定のウェブサイトから情報を自動取得</p>
+                            <a href="http://example.com/sample-web" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">AI連携レポート生成ロボット</h4>
+                            <p class="text-sm">AIを活用して自動的にレポートを作成</p>
+                            <a href="http://example.com/sample-ai" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('trial')">戻る</button>
+                </div>
+            </div>
+
+            <div id="trial-academy-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">アカデミー</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                            <p class="text-sm">業務効率化の理論と実践</p>
+                            <a href="http://example.com/academy-intro" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">初級コース</h4>
+                            <p class="text-sm">プロジェクト管理と改善手法</p>
+                            <a href="http://example.com/academy-beginner" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">中級コース</h4>
+                            <p class="text-sm">業務分析とプロセス設計</p>
+                            <a href="http://example.com/academy-intermediate" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">上級コース</h4>
+                            <p class="text-sm">組織変革とDX推進</p>
+                            <a href="http://example.com/academy-advanced" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('trial')">戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="hands_on_training" class="tab-content hidden">
+            <div id="hands_on_training-main" class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">ハンズオン研修</h2>
+                <p class="text-gray-700 mb-6">RPAハンズオン研修カリキュラムの詳細はこちら。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">入門コース</h4>
+                        <p class="text-sm">RPAツールの基本操作を習得し、RPA開発の第一歩を踏み出します。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hands_on_training', 'intro_course')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">初級コース</h4>
+                        <p class="text-sm">RPAの基礎知識と応用スキルを習得し、簡単な業務の自動化を実現します。</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hands_on_training', 'beginner_course')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">中級コース</h4>
+                        <p class="text-sm">より複雑な業務プロセスの自動化スキルを習得し、RPA適用範囲を拡大します。</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hands_on_training', 'intermediate_course')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">上級コース</h4>
+                        <p class="text-sm">エンタープライズレベルのRPAプロジェクトを推進できるスキルを習得し、RPA導入効果を最大化します。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('hands_on_training', 'advanced_course')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="hands_on_training-intro_course-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 入門コース</h2>
+                    <p class="text-gray-700 mb-4">RPAツールの基本操作を習得し、RPA開発の第一歩を踏み出します。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">ブラウザ操作（デモ画面を開く、ボタンをクリック、文字を入力、項目を選択、テキストを取得）</li>
+                                <li class="mb-1">条件分岐（ファイルが存在しなければURLからダウンロード）</li>
+                                <li class="mb-1">Excel操作（範囲を読み込み、セルに書き込み）</li>
+                                <li>繰り返し（繰り返し各行）</li>
+                            </ul>
+                            <a href="http://example.com/hot-intro-learn" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-purple-600 to-indigo-700 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">RPAツールの基本的なUI操作</li>
+                                <li class="mb-1">簡単なウェブサイトからのデータ取得</li>
+                                <li class="mb-1">Excelへのデータ書き込み</li>
+                                <li>条件に基づいた処理の分岐</li>
+                            </ul>
+                            <a href="http://example.com/hot-intro-skill" target="_blank" class="btn bg-white text-indigo-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hands_on_training')">戻る</button>
+                </div>
+            </div>
+
+            <div id="hands_on_training-beginner_course-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 初級コース</h2>
+                    <p class="text-gray-700 mb-4">RPAの基礎知識と応用スキルを習得し、簡単な業務の自動化を実現します。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">変数とデータ型（変数作成・型指定、配列/リスト利用、変数スコープ）</li>
+                                <li class="mb-1">Web操作応用（動的セレクター利用、要素待機、複雑な入力フォーム自動化）</li>
+                                <li class="mb-1">Excel操作応用（複数シート操作、データテーブル活用、Excel関数実行、データテーブル抽出/絞込、マクロ実行（引数なし/あり））</li>
+                                <li class="mb-1">データ加工（文字列処理（分割/結合/置換）、日付/時刻データ扱い）</li>
+                                <li>複雑な条件分岐設計（複雑なIf/Switch文活用）</li>
+                            </ul>
+                            <a href="http://example.com/hot-beginner-learn" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-blue-600 to-teal-700 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">RPAにおけるデータ管理と変数利用</li>
+                                <li class="mb-1">動的なウェブコンテンツへの対応</li>
+                                <li class="mb-1">高度なExcel操作とデータ処理</li>
+                                <li class="mb-1">複雑な業務ロジックの自動化</li>
+                                <li>データ加工と整形</li>
+                            </ul>
+                            <a href="http://example.com/hot-beginner-skill" target="_blank" class="btn bg-white text-teal-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hands_on_training')">戻る</button>
+                </div>
+            </div>
+
+            <div id="hands_on_training-intermediate_course-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 中級コース</h2>
+                    <p class="text-gray-700 mb-4">より複雑な業務プロセスの自動化スキルを習得し、RPA適用範囲を拡大します。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">例外処理（Try-Catchによるエラー制御、カスタム例外作成、エラーログ出力、基本的なエラー処理）</li>
+                                <li class="mb-1">モジュール化（ワークフロー分割/再利用、引数設定/受渡、Configファイル利用）</li>
+                                <li>ファイル操作（ファイル/フォルダ一括処理、PDF読込/保存、SharePoint OnlineファイルDL/UL）</li>
+                            </ul>
+                            <a href="http://example.com/hot-intermediate-learn" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-orange-600 to-red-700 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">堅牢なRPAロボットの設計と実装</li>
+                                <li class="mb-1">再利用可能なコンポーネントの作成</li>
+                                <li class="mb-1">ファイルシステムやPDF、SharePointとの連携</li>
+                                <li>エラー発生時の適切な対応</li>
+                            </ul>
+                            <a href="http://example.com/hot-intermediate-skill" target="_blank" class="btn bg-white text-red-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hands_on_training')">戻る</button>
+                </div>
+            </div>
+
+            <div id="hands_on_training-advanced_course-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">RPAハンズオン研修カリキュラム - 上級コース</h2>
+                    <p class="text-gray-700 mb-4">エンタープライズレベルのRPAプロジェクトを推進できるスキルを習得し、RPA導入効果を最大化します。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">学習項目</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">API連携（REST API呼出、外部サービス認証処理、JSONデータ解析/生成）</li>
+                                <li class="mb-1">セキュリティ対策（認証情報安全管理、アクセス権限設計、監査ログ実装、資格情報アセットの利用）</li>
+                                <li>Copilot連携（Copilot API連携、自然言語RPA制御、AIによる自動化）</li>
+                            </ul>
+                            <a href="http://example.com/hot-advanced-learn" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-purple-600 to-pink-700 text-white p-5 rounded-xl shadow-lg flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">習得スキル</h4>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">外部システムとの連携とデータ交換</li>
+                                <li class="mb-1">RPAにおけるセキュリティのベストプラクティス</li>
+                                <li class="mb-1">AIを活用した高度な自動化</li>
+                                <li>エンタープライズRPAプロジェクトの推進</li>
+                            </ul>
+                            <a href="http://example.com/hot-advanced-skill" target="_blank" class="btn bg-white text-pink-700 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('hands_on_training')">戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="development" class="tab-content hidden">
+            <div id="development-main" class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">開発したい</h2>
+                <p class="text-gray-700 mb-6">自動化する実務がある場合の開発フローとサポート。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">開発フェーズ</h4>
+                        <p class="text-sm mb-4">要件定義・設計</p>
+                        <p class="text-xs">業務分析から自動化対象の特定、システム設計まで</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('development', 'development_flow')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">プレ本番フェーズ</h4>
+                        <p class="text-sm mb-4">テスト・検証</p>
+                        <p class="text-xs">開発したロボットの動作確認とパフォーマンステスト</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('development', 'development_flow')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">本番フェーズ</h4>
+                        <p class="text-sm mb-4">運用・保守</p>
+                        <p class="text-xs">本番環境での運用開始と継続的な改善</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('development', 'development_flow')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="development-development_flow-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">開発したい（自動化したい実務の有る場合）</h2>
+                    <h3 class="text-xl font-semibold text-purple-700 mb-3">開発フロー</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">開発フェーズ</h4>
+                            <p class="text-sm mb-4">要件定義・設計</p>
+                            <p class="text-xs">業務分析から自動化対象の特定、システム設計まで</p>
+                            <a href="http://example.com/dev-phase" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">プレ本番フェーズ</h4>
+                            <p class="text-sm mb-4">テスト・検証</p>
+                            <p class="text-xs">開発したロボットの動作確認とパフォーマンステスト</p>
+                            <a href="http://example.com/pre-prod-phase" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">本番フェーズ</h4>
+                            <p class="text-sm mb-4">運用・保守</p>
+                            <p class="text-xs">本番環境での運用開始と継続的な改善</p>
+                            <a href="http://example.com/prod-phase" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('development')">戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="community" class="tab-content hidden">
+            <div id="community-main" class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">コミュニティ</h2>
+                <p class="text-gray-700 mb-6">質問、相談、事例共有、勉強会などのコミュニティ活動。</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">質問・相談</h4>
+                        <p class="text-sm mb-4">技術的な疑問や学習に関する質問を投稿。</p>
+                        <a href="#" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('community', 'qa_forum')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">イベント情報</h4>
+                        <p class="text-sm mb-4">オンラインイベントや勉強会の最新情報。</p>
+                        <a href="#" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('community', 'events')">詳細を見る</a>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                        <h4 class="text-xl font-semibold mb-2">成功事例</h4>
+                        <p class="text-sm mb-4">業務効率化の成功事例をご紹介。</p>
+                        <a href="#" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto" onclick="showDetail('community', 'success_stories')">詳細を見る</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="community-qa_forum-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">コミュニティ</h2>
+                    <h3 class="text-xl font-semibold text-purple-700 mb-3">質問・相談</h3>
+                    <p class="text-gray-700 mb-6">Jennyコミュニティでは、学習者同士の交流と相互サポートを促進しています。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">質問フォーラム</h4>
+                            <p class="text-sm mb-4">技術的な疑問や学習に関する質問を投稿</p>
+                            <a href="http://example.com/forum" target="_blank" class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">事例共有</h4>
+                            <p class="text-sm mb-4">成功事例や失敗談を共有し学び合う</p>
+                            <a href="http://example.com/share" target="_blank" class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                        <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col">
+                            <h4 class="text-xl font-semibold mb-2">勉強会・イベント</h4>
+                            <p class="text-sm mb-4">定期的な勉強会やウェビナーの開催</p>
+                            <a href="http://example.com/events" target="_blank" class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-auto">詳細を見る</a>
+                        </div>
+                    </div>
+                    <div class="news-item border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded-r-lg">
+                        <div class="text-purple-600 font-bold text-sm mb-2">最新の質問</div>
+                        <p class="text-gray-700 mb-1"><strong class="text-indigo-600">Q:</strong> ChatGPTをExcelと連携させる方法について教えてください</p>
+                        <p class="text-gray-700"><strong class="text-purple-600">A:</strong> Power QueryやVBAを活用した連携方法があります。詳細は中級コースで解説しています。</p>
+                    </div>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('community')">戻る</button>
+                </div>
+            </div>
+
+            <div id="community-events-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">イベント情報</h2>
+                    <p class="text-gray-700 mb-4">Jennyコミュニティで開催されるオンラインイベントや勉強会の最新情報です。ぜひご参加ください！</p>
+                    <ul class="list-disc list-inside ml-4 text-gray-700 mb-6">
+                        <li class="mb-2"><strong class="text-indigo-600">2024年6月15日:</strong> AI自動化最新トレンドセミナー（オンライン）</li>
+                        <li class="mb-2"><strong class="text-indigo-600">2024年7月10日:</strong> RPA実践ワークショップ（オフライン開催）</li>
+                        <li><strong class="text-indigo-600">毎月第3木曜日:</strong> Jennyオンライン交流会</li>
+                    </ul>
+                    <a href="http://example.com/all-events" target="_blank" class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-auto">詳細を見る</a>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('community')">戻る</button>
+                </div>
+            </div>
+
+            <div id="community-success_stories-detail" class="detail-content hidden">
+                <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                    <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">成功事例</h2>
+                    <p class="text-gray-700 mb-4">Jennyで学んだメンバーによる業務効率化の成功事例をご紹介します。あなたの業務改善のヒントに！</p>
+                    <div class="news-item border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded-r-lg mb-4">
+                        <div class="text-purple-600 font-bold text-sm mb-2">事例1: A社</div>
+                        <p class="text-gray-700">経理業務のRPA導入により、月間50時間の作業時間を削減。</p>
+                    </div>
+                    <div class="news-item border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded-r-lg mb-6">
+                        <div class="text-purple-600 font-bold text-sm mb-2">事例2: Bさん</div>
+                        <p class="text-gray-700">ChatGPTとExcel連携で、レポート作成時間を80%短縮。</p>
+                    </div>
+                    <a href="http://example.com/all-stories" target="_blank" class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-auto">詳細を見る</a>
+                    <button class="btn bg-indigo-500 text-white px-6 py-3 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-6" onclick="showMainContent('community')">戻る</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // メインタブの表示を切り替える関数
+        function showTab(tabName) {
+            // すべてのタブコンテンツを非表示にする
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden'); // Tailwindのhiddenクラスを追加
+            });
+
+            // すべてのメインナビゲーションタブのactiveクラスを削除する
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active', 'bg-gradient-to-r', 'from-indigo-600', 'to-purple-700', 'text-white');
+                tab.classList.add('from-purple-500', 'to-indigo-500', 'text-gray-800'); // 非アクティブ時のグラデーションと文字色
+            });
+
+            // 選択されたタブコンテンツを表示する
+            document.getElementById(tabName).classList.remove('hidden');
+            document.getElementById(tabName).classList.add('active');
+
+            // 選択されたメインナビゲーションタブにactiveクラスを追加する
+            const activeTabButton = document.querySelector(`.nav-tab[onclick="showTab('${tabName}')"]`);
+            if (activeTabButton) {
+                activeTabButton.classList.add('active', 'bg-gradient-to-r', 'from-indigo-600', 'to-purple-700', 'text-white');
+                activeTabButton.classList.remove('from-purple-500', 'to-indigo-500', 'text-gray-800'); // アクティブ時のグラデーションと文字色
+            }
+
+            // メインタブが切り替わったら、そのタブのメインコンテンツを表示し、詳細コンテンツを非表示にする
+            document.querySelectorAll(`#${tabName} .detail-content`).forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('active');
+            });
+            const mainContent = document.querySelector(`#${tabName}-main`);
+            if (mainContent) {
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('active');
+            }
+            // ポータルタブにはメインコンテンツがないため、直接内容を表示するロジックは削除
+            // サブタブ関連のロジックも削除
+        }
+
+        // 詳細コンテンツの表示を切り替える関数（サブタブ関連ロジックを削除）
+        function showDetail(mainTabName, detailId) {
+            // まず目的のメインタブに切り替える
+            showTab(mainTabName);
+
+            // 切り替わったメインタブ内のすべての詳細コンテンツとメインコンテンツを非表示にする
+            document.querySelectorAll(`#${mainTabName} .detail-content`).forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('active');
+            });
+            const mainContent = document.querySelector(`#${mainTabName}-main`);
+            if (mainContent) {
+                mainContent.classList.add('hidden');
+                mainContent.classList.remove('active');
+            }
+
+            // 選択された詳細コンテンツを表示する
+            const detailContent = document.getElementById(`${mainTabName}-${detailId}-detail`);
+            if (detailContent) {
+                detailContent.classList.remove('hidden');
+                detailContent.classList.add('active');
+            }
+        }
+
+        // メインコンテンツに戻る関数（サブタブ関連ロジックを削除）
+        function showMainContent(tabName) {
+            // 現在のタブのすべての詳細コンテンツを非表示にする
+            document.querySelectorAll(`#${tabName} .detail-content`).forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('active');
+            });
+
+            // メインコンテンツを表示する
+            const mainContent = document.querySelector(`#${tabName}-main`);
+            if (mainContent) {
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('active');
+            }
+            // サブタブ関連のロジックを削除
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn, .nav-tab'); /* .sub-nav-btn を削除 */
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に'ポータル'タブをアクティブにする
+            showTab('portal');
+        });
+    </script>
+</body>
+</html>

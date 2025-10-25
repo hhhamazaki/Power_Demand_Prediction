@@ -1,0 +1,4 @@
+{
+  "markdown.styles": ["./styles/markdown.css"],    // Markdownプレビュー用のCSSを適用
+  "markdown-pdf.headerTemplate": "<div></div>"     // PDF出力時のヘッダーを空にする
+}

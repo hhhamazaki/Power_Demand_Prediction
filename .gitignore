@@ -1,0 +1,19 @@
+# Obsidian の一時ファイル・キャッシュを無視
+.obsidian/workspace.json
+.obsidian/cache
+.obsidian/workspace-mobile.json
+
+# OSごとの不要ファイル
+Thumbs.db
+Desktop.ini
+.DS_Store
+*~
+
+# Vim, Emacs, その他エディタのバックアップ・一時ファイル
+*.swp
+*.swo
+*.bak
+*.tmp
+*.sav
+*.mb
+*.pkl

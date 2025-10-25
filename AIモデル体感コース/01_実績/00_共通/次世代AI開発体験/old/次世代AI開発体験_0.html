@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>次世代AI開発体験</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #presentation-container {
+            width: 100vw;
+            height: 56.25vw; /* 16:9 aspect ratio */
+            max-height: 100vh;
+            max-width: 177.78vh; /* 16:9 aspect ratio */
+            position: relative;
+            background-color: #0d1117;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide-content {
+            width: 1280px;
+            height: 720px;
+            transform-origin: top left;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 24px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #prev-button {
+            left: 20px;
+        }
+
+        #next-button {
+            right: 20px;
+        }
+
+        #pagination-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 1000;
+        }
+
+        .pagination-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .pagination-dot.active {
+            background-color: white;
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            bottom: -15px;
+            left: 28px;
+            width: 2px;
+            background-color: #30363d;
+            z-index: 1;
+        }
+        .dev-timeline.horizontal .timeline-item::before {
+            display: none;
+        }
+        .dev-timeline.horizontal .timeline-item {
+            flex: 1;
+            min-width: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentation-container">
+        <div id="slides-wrapper">
+            <div class="slide active">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url(&quot;https://www.genspark.ai/image_placeholder.png&quot;); opacity: 0.1;"></div>
+                        <div class="bg-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background-color: rgba(0, 0, 0, 0.2);"></div>
+                        <div class="accent-bar" style="position: absolute; top: 0; left: 0; width: 10px; height: 100%; background-color: #2ea043;"></div>
+                        <div class="floating-elements" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;">
+                            <i class="floating-icon fas fa-code" style="top: 15%; left: 10%; font-size: 30px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-robot" style="top: 25%; left: 85%; font-size: 24px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-brain" style="top: 65%; left: 15%; font-size: 28px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-lightbulb" style="top: 40%; left: 80%; font-size: 22px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-terminal" style="top: 80%; left: 75%; font-size: 26px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                        </div>
+                        <div class="title-container" style="position: relative; z-index: 10; padding-top: 120px; text-align: center;">
+                            <div class="logo-container" style="display: flex; align-items: center; justify-content: center; margin-bottom: 50px; position: relative;">
+                                <img alt="VS Code Logo" src="https://page.gensparksite.com/slides_images/31771aa7bb5cbaba4a6a8577158b27d2.png" style="height: 80px; margin: 0 20px;">
+                                <div class="connection-line" style="width: 100px; height: 4px; background-color: #2ea043;"></div>
+                                <img alt="GitHub Logo" src="https://page.gensparksite.com/slides_images/2012752c39b98d208a28d7d4d2db7a51.png" style="height: 80px; margin: 0 20px;">
+                            </div>
+                            <h1 class="main-title" style="font-size: 4rem; font-weight: 900; margin-bottom: 20px; background-clip: text; -webkit-background-clip: text; color: white; line-height: 1.2;">VS Code と GitHub Copilot 2025</h1>
+                            <h2 class="subtitle" style="font-size: 2.5rem; font-weight: 700; color: #2ea043; margin-bottom: 40px;">次世代AI開発体験</h2>
+                            <p class="tagline" style="font-size: 1.5rem; color: #8b949e; margin-bottom: 60px;">AI とともに生まれ変わる開発現場</p>
+                        </div>
+                        <div class="code-visual" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; text-align: left; font-family: 'M PLUS 1 Code', monospace; color: #a5d6ff; font-size: 0.9rem; opacity: 0.7;">
+                            <pre><span class="comment" style="color: #8b949e;">// 2025年の開発は AI が主導する時代へ</span>
+<span class="keyword" style="color: #ff7b72;">import</span> { AgentMode, Workspace } from <span class="string" style="color: #a5d6a7;">'@github/copilot-next'</span>;
+
+<span class="keyword" style="color: #ff7b72;">const</span> <span class="variable" style="color: #79c0ff;">developer</span> = <span class="keyword" style="color: #ff7b72;">new</span> Developer();
+<span class="keyword" style="color: #ff7b72;">const</span> <span class="variable" style="color: #79c0ff;">ai</span> = <span class="keyword" style="color: #ff7b72;">new</span> CopilotAgent({ mode: AgentMode.ADVANCED });
+
+<span class="variable" style="color: #79c0ff;">ai</span>.collaborateWith(<span class="variable" style="color: #79c0ff;">developer</span>)
+  .then(<span class="variable" style="color: #79c0ff;">result</span> =&gt; <span class="variable" style="color: #79c0ff;">project</span>.revolutionizeDevelopment());</pre>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.9rem;">
+                            <div>2025年9月14日</div>
+                            <div><span class="highlight" style="color: #2ea043; font-weight: bold;">AI開発体験</span> × <span class="highlight" style="color: #2ea043; font-weight: bold;">生産性向上</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-size: 20px 20px; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px);"></div>
+                        <div class="header" style="text-align: center; padding: 30px 0 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; letter-spacing: 1px;">従来の開発 vs AI駆動開発の比較</h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #2ea043; margin-bottom: 30px;">生産性・品質・開発者体験の劇的な変化</p>
+                        </div>
+                        <div class="comparison-container" style="display: flex; justify-content: space-between; padding: 0 40px 20px; position: relative; z-index: 5;">
+                            <div class="column traditional" style="width: 48%; position: relative; border-radius: 10px; border: 1px solid #30363d; padding: 20px; background-color: rgba(30, 35, 44, 0.7);">
+                                <div class="column-header" style="display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #30363d;">
+                                    <div class="column-icon" style="font-size: 24px; margin-right: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #394049; color: #8b949e;">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <h2 class="column-title" style="font-size: 1.5rem; font-weight: 700;">従来型開発</h2>
+                                </div>
+                                <div class="process-flow" style="margin: 15px 0; padding: 10px; border-radius: 5px;">
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(57, 64, 73, 0.5);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #8b949e; color: #0d1117;">1</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">手動コーディング</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">開発者が一からコードを記述</div>
+                                        </div>
+                                    </div>
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(57, 64, 73, 0.5);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #8b949e; color: #0d1117;">2</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">ドキュメント参照</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">公式ドキュメントやStackOverflowを検索</div>
+                                        </div>
+                                    </div>
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(57, 64, 73, 0.5);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #8b949e; color: #0d1117;">3</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">コンパイル・デバッグ</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">エラーを手動で修正</div>
+                                        </div>
+                                    </div>
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(57, 64, 73, 0.5);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #8b949e; color: #0d1117;">4</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">コードレビュー</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">人的リソースに依存</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="metrics-container" style="margin-top: 20px;">
+                                    <h3 class="metrics-title" style="font-size: 1rem; font-weight: 700; margin-bottom: 10px; color: #e6edf3;">開発メトリクス</h3>
+                                    <div class="chart-container" style="height: 160px; position: relative;">
+                                        <canvas id="traditionalMetrics"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="vs-badge" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background-color: #238636; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.5rem; color: white; z-index: 10; box-shadow: 0 0 20px rgba(46, 160, 67, 0.5);">VS</div>
+                            <div class="column ai-driven" style="width: 48%; position: relative; border-radius: 10px; border: 1px solid #30363d; padding: 20px; background-color: rgba(21, 37, 23, 0.7);">
+                                <div class="column-header" style="display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #30363d;">
+                                    <div class="column-icon" style="font-size: 24px; margin-right: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #238636; color: #fff;">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <h2 class="column-title" style="font-size: 1.5rem; font-weight: 700;">AI駆動開発</h2>
+                                </div>
+                                <div class="process-flow" style="margin: 15px 0; padding: 10px; border-radius: 5px;">
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.2);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #2ea043; color: #fff;">1</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">AIコード生成</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">Copilotが意図からコードを自動生成</div>
+                                        </div>
+                                    </div>
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.2);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #2ea043; color: #fff;">2</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">対話型アシスタント</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">Copilot Chatでリアルタイム支援</div>
+                                        </div>
+                                    </div>
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.2);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #2ea043; color: #fff;">3</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">自動バグ検出＆修正</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">エラー原因と解決策を提案</div>
+                                        </div>
+                                    </div>
+                                    <div class="process-step" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.2);">
+                                        <div class="step-number" style="width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; margin-right: 10px; flex-shrink: 0; background-color: #2ea043; color: #fff;">4</div>
+                                        <div class="step-content" style="flex-grow: 1;">
+                                            <div class="step-title" style="font-weight: 700; margin-bottom: 2px;">AI支援コードレビュー</div>
+                                            <div class="step-desc" style="font-size: 0.85rem; color: #8b949e;">Copilot自動レビューとリファクタリング</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="metrics-container" style="margin-top: 20px;">
+                                    <h3 class="metrics-title" style="font-size: 1rem; font-weight: 700; margin-bottom: 10px; color: #e6edf3;">開発メトリクス</h3>
+                                    <div class="chart-container" style="height: 160px; position: relative;">
+                                        <canvas id="aiMetrics"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: center; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <span style="margin: 0 15px;">コーディング速度: <span class="highlight" style="color: #2ea043;">55%向上</span></span>
+                            <span style="margin: 0 15px;">バグ発生率: <span class="highlight" style="color: #2ea043;">40%減少</span></span>
+                            <span style="margin: 0 15px;">開発者満足度: <span class="highlight" style="color: #2ea043;">88%向上</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-size: 20px 20px; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px);"></div>
+                        <div class="header" style="padding: 30px 50px 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center;">
+                                <span class="title-icon" style="color: #2ea043; margin-right: 15px;"><i class="fas fa-rocket"></i></span>
+                                GitHub Copilot 2025年 革新機能ハイライト
+                            </h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #8b949e; margin-bottom: 30px;">AI駆動開発の最先端：次世代コーディングアシスタント</p>
+                        </div>
+                        <div class="content-container" style="display: flex; flex-wrap: wrap; padding: 0 40px 40px; position: relative; z-index: 5;">
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Agent Mode</h3>
+                                    <span class="feature-badge" style="margin-left: 8px; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; background-color: #1f6feb; color: white;">NEW</span>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">開発者の意図を理解し、複数のタスクを自律的に完了させる高度なAIエージェント機能。コードの理解からバグ修正、リファクタリングまで自動対応。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">await agent.completeTask("Fix authentication bug");</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Workspace</h3>
+                                    <span class="feature-badge" style="margin-left: 8px; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; background-color: #1f6feb; color: white;">BETA</span>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">自然言語の指示からプロジェクト全体を自動構築。Issueから仕様書作成、設計、実装、テストまで一貫した開発環境を提供。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">workspace.createFromIssue("#123");</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Chat統合強化</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">コンテキストを完全理解した対話型アシスタント。複数ファイル参照、プロジェクト全体把握、言語切替など、より自然な会話でコーディングをサポート。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">@copilot explain this code and optimize it</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-files-o"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">マルチファイル編集</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">単一の指示で複数ファイルを同時編集。プロジェクト規模の変更やリファクタリングを効率化し、一貫性を自動維持。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">copilot.editAcrossFiles("Update API endpoints");</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-code-branch"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">コードレビュー統合</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">PRの自動レビュー、セキュリティ脆弱性検出、パフォーマンス最適化提案。人間レビュアーと協調してコード品質を向上。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">copilot.review(pullRequest, {depth: "deep"});</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">画像分析機能</h3>
+                                    <span class="feature-badge" style="margin-left: 8px; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; background-color: #1f6feb; color: white;">NEW</span>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">スクリーンショットやUI設計からコードを自動生成。ワイヤーフレームやモックアップを実装コードへと変換。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">copilot.generateFromImage("./mockup.png");</div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <div>詳細ガイド: <a href="https://github.com/features/copilot" style="color: #2ea043; text-decoration: none;">github.com/features/copilot</a></div>
+                            <div class="page-number" style="background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 3px 10px; border-radius: 12px;">3 / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-size: 20px 20px; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px);"></div>
+                        <div class="header" style="padding: 30px 50px 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center;">
+                                <span class="title-icon" style="color: #2ea043; margin-right: 15px;"><i class="fas fa-project-diagram"></i></span>
+                                開発フロー Step 1-2：プロジェクト立ち上げ〜設計
+                            </h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #8b949e; margin-bottom: 30px;">GitHub Copilot WorkspaceとAgent Modeによる自動化されたプロジェクト初期化と設計プロセス</p>
+                        </div>
+                        <div class="content-container" style="padding: 0 40px 40px; position: relative; z-index: 5;">
+                            <div class="workflow-container" style="display: flex; margin-bottom: 30px;">
+                                <div class="workflow-step" style="flex: 1; position: relative; padding: 0 15px;">
+                                    <div class="step-circle" style="width: 50px; height: 50px; background-color: rgba(46, 160, 67, 0.2); border: 2px solid #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #2ea043; margin: 0 auto 15px;">1</div>
+                                    <h3 class="step-title" style="text-align: center; font-weight: 700; color: #ffffff; margin-bottom: 10px;">プロジェクト立ち上げ</h3>
+                                    <p class="step-desc" style="text-align: center; font-size: 0.9rem; color: #8b949e;">自然言語でプロジェクト要件を入力するだけで自動初期化</p>
+                                </div>
+                                <div class="workflow-step" style="flex: 1; position: relative; padding: 0 15px;">
+                                    <div class="step-circle" style="width: 50px; height: 50px; background-color: rgba(46, 160, 67, 0.2); border: 2px solid #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #2ea043; margin: 0 auto 15px;">2</div>
+                                    <h3 class="step-title" style="text-align: center; font-weight: 700; color: #ffffff; margin-bottom: 10px;">要件分析</h3>
+                                    <p class="step-desc" style="text-align: center; font-size: 0.9rem; color: #8b949e;">AIが要件を理解し、必要なファイル構造を計画</p>
+                                </div>
+                                <div class="workflow-step" style="flex: 1; position: relative; padding: 0 15px;">
+                                    <div class="step-circle" style="width: 50px; height: 50px; background-color: rgba(46, 160, 67, 0.2); border: 2px solid #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #2ea043; margin: 0 auto 15px;">3</div>
+                                    <h3 class="step-title" style="text-align: center; font-weight: 700; color: #ffffff; margin-bottom: 10px;">設計書生成</h3>
+                                    <p class="step-desc" style="text-align: center; font-size: 0.9rem; color: #8b949e;">プロジェクト構造、アーキテクチャ、クラス設計を自動作成</p>
+                                </div>
+                                <div class="workflow-step" style="flex: 1; position: relative; padding: 0 15px;">
+                                    <div class="step-circle" style="width: 50px; height: 50px; background-color: rgba(46, 160, 67, 0.2); border: 2px solid #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #2ea043; margin: 0 auto 15px;">4</div>
+                                    <h3 class="step-title" style="text-align: center; font-weight: 700; color: #ffffff; margin-bottom: 10px;">環境構築</h3>
+                                    <p class="step-desc" style="text-align: center; font-size: 0.9rem; color: #8b949e;">必要な依存関係とプロジェクト設定ファイルを自動生成</p>
+                                </div>
+                            </div>
+                            <div class="features-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px;">
+                                <div class="feature-box" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px;">
+                                    <h3 class="feature-box-title" style="display: flex; align-items: center; margin-bottom: 15px; font-size: 1.2rem; font-weight: 700; color: #ffffff;">
+                                        <span class="feature-box-icon" style="color: #2ea043; margin-right: 10px; font-size: 1.2rem;"><i class="fas fa-building"></i></span>
+                                        Workspace機能による自動プロジェクト立ち上げ
+                                    </h3>
+                                    <div class="feature-content" style="display: flex; flex-direction: column;">
+                                        <p class="feature-text" style="font-size: 0.9rem; color: #8b949e; line-height: 1.6; margin-bottom: 15px;">GitHub Copilot Workspaceを使えば、要件をIssueとして記述するだけでプロジェクトの骨格が自動生成されます。フォルダ構造、設定ファイル、依存関係まで含めた初期化が数分で完了します。</p>
+                                        <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden;">
+                                            <div class="command-line" style="display: flex; margin: 5px 0; align-items: center;">
+                                                <span class="prompt" style="color: #ff7b72; margin-right: 8px;">$</span>
+                                                <span class="command" style="color: #a5d6a7;">gh copilot workspace create --from-issue 42</span>
+                                            </div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">✓ 要件を分析中...</div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">✓ プロジェクト構造を生成中...</div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">✓ 依存関係を構成中...</div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">✓ 設計書を作成中...</div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">🚀 プロジェクト「経費管理システム」の初期設定が完了しました！</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="feature-box" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px;">
+                                    <h3 class="feature-box-title" style="display: flex; align-items: center; margin-bottom: 15px; font-size: 1.2rem; font-weight: 700; color: #ffffff;">
+                                        <span class="feature-box-icon" style="color: #2ea043; margin-right: 10px; font-size: 1.2rem;"><i class="fas fa-robot"></i></span>
+                                        Agent Modeによる設計書自動生成
+                                    </h3>
+                                    <div class="feature-content" style="display: flex; flex-direction: column;">
+                                        <p class="feature-text" style="font-size: 0.9rem; color: #8b949e; line-height: 1.6; margin-bottom: 15px;">Agent Modeでは、AIが自律的に設計プロセスを遂行します。ERD、UML図、API設計書など、高品質な設計ドキュメントを自動で作成し、開発のロードマップを提示します。</p>
+                                        <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden;">
+                                            <div class="command-line" style="display: flex; margin: 5px 0; align-items: center;">
+                                                <span class="prompt" style="color: #ff7b72; margin-right: 8px;">&gt;</span>
+                                                <span class="command" style="color: #a5d6a7;">@copilot create system design for expense management app</span>
+                                            </div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">システム設計書を生成しています。アーキテクチャパターン、データモデル、API設計を含めます。</div>
+                                            <div class="command-line" style="display: flex; margin: 5px 0; align-items: center;">
+                                                <span class="prompt" style="color: #ff7b72; margin-right: 8px;">&gt;</span>
+                                                <span class="command" style="color: #a5d6a7;">@copilot generate ERD for user and expense entities</span>
+                                            </div>
+                                            <div class="response" style="color: #8b949e; margin-top: 3px; margin-left: 18px; font-size: 0.8rem;">ERDを生成しています。ユーザー、経費カテゴリ、経費項目、承認フローのエンティティ関係を図示します。</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <div>GitHub Copilot Workspace テクニカルプレビュー版：<a href="https://github.com/features/copilot/workspace" style="color: #2ea043; text-decoration: none;">github.com/features/copilot/workspace</a></div>
+                            <div class="page-number" style="background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 3px 10px; border-radius: 12px;">4 / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-size: 20px 20px; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px);"></div>
+                        <div class="header" style="padding: 30px 50px 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center;">
+                                <span class="title-icon" style="color: #2ea043; margin-right: 15px;"><i class="fas fa-code-branch"></i></span>
+                                開発フロー Step 3-4：実装〜テスト
+                            </h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #8b949e; margin-bottom: 30px;">Agent ModeとCopilot Chatによる自動コード生成・テスト・バグ修正の効率化</p>
+                        </div>
+                        <div class="content-container" style="display: flex; flex-direction: column; padding: 0 40px 40px; position: relative; z-index: 5;">
+                            <!-- Workflow Cycle -->
+                            <div class="workflow-container" style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                                <div class="workflow-step" style="flex: 1; position: relative; text-align: center;">
+                                    <div class="workflow-icon" style="width: 60px; height: 60px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 15px;">
+                                        <i class="fas fa-pen-fancy"></i>
+                                    </div>
+                                    <h3 class="workflow-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 5px;">コード自動生成</h3>
+                                    <p class="workflow-desc" style="font-size: 0.85rem; color: #8b949e; padding: 0 10px;">自然言語の指示から高品質なコードを生成</p>
+                                    <div class="workflow-arrow" style="position: absolute; top: 30px; right: -10px; color: #2ea043; font-size: 24px; z-index: 10;"><i class="fas fa-chevron-right"></i></div>
+                                </div>
+                                <div class="workflow-step" style="flex: 1; position: relative; text-align: center;">
+                                    <div class="workflow-icon" style="width: 60px; height: 60px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 15px;">
+                                        <i class="fas fa-vial"></i>
+                                    </div>
+                                    <h3 class="workflow-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 5px;">自動テスト生成</h3>
+                                    <p class="workflow-desc" style="font-size: 0.85rem; color: #8b949e; padding: 0 10px;">実装に基づくテストケースの自動作成</p>
+                                    <div class="workflow-arrow" style="position: absolute; top: 30px; right: -10px; color: #2ea043; font-size: 24px; z-index: 10;"><i class="fas fa-chevron-right"></i></div>
+                                </div>
+                                <div class="workflow-step" style="flex: 1; position: relative; text-align: center;">
+                                    <div class="workflow-icon" style="width: 60px; height: 60px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 15px;">
+                                        <i class="fas fa-bug"></i>
+                                    </div>
+                                    <h3 class="workflow-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 5px;">バグ検出</h3>
+                                    <p class="workflow-desc" style="font-size: 0.85rem; color: #8b949e; padding: 0 10px;">実行時エラーや潜在的問題を事前検知</p>
+                                    <div class="workflow-arrow" style="position: absolute; top: 30px; right: -10px; color: #2ea043; font-size: 24px; z-index: 10;"><i class="fas fa-chevron-right"></i></div>
+                                </div>
+                                <div class="workflow-step last-step" style="flex: 1; position: relative; text-align: center;">
+                                    <div class="workflow-icon" style="width: 60px; height: 60px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 15px;">
+                                        <i class="fas fa-wrench"></i>
+                                    </div>
+                                    <h3 class="workflow-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 5px;">自動修正提案</h3>
+                                    <p class="workflow-desc" style="font-size: 0.85rem; color: #8b949e; padding: 0 10px;">検出された問題の解決策を提示</p>
+                                </div>
+                            </div>
+                            <!-- Code Examples -->
+                            <div class="examples-container" style="display: flex; margin-top: 20px;">
+                                <!-- Agent Mode Example -->
+                                <div class="example-card" style="width: 48%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px;">
+                                    <div class="example-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                        <div class="example-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <h3 class="example-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Agent Mode</h3>
+                                    </div>
+                                    <div class="code-window" style="background-color: #161b22; border: 1px solid #30363d; border-radius: 5px; padding: 12px; font-family: 'M PLUS 1 Code', monospace; font-size: 0.85rem; color: #e6edf3; position: relative; margin-bottom: 10px;">
+                                        <div class="code-header" style="display: flex; justify-content: space-between; border-bottom: 1px solid #30363d; padding-bottom: 8px; margin-bottom: 10px; color: #8b949e; font-size: 0.8rem;">
+                                            <span>agent_mode.js</span>
+                                            <span>GitHub Copilot Agent</span>
+                                        </div>
+                                        <div class="code-content" style="line-height: 1.4;">
+                                            <div class="code-input" style="color: #a5d6a7;">// APIクライアントを作成してデータを取得・処理する関数を実装</div><br>
+                                            <div class="code-input" style="color: #a5d6a7;">@copilot implement fetchUserDataAndProcess</div><br>
+                                            <div class="code-output" style="color: #79b8ff;">
+                                                <span class="highlight" style="color: #ff7b72;">async function fetchUserDataAndProcess(userId) {</span><br>
+                                                try {<br>
+                                                // APIからユーザーデータを取得<br>
+                                                const response = await fetch(`/api/users/${userId}`);<br>
+                                                if (!response.ok) throw new Error('User data fetch failed');<br>
+                                                const userData = await response.json();<br><br>
+                                                // データ処理ロジック<br>
+                                                const processedData = {<br>
+                                                ...userData,<br>
+                                                fullName: `${userData.firstName} ${userData.lastName}`,<br>
+                                                isActive: userData.status === 'active',<br>
+                                                lastLoginDate: new Date(userData.lastLogin)<br>
+                                                };<br><br>
+                                                return processedData;<br>
+                                                } catch (error) {<br>
+                                                console.error('Error processing user data:', error);<br>
+                                                throw error;<br>
+                                                }<br>
+                                                <span class="highlight" style="color: #ff7b72;">}</span>
+                                            </div><br>
+                                            <div class="code-input" style="color: #a5d6a7;">@copilot test this function</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Copilot Chat Example -->
+                                <div class="example-card" style="width: 48%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px;">
+                                    <div class="example-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                        <div class="example-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                            <i class="fas fa-comments"></i>
+                                        </div>
+                                        <h3 class="example-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">Copilot Chat</h3>
+                                    </div>
+                                    <div class="code-window" style="background-color: #161b22; border: 1px solid #30363d; border-radius: 5px; padding: 12px; font-family: 'M PLUS 1 Code', monospace; font-size: 0.85rem; color: #e6edf3; position: relative; margin-bottom: 10px;">
+                                        <div class="code-header" style="display: flex; justify-content: space-between; border-bottom: 1px solid #30363d; padding-bottom: 8px; margin-bottom: 10px; color: #8b949e; font-size: 0.8rem;">
+                                            <span>テスト自動化とバグ修正</span>
+                                            <span>GitHub Copilot Chat</span>
+                                        </div>
+                                        <div class="code-content" style="line-height: 1.4;">
+                                            <div class="code-input" style="color: #a5d6a7;">@copilot このコードのテストを書いてください。異常系もカバーしてください</div><br>
+                                            <div class="code-output" style="color: #79b8ff;">
+                                                <span class="highlight" style="color: #ff7b72;">describe('fetchUserDataAndProcess', () =&gt; {</span><br>
+                                                // 正常系テスト<br>
+                                                test('正常にユーザーデータを取得・加工できる', async () =&gt; {<br>
+                                                // モックレスポンスを設定<br>
+                                                global.fetch = jest.fn().mockResolvedValue({<br>
+                                                ok: true,<br>
+                                                json: () =&gt; Promise.resolve({<br>
+                                                firstName: '太郎',<br>
+                                                lastName: '山田',<br>
+                                                status: 'active',<br>
+                                                lastLogin: '2023-04-01T12:00:00Z'<br>
+                                                })<br>
+                                                });<br><br>
+                                                const result = await fetchUserDataAndProcess('user123');<br>
+                                                expect(result.fullName).toBe('太郎 山田');<br>
+                                                expect(result.isActive).toBe(true);<br>
+                                                });<br><br>
+                                                // 異常系テスト<br>
+                                                test('APIエラー時に例外をスローする', async () =&gt; {<br>
+                                                global.fetch = jest.fn().mockResolvedValue({<br>
+                                                ok: false<br>
+                                                });<br><br>
+                                                await expect(fetchUserDataAndProcess('user123'))<br>
+                                                .rejects.toThrow('User data fetch failed');<br>
+                                                });<br>
+                                                <span class="highlight" style="color: #ff7b72;">});</span>
+                                                <span class="result-tag" style="display: inline-block; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 10px;">テスト自動生成完了</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <div>AI駆動の開発サイクル: 設計 → 実装 → テスト → 改善 → デプロイ</div>
+                            <div class="page-number" style="background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 3px 10px; border-radius: 12px;">5 / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-size: 20px 20px; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px);"></div>
+                        <div class="header" style="padding: 30px 50px 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center;">
+                                <span class="title-icon" style="color: #2ea043; margin-right: 15px;"><i class="fas fa-rocket-launch"></i></span>
+                                開発フロー Step 5-6：レビュー〜デプロイ
+                            </h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #8b949e; margin-bottom: 30px;">GitHub Copilotによる効率的なリリースプロセスの実現</p>
+                        </div>
+                        <div class="content-container" style="display: flex; flex-wrap: wrap; padding: 0 40px 40px; position: relative; z-index: 5;">
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-code-pull-request"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">AI駆動コードレビュー</h3>
+                                    <span class="feature-badge" style="margin-left: 8px; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; background-color: #1f6feb; color: white;">2025</span>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">GitHubのPRに自動的にAIレビュアーが参加。セキュリティ脆弱性、パフォーマンスボトルネック、ベストプラクティス違反を検出し、改善提案を自動生成。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">copilot.assignReviewer(pullRequest, "ai-reviewer");</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-infinity"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">CI/CD自動最適化</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">テスト戦略の最適化、ビルドパイプラインの高速化、デプロイスクリプトの自動生成。プロジェクトに最適なCI/CD設定をAIが提案・実装。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">copilot.optimizePipeline("production", {speed: "max"});</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-cubes"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">マルチファイルデプロイ</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">複数ファイルの変更を一元管理し、依存関係を自動解析。破壊的変更を事前に検出し、デプロイ時の整合性を確保。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">await agent.deployChanges({detectDependencies: true});</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-shield-check"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">品質ゲート自動化</h3>
+                                    <span class="feature-badge" style="margin-left: 8px; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; background-color: #1f6feb; color: white;">NEW</span>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">カスタマイズ可能なコード品質基準に基づき、自動的に品質を評価。テストカバレッジ、複雑度、セキュリティスコアを分析し、基準未達の場合はデプロイを阻止。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">copilot.enforceQualityGate(branch, standardLevel.high);</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">デプロイ監視統合</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">デプロイ後のパフォーマンスと安定性を自動監視。異常検知時にロールバック提案や修正コードを自動生成し、システム安定性を確保。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">agent.monitorDeployment("v2.5.0", {duration: "24h"});</div>
+                            </div>
+                            <div class="feature-card" style="width: 31%; margin: 1%; background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: all 0.2s;">
+                                <div class="card-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                    <div class="feature-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0;">
+                                        <i class="fas fa-rotate-left"></i>
+                                    </div>
+                                    <h3 class="feature-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff;">インテリジェントロールバック</h3>
+                                </div>
+                                <p class="feature-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">問題発生時に自動的に前バージョンへの安全なロールバックを実施。障害の原因を分析し、修正案をその場で提示。</p>
+                                <div class="feature-highlight" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis;">await copilot.rollback("v2.5.0", {analyze: true});</div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <div>GitHub Actions + Copilot 統合デモ: <a href="https://github.com/features/actions" style="color: #2ea043; text-decoration: none;">github.com/features/actions</a></div>
+                            <div class="page-number" style="background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 3px 10px; border-radius: 12px;">6 / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px); background-size: 20px 20px;"></div>
+                        <div class="header" style="padding: 30px 50px 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center;">
+                                <span class="title-icon" style="color: #2ea043; margin-right: 15px;"><i class="fas fa-code"></i></span>
+                                Webアプリケーション開発の具体例
+                            </h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #8b949e; margin-bottom: 20px;">経費精算アプリ開発プロセスにおけるGitHub Copilot活用シナリオ</p>
+                        </div>
+                        <div class="content-container" style="display: flex; padding: 0 40px 40px; position: relative; z-index: 5; gap: 30px;">
+                            <div class="dev-timeline horizontal" style="width: 100%; display: flex; flex-direction: row; justify-content: space-around; gap: 15px;">
+                                <div class="timeline-item active" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s; border-color: #2ea043; box-shadow: 0 0 15px rgba(46, 160, 67, 0.3);">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-pencil-ruler"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">プロトタイピング</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">自然言語の指示からUIプロトタイプを短時間で生成。Agent Modeが画面遷移と基本機能を理解し、基本レイアウトを構築。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;">// Copilot Chat入力
+@copilot 経費精算システムのプロトタイプを
+Bootstrap使用して作成してください</div>
+                                </div>
+                                <div class="timeline-item" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s;">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-paint-brush"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">フロントエンド開発</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">HTML/CSS/JSコードの自動生成とリアルタイム最適化。レスポンシブデザイン、アクセシビリティ考慮、複雑なフォーム検証も対応。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;">// 経費入力フォームのバリデーション
+const validateForm = () =&gt; {
+  // Copilot生成コード
+  const amount = document.getElementById('amount');
+  return isValidAmount(amount.value);
+}</div>
+                                </div>
+                                <div class="timeline-item" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s;">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-server"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">バックエンド実装</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">APIエンドポイント、データモデル、バリデーションロジックを自動生成。Workspace機能でフロントとの整合性を自動維持。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;">// バックエンドAPI（Node.js/Express）
+app.post('/api/expenses', async (req, res) =&gt; {
+  // Copilot生成コード
+  try {
+    const expense = await Expense.create(req.body);
+    return res.status(201).json(expense);
+  } catch (err) {...}
+});</div>
+                                </div>
+                                <div class="timeline-item" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s;">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-vial"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">テスト・デプロイ</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">単体テスト、E2Eテストの自動生成。CI/CDパイプライン設定もCopilotがサポート。バグの事前検出率が大幅向上。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;">// 自動生成されたJestテスト
+test('expense submission with valid data', async () =&gt; {
+  // Copilot生成コード
+  const response = await request(app)
+    .post('/api/expenses')
+    .send(validExpenseData);
+  expect(response.status).toBe(201);
+});</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <div>開発期間: 従来の1/4に短縮（1ヶ月→1週間）/ バグ削減率: 85%</div>
+                            <div class="page-number" style="background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 3px 10px; border-radius: 12px;">7 / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px); background-size: 20px 20px;"></div>
+                        <div class="header" style="padding: 30px 50px 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; display: flex; align-items: center;">
+                                <span class="title-icon" style="color: #2ea043; margin-right: 15px;"><i class="fas fa-brain"></i></span>
+                                機械学習プロジェクトの具体例
+                            </h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #8b949e; margin-bottom: 20px;">電力需要予測AIモデル開発におけるGitHub Copilot活用シナリオ</p>
+                        </div>
+                        <div class="content-container" style="display: flex; padding: 0 40px 40px; position: relative; z-index: 5; gap: 30px;">
+                            <div class="dev-timeline horizontal" style="width: 100%; display: flex; flex-direction: row; justify-content: space-around; gap: 15px;">
+                                <div class="timeline-item active" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s; border-color: #2ea043; box-shadow: 0 0 15px rgba(46, 160, 67, 0.3);">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-database"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">データ分析・前処理</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">Copilot Chatにデータセットを渡し、EDA（探索的データ分析）を依頼。欠損値処理、特徴量エンジニアリングのコードを自動生成。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;"># Copilot Chat in Notebook
+@copilot analyze this dataframe and suggest preprocessing steps</div>
+                                </div>
+                                <div class="timeline-item" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s;">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-cogs"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">モデル開発・訓練</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">PyTorch, TensorFlow等のフレームワークでモデルアーキテクチャを自動生成。ハイパーパラメータ調整や訓練ループもCopilotが支援。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;"># LSTMモデルのコードを生成
+model = copilot.generate_model('LSTM', input_shape=(...))</div>
+                                </div>
+                                <div class="timeline-item" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s;">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-chart-pie"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">モデル評価・可視化</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">精度、再現率、F1スコアなどの評価指標を計算するコードを自動生成。MatplotlibやPlotlyでの結果可視化もサポート。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;"># 予測結果と実測値の比較グラフ
+copilot.plot_predictions(y_true, y_pred)</div>
+                                </div>
+                                <div class="timeline-item" style="background-color: rgba(22, 27, 34, 0.7); border: 1px solid #30363d; border-radius: 8px; padding: 15px; position: relative; transition: all 0.2s;">
+                                    <div class="step-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                                        <div class="step-icon" style="width: 40px; height: 40px; background-color: rgba(46, 160, 67, 0.2); color: #2ea043; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-right: 12px; flex-shrink: 0; z-index: 2; position: relative;">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <h3 class="step-title" style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">MLOps・デプロイ</h3>
+                                    </div>
+                                    <p class="step-desc" style="font-size: 0.9rem; color: #8b949e; line-height: 1.5; padding-left: 52px;">モデルをAPIとしてデプロイするためのDockerfileやCI/CDパイプラインを自動生成。MLflow等との連携もサポート。</p>
+                                    <div class="code-snippet" style="font-family: 'M PLUS 1 Code', monospace; background-color: rgba(46, 160, 67, 0.1); border-left: 3px solid #2ea043; padding: 8px 12px; font-size: 0.85rem; color: #a5d6a7; border-radius: 0 4px 4px 0; overflow: hidden; white-space: pre; text-overflow: ellipsis; margin-top: 10px; margin-left: 52px;"># FastAPIでのモデルサービングAPI
+copilot.generate_serving_api(model, 'fastapi')</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            <div>モデル精度: 98.5% (従来比+5%) / 開発期間: 60%短縮</div>
+                            <div class="page-number" style="background-color: rgba(46, 160, 67, 0.2); color: #2ea043; padding: 3px 10px; border-radius: 12px;">8 / 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden; color: #e6edf3;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-size: 20px 20px; background-image: repeating-linear-gradient(0deg, #30363d, #30363d 1px, transparent 1px, transparent 20px), repeating-linear-gradient(90deg, #30363d, #30363d 1px, transparent 1px, transparent 20px);"></div>
+                        <div class="header" style="text-align: center; padding: 30px 0 20px; position: relative; z-index: 5;">
+                            <h1 class="title" style="font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 10px; letter-spacing: 1px;">開発効率アップの実測値・メトリクス</h1>
+                            <p class="subtitle" style="font-size: 1.2rem; color: #2ea043; margin-bottom: 20px;">2025年のAI開発がもたらす具体的な効果</p>
+                        </div>
+                        <div class="metrics-grid" style="display: flex; justify-content: space-between; padding: 0 40px 20px; position: relative; z-index: 5;">
+                            <div class="metrics-column" style="width: 48%; position: relative; border-radius: 10px; border: 1px solid #30363d; padding: 20px; background-color: rgba(21, 31, 46, 0.7);">
+                                <div class="metrics-header" style="display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #30363d;">
+                                    <div class="metrics-icon" style="font-size: 24px; margin-right: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #238636; color: #fff;">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <h2 class="metrics-title" style="font-size: 1.3rem; font-weight: 700; color: #ffffff;">主要パフォーマンス指標</h2>
+                                </div>
+                                <div class="chart-container" style="height: 300px; position: relative; margin-bottom: 15px;">
+                                    <canvas id="performanceChart"></canvas>
+                                </div>
+                                <div class="testimonial" style="background-color: rgba(35, 134, 54, 0.1); border-left: 4px solid #2ea043; padding: 10px 15px; margin-top: 15px; border-radius: 0 5px 5px 0;">
+                                    <p class="testimonial-text" style="font-style: italic; color: #e6edf3; font-size: 0.9rem; margin-bottom: 5px;">「GitHub Copilotの導入後、特に繰り返し作業の多いコーディング部分で劇的な時間短縮を実感。開発チーム全体の効率が約3倍に向上しました。」</p>
+                                    <p class="testimonial-source" style="color: #8b949e; font-size: 0.8rem; text-align: right;">- 大手IT企業 開発リーダー</p>
+                                </div>
+                            </div>
+                            <div class="metrics-column" style="width: 48%; position: relative; border-radius: 10px; border: 1px solid #30363d; padding: 20px; background-color: rgba(21, 31, 46, 0.7);">
+                                <div class="metrics-header" style="display: flex; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #30363d;">
+                                    <div class="metrics-icon" style="font-size: 24px; margin-right: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #238636; color: #fff;">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <h2 class="metrics-title" style="font-size: 1.3rem; font-weight: 700; color: #ffffff;">開発プロセス効率化</h2>
+                                </div>
+                                <div class="stat-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
+                                    <div class="stat-card" style="background-color: rgba(35, 134, 54, 0.1); border-radius: 8px; padding: 15px; text-align: center;">
+                                        <div class="stat-value" style="font-size: 2.2rem; font-weight: 700; color: #2ea043; margin-bottom: 5px;">55%</div>
+                                        <div class="stat-label" style="font-size: 0.85rem; color: #8b949e;">開発時間短縮</div>
+                                    </div>
+                                    <div class="stat-card" style="background-color: rgba(35, 134, 54, 0.1); border-radius: 8px; padding: 15px; text-align: center;">
+                                        <div class="stat-value" style="font-size: 2.2rem; font-weight: 700; color: #2ea043; margin-bottom: 5px;">70%</div>
+                                        <div class="stat-label" style="font-size: 0.85rem; color: #8b949e;">ボイラープレート削減</div>
+                                    </div>
+                                    <div class="stat-card" style="background-color: rgba(35, 134, 54, 0.1); border-radius: 8px; padding: 15px; text-align: center;">
+                                        <div class="stat-value" style="font-size: 2.2rem; font-weight: 700; color: #2ea043; margin-bottom: 5px;">40%</div>
+                                        <div class="stat-label" style="font-size: 0.85rem; color: #8b949e;">バグ発生率減少</div>
+                                    </div>
+                                    <div class="stat-card" style="background-color: rgba(35, 134, 54, 0.1); border-radius: 8px; padding: 15px; text-align: center;">
+                                        <div class="stat-value" style="font-size: 2.2rem; font-weight: 700; color: #2ea043; margin-bottom: 5px;">65%</div>
+                                        <div class="stat-label" style="font-size: 0.85rem; color: #8b949e;">コスト削減効果</div>
+                                    </div>
+                                </div>
+                                <div class="improvement-list" style="margin-top: 20px;">
+                                    <div class="improvement-item" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.1);">
+                                        <div class="improvement-icon" style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #2ea043; color: #fff; margin-right: 10px; flex-shrink: 0; font-size: 0.9rem;">
+                                            <i class="fas fa-brain"></i>
+                                        </div>
+                                        <div class="improvement-content" style="flex-grow: 1;">
+                                            <div class="improvement-title" style="font-weight: 700; margin-bottom: 2px; color: #e6edf3;">認知負荷の軽減</div>
+                                            <div class="improvement-desc" style="font-size: 0.85rem; color: #8b949e;">開発者は創造的思考に集中可能（85%改善）</div>
+                                        </div>
+                                    </div>
+                                    <div class="improvement-item" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.1);">
+                                        <div class="improvement-icon" style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #2ea043; color: #fff; margin-right: 10px; flex-shrink: 0; font-size: 0.9rem;">
+                                            <i class="fas fa-rocket"></i>
+                                        </div>
+                                        <div class="improvement-content" style="flex-grow: 1;">
+                                            <div class="improvement-title" style="font-weight: 700; margin-bottom: 2px; color: #e6edf3;">新機能リリース速度</div>
+                                            <div class="improvement-desc" style="font-size: 0.85rem; color: #8b949e;">市場投入までの時間60%短縮</div>
+                                        </div>
+                                    </div>
+                                    <div class="improvement-item" style="display: flex; align-items: center; margin-bottom: 10px; padding: 8px; border-radius: 5px; background-color: rgba(35, 134, 54, 0.1);">
+                                        <div class="improvement-icon" style="width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #2ea043; color: #fff; margin-right: 10px; flex-shrink: 0; font-size: 0.9rem;">
+                                            <i class="fas fa-code-branch"></i>
+                                        </div>
+                                        <div class="improvement-content" style="flex-grow: 1;">
+                                            <div class="improvement-title" style="font-weight: 700; margin-bottom: 2px; color: #e6edf3;">コード品質</div>
+                                            <div class="improvement-desc" style="font-size: 0.85rem; color: #8b949e;">テストカバレッジ50%向上・技術的負債45%減少</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 15px; left: 0; width: 100%; text-align: center; color: #8b949e; font-size: 0.8rem; z-index: 5;">
+                            ※数値は2024年第3四半期から2025年第2四半期にかけての複数企業での実測値平均（n=350）
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-container" style="width: 1280px; min-height: 720px; background-color: #0d1117; position: relative; overflow: hidden;">
+                        <div class="bg-pattern" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url(&quot;https://www.genspark.ai/image_placeholder.png&quot;); opacity: 0.1;"></div>
+                        <div class="bg-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background-color: rgba(0, 0, 0, 0.2);"></div>
+                        <div class="accent-bar" style="position: absolute; top: 0; left: 0; width: 10px; height: 100%; background-color: #2ea043;"></div>
+                        <div class="floating-elements" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;">
+                            <i class="floating-icon fas fa-code" style="top: 15%; left: 10%; font-size: 30px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-robot" style="top: 25%; left: 85%; font-size: 24px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-brain" style="top: 65%; left: 15%; font-size: 28px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-lightbulb" style="top: 40%; left: 80%; font-size: 22px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                            <i class="floating-icon fas fa-terminal" style="top: 80%; left: 75%; font-size: 26px; position: absolute; opacity: 0.2; color: #79c0ff;"></i>
+                        </div>
+                        <div class="title-container" style="position: relative; z-index: 10; padding-top: 60px; text-align: center;">
+                            <h1 class="main-title" style="font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; background-clip: text; -webkit-background-clip: text; color: white; line-height: 1.2;">まとめ・次世代AI開発への展望</h1>
+                            <h2 class="subtitle" style="font-size: 2rem; font-weight: 700; color: #2ea043; margin-bottom: 40px;">AI時代における開発の未来を見据えて</h2>
+                        </div>
+                        <div class="content-container" style="display: flex; justify-content: space-between; padding: 0 80px; margin-top: 40px; position: relative; z-index: 10;">
+                            <div class="future-column" style="width: 30%; padding: 20px; background-color: rgba(13, 17, 23, 0.7); border: 1px solid #30363d; border-radius: 8px;">
+                                <h3 class="column-title" style="font-size: 1.5rem; font-weight: 700; color: #2ea043; margin-bottom: 15px; display: flex; align-items: center;"><i class="fas fa-rocket" style="margin-right: 10px;"></i>AI内蔵開発環境の未来</h3>
+                                <ul class="future-list" style="list-style: none; padding-left: 0; margin: 0;">
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>インテリジェントな自動最適化とリアルタイム支援</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>ドメイン知識の自己学習と特化型提案</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>完全な要件からコードへの自動変換</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>プロジェクト全体の自動リファクタリング</li>
+                                </ul>
+                            </div>
+                            <div class="future-column" style="width: 30%; padding: 20px; background-color: rgba(13, 17, 23, 0.7); border: 1px solid #30363d; border-radius: 8px;">
+                                <h3 class="column-title" style="font-size: 1.5rem; font-weight: 700; color: #2ea043; margin-bottom: 15px; display: flex; align-items: center;"><i class="fas fa-user-cog" style="margin-right: 10px;"></i>開発者の役割変化</h3>
+                                <ul class="future-list" style="list-style: none; padding-left: 0; margin: 0;">
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>実装者からシステム設計者・監督者へ</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>AIプロンプト設計スキルの重要性向上</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>ビジネス価値創出への集中</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>複雑な問題解決とイノベーション創出</li>
+                                </ul>
+                            </div>
+                            <div class="future-column" style="width: 30%; padding: 20px; background-color: rgba(13, 17, 23, 0.7); border: 1px solid #30363d; border-radius: 8px;">
+                                <h3 class="column-title" style="font-size: 1.5rem; font-weight: 700; color: #2ea043; margin-bottom: 15px; display: flex; align-items: center;"><i class="fas fa-handshake" style="margin-right: 10px;"></i>エージェント協働時代</h3>
+                                <ul class="future-list" style="list-style: none; padding-left: 0; margin: 0;">
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>複数AIエージェントの自律連携開発</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>人間の意図理解に基づく先回り支援</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>継続的な学習と能力向上</li>
+                                    <li style="margin-bottom: 12px; color: #c9d1d9; display: flex; align-items: flex-start;"><i class="fas fa-check-circle" style="color: #2ea043; margin-right: 10px; margin-top: 5px;"></i>個人最適化されたAIペアプログラミング</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="conclusion" style="text-align: center; position: relative; z-index: 10; margin-top: 40px; padding: 0 80px;">
+                            <p style="font-size: 1.2rem; color: #c9d1d9; line-height: 1.6;">開発者とAIの境界が曖昧になる<span class="highlight" style="color: #2ea043; font-weight: bold;">共創の時代</span>が始まっています。<br>AIはツールではなく<span class="highlight" style="color: #2ea043; font-weight: bold;">パートナー</span>として、より創造的で革新的なソフトウェア開発を実現します。</p>
+                        </div>
+                        <div class="footer" style="position: absolute; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; color: #8b949e; font-size: 0.9rem;">
+                            <div>2025年9月14日</div>
+                            <div><span class="highlight" style="color: #2ea043; font-weight: bold;">AI開発革命</span> × <span class="highlight" style="color: #2ea043; font-weight: bold;">人間の創造性</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="prev-button" class="nav-button"><i class="fas fa-chevron-left"></i></button>
+        <button id="next-button" class="nav-button"><i class="fas fa-chevron-right"></i></button>
+
+        <div id="pagination-container"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+            const paginationContainer = document.getElementById('pagination-container');
+            const presentationContainer = document.getElementById('presentation-container');
+
+            let currentSlide = 0;
+            let dots = [];
+
+            function init() {
+                createPagination();
+                showSlide(0);
+                window.addEventListener('resize', resizePresentation);
+                resizePresentation();
+            }
+
+            function resizePresentation() {
+                const containerWidth = presentationContainer.offsetWidth;
+                const scale = containerWidth / 1280;
+                const slideContents = document.querySelectorAll('.slide-content');
+                slideContents.forEach(content => {
+                    content.style.transform = `scale(${scale})`;
+                });
+            }
+
+            function createPagination() {
+                slides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('pagination-dot');
+                    dot.addEventListener('click', () => {
+                        showSlide(index);
+                    });
+                    paginationContainer.appendChild(dot);
+                    dots.push(dot);
+                });
+            }
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+                currentSlide = index;
+                
+                // Re-initialize charts on the active slide if they exist
+                const activeSlide = slides[currentSlide];
+                if (activeSlide) {
+                    const traditionalCanvas = activeSlide.querySelector('#traditionalMetrics');
+                    const aiCanvas = activeSlide.querySelector('#aiMetrics');
+                    const performanceCanvas = activeSlide.querySelector('#performanceChart');
+
+                    if (traditionalCanvas && !traditionalCanvas.chart) {
+                         traditionalCanvas.chart = new Chart(traditionalCanvas.getContext('2d'), {
+                            type: 'bar',
+                            data: {
+                                labels: ['開発時間', '問題解決', 'レビュー', 'デプロイ'],
+                                datasets: [{
+                                    label: '所要時間（相対値）',
+                                    data: [100, 100, 100, 100],
+                                    backgroundColor: '#8b949e',
+                                    borderColor: '#30363d',
+                                    borderWidth: 1,
+                                    borderRadius: 5
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true, max: 100, grid: { color: 'rgba(48, 54, 61, 0.5)' } },
+                                    x: { grid: { display: false } }
+                                }
+                            }
+                        });
+                    }
+                    if (aiCanvas && !aiCanvas.chart) {
+                        aiCanvas.chart = new Chart(aiCanvas.getContext('2d'), {
+                            type: 'bar',
+                            data: {
+                                labels: ['開発時間', '問題解決', 'レビュー', 'デプロイ'],
+                                datasets: [{
+                                    label: '所要時間（相対値）',
+                                    data: [45, 35, 40, 60],
+                                    backgroundColor: '#2ea043',
+                                    borderColor: '#238636',
+                                    borderWidth: 1,
+                                    borderRadius: 5
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true, max: 100, grid: { color: 'rgba(48, 54, 61, 0.5)' } },
+                                    x: { grid: { display: false } }
+                                }
+                            }
+                        });
+                    }
+                    if (performanceCanvas && !performanceCanvas.chart) {
+                        performanceCanvas.chart = new Chart(performanceCanvas.getContext('2d'), {
+                            type: 'bar',
+                            data: {
+                                labels: ['設計フェーズ', 'コーディング', 'テスト', 'レビュー', 'バグ修正', 'ドキュメント作成'],
+                                datasets: [
+                                    {
+                                        label: '従来の開発（時間）',
+                                        data: [100, 100, 100, 100, 100, 100],
+                                        backgroundColor: '#8b949e',
+                                        borderColor: '#30363d',
+                                        borderWidth: 1,
+                                        borderRadius: 5,
+                                        order: 2
+                                    },
+                                    {
+                                        label: 'AI駆動開発（時間）',
+                                        data: [45, 30, 50, 35, 40, 25],
+                                        backgroundColor: '#2ea043',
+                                        borderColor: '#238636',
+                                        borderWidth: 1,
+                                        borderRadius: 5,
+                                        order: 1
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'top',
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                const label = context.dataset.label || '';
+                                                const value = context.raw || 0;
+                                                if (label.includes('AI')) {
+                                                    const reduction = 100 - value;
+                                                    return `${label}: ${value} (${reduction}%削減)`;
+                                                }
+                                                return `${label}: ${value}`;
+                                            }
+                                        }
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        max: 100,
+                                        title: {
+                                            display: true,
+                                            text: '相対時間（従来開発=100）'
+                                        },
+                                        grid: {
+                                            color: 'rgba(48, 54, 61, 0.5)'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            prevButton.addEventListener('click', () => {
+                const newIndex = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(newIndex);
+            });
+
+            nextButton.addEventListener('click', () => {
+                const newIndex = (currentSlide + 1) % slides.length;
+                showSlide(newIndex);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevButton.click();
+                } else if (e.key === 'ArrowRight') {
+                    nextButton.click();
+                }
+            });
+
+            init();
+        });
+    </script>
+</body>
+</html>

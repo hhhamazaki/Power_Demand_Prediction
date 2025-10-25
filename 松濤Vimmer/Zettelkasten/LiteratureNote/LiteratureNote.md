@@ -1,0 +1,5 @@
+Web上のコンテンツ、参考資料や文献からの情報をまとめたノートです。
+LiteratureNoteのほとんどはObsidian Web Clipper でWebから保存した記事になります。
+最近はリポジトリの内容も含めたりします。
+フロントマターはWeb Clipper で保存時にほとんどが自動生成されます。
+permanentNote のリンクだけ手動で行い双方向リンクを設定します。

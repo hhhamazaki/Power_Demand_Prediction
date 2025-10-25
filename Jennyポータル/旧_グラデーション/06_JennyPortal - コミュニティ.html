@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - コミュニティ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn {
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">コミュニティ</h2>
+        <p class="text-gray-700 mb-6">質問、相談、事例共有、勉強会などのコミュニティ活動をご紹介します。</p>
+
+        <div id="community_overview_cards" class="content-section active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">質問・相談</h4>
+                    <p class="text-sm mb-4">技術的な疑問や学習に関する質問を投稿。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('community_qa_forum_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">イベント情報</h4>
+                    <p class="text-sm mb-4">オンラインイベントや勉強会の最新情報。</p>
+                    <button class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('community_events_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">成功事例</h4>
+                    <p class="text-sm mb-4">業務効率化の成功事例をご紹介。</p>
+                    <button class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('community_success_stories_detail')">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="community_qa_forum_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">質問・相談</h3>
+                <p class="text-gray-700 mb-6">Jennyコミュニティでは、学習者同士の交流と相互サポートを促進しています。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <a href="http://example.com/qa_forum_ask" target="_blank" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">質問フォーラム</h4>
+                            <p class="text-sm mb-4">技術的な疑問や学習に関する質問を投稿</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/qa_forum_share" target="_blank" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">事例共有</h4>
+                            <p class="text-sm mb-4">成功事例や失敗談を共有し学び合う</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/qa_forum_events" target="_blank" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">勉強会・イベント</h4>
+                            <p class="text-sm mb-4">定期的な勉強会やウェビナーの開催</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+
+                <div class="news-item border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded-r-lg mt-6">
+                    <div class="text-purple-600 font-bold text-sm mb-2">最新の質問</div>
+                    <p class="text-gray-700 mb-1"><strong class="text-indigo-600">Q:</strong> ChatGPTをExcelと連携させる方法について教えてください</p>
+                    <p class="text-gray-700"><strong class="text-purple-600">A:</strong> Power QueryやVBAを活用した連携方法があります。詳細は中級コースで解説しています。</p>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('community_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="community_events_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">イベント情報</h3>
+                <p class="text-gray-700 mb-4">Jennyコミュニティで開催されるオンラインイベントや勉強会の最新情報です。ぜひご参加ください！</p>
+                <div class="grid grid-cols-1 gap-6">
+                    <a href="http://example.com/event_ai_seminar" target="_blank" class="course-card bg-gradient-to-br from-purple-500 to-indigo-500 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">AI自動化最新トレンドセミナー</h4>
+                            <p class="text-sm mb-2">2024年6月15日（オンライン）</p>
+                        </div>
+                        <span class="btn bg-white text-indigo-500 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/event_rpa_workshop" target="_blank" class="course-card bg-gradient-to-br from-teal-500 to-cyan-600 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">RPA実践ワークショップ</h4>
+                            <p class="text-sm mb-2">2024年7月10日（オフライン開催）</p>
+                        </div>
+                        <span class="btn bg-white text-cyan-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/event_online_exchange" target="_blank" class="course-card bg-gradient-to-br from-pink-500 to-red-600 text-white p-5 rounded-xl shadow-lg flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">Jennyオンライン交流会</h4>
+                            <p class="text-sm mb-2">毎月第3木曜日開催</p>
+                        </div>
+                        <span class="btn bg-white text-red-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('community_overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="community_success_stories_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">成功事例</h3>
+                <p class="text-gray-700 mb-4">Jennyで学んだメンバーによる業務効率化の成功事例をご紹介します。あなたの業務改善のヒントに！</p>
+                <div class="grid grid-cols-1 gap-6">
+                    <a href="http://example.com/success_story_a_company" target="_blank" class="news-item border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded-r-lg mb-4 block flex flex-col justify-between items-start">
+                        <div>
+                            <div class="text-purple-600 font-bold text-sm mb-2">事例1: A社</div>
+                            <p class="text-gray-700">経理業務のRPA導入により、月間50時間の作業時間を削減。</p>
+                        </div>
+                        <span class="btn bg-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="http://example.com/success_story_b_san" target="_blank" class="news-item border-l-4 border-indigo-500 bg-indigo-50 p-4 rounded-r-lg mb-6 block flex flex-col justify-between items-start">
+                        <div>
+                            <div class="text-purple-600 font-bold text-sm mb-2">事例2: Bさん</div>
+                            <p class="text-gray-700">ChatGPTとExcel連携で、レポート作成時間を80%短縮。</p>
+                        </div>
+                        <span class="btn bg-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:bg-indigo-600 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('community_overview_cards')">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // すべてのコンテンツセクションを非表示にし、指定されたセクションを表示する関数
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card, .news-item'); // news-itemも追加
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に概要カードを表示
+            showSection('community_overview_cards');
+        });
+    </script>
+</body>
+</html>

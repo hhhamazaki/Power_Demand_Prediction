@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FY25_RPA市民開発サポート方針</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Hiragino Sans", "Meiryo", sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .slide-container {
+      width: 1600px;
+      height: 1100px; /* 高さを設定 */
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    
+    .header {
+      background: #2c3e50;
+      color: white;
+      padding: 10px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header-title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .header-date {
+      font-size: 16px;
+    }
+    
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .column {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      border: none;
+    }
+    
+    .card-title {
+      background: #3498db;
+      color: white;
+      padding: 10px 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .card-content {
+      padding: 15px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #333;
+      overflow-wrap: break-word;
+    }
+    
+    .highlight {
+      background-color: pink;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    ul {
+      padding-left: 16px;
+      margin-bottom: 8px;
+    }
+    
+    li {
+      margin-bottom: 6px;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 10px;
+      margin-top: 4px;
+    }
+    
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    
+    .comparison-item {
+      background-color: #fafafa;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .comparison-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .flow-chart {
+      display: flex;
+      justify-content: space-between;
+      margin: 16px 0;
+      position: relative;
+    }
+    
+    .flow-chart::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 50px;
+      right: 50px;
+      height: 2px;
+      background-color: #e0e0e0;
+      z-index: 1;
+    }
+    
+    .flow-step {
+      text-align: center;
+      width: 22%;
+      z-index: 2;
+      background-color: white;
+      padding: 0 8px;
+    }
+    
+    .flow-icon {
+      background-color: #3498db;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 8px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .flow-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .executive-needs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    
+    .executive-card {
+      background-color: #fafafa;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .executive-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .future-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    
+    .future-item {
+      background-color: #fafafa;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .future-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .strong {
+      font-weight: 600;
+    }
+    
+    p {
+      font-size: 16px;
+    }
+
+    /* 2カラム構成用のスタイル */
+    .two-column {
+      display: flex;
+      gap: 20px;
+    }
+
+    .grid-container {
+      border: 1px solid #e0e0e0;
+      padding: 16px;
+      border-radius: 8px;
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <div class="header">
+      <h1 class="header-title">FY25_RPA市民開発サポート方針</h1>
+      <div class="header-date">2025年5月</div>
+    </div>
+    
+    <div class="content">
+      <div class="two-column">
+      <!-- 左カラム -->
+      <div class="column">
+        <div class="card">
+          <div class="card-title">👤 キャリア</div>
+          <div class="card-content">
+            <ul>
+              <li>1989年～ 現場で設備の<mark style="background-color: yellow;">性能データ分析</mark>（<mark style="background-color: pink;">プログラミング独学</mark>）</li>
+              <li>1998年～ 海外７か国で<mark style="background-color: yellow;">省エネ事業</mark>（運用改善による性能向上）</li>
+              <li>2015年～ RPA<mark style="background-color: yellow;">ヘビーユーザー</mark>（「WinActor」「BizRobo!」「AA」「UiPath」制覇）</li>
+              <li>2022年～ 市民開発<mark style="background-color: yellow;">CoEを兼務</mark>（現場との橋渡し役）</li>
+              <li>2025年～ 市民開発チーム<mark style="background-color: pink;">増員</mark>（現場ユーザー<mark style="background-color: pink;">育成</mark>）</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">🚀 市民開発のメリット</div>
+          <div class="card-content">
+            <ul>
+              <li><mark style="background-color: pink;">内製</mark>で非ITユーザー自身がアプリを<mark style="background-color: pink;">スピーディー</mark>に「開発」「改修」「廃止」</li>
+              <li>開発プロセス全体（「要件定義」「設計」「実装」）を体験</li>
+              <li><mark style="background-color: pink;">要件定義力</mark>（言語化スキル）向上 ⇒ デジタル部門と<mark style="background-color: pink;">業務部門との合意形成</mark></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">📝 FY24課題とFY25対策</div>
+          <div class="card-content">
+            <ul>
+              <li>累計<mark style="background-color: yellow;">ユーザー1200名</mark>の内、<mark style="background-color: yellow;">開発者90名</mark>、<mark style="background-color: yellow;">120体のロボ</mark>が本番稼働</li>
+              <li><mark style="background-color: yellow;">シャドーIT・アプリ乱立</mark>を防止 ⇒ <mark style="background-color: pink;">市民開発ガイドライン</mark>で統制</li>
+              <li>トレーニング・サポート体制の不足 ⇒ <mark style="background-color: yellow;">学習カリキュラム拡充</mark>・<mark style="background-color: pink;">サポート要員の育成</mark></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">⚖️ 専門開発 vs 市民開発（棲み分け）ガイドライン</div>
+          <div class="card-content">
+            <div class="comparison-grid">
+              <div class="comparison-item">
+                <div class="comparison-title">🔒 専門開発</div>
+                <ul>
+                  <li>基幹システム連携など<mark style="background-color: pink;">重要データ</mark>を扱う</li>
+                  <li>アプリ停止が<mark style="background-color: pink;">事業継続に甚大な影響</mark>を及ぼす</li>
+                </ul>
+              </div>
+              <div class="comparison-item">
+                <div class="comparison-title">🛠️ 市民開発</div>
+                <ul>
+                  <li>日常業務の<mark style="background-color: yellow;">効率化・自動化</mark></li>
+                  <li><mark style="background-color: pink;">RPA x AI</mark>による<span class="strong">「情報収集」「要約」</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右カラム -->
+      <div class="column">
+        <div class="card">
+          <div class="card-title">🔄 全社員によるニーズ発掘と提案フロー</div>
+          <div class="card-content">
+            <div class="flow-chart">
+              <div class="flow-step">
+                <div class="flow-icon">1</div>
+                <div class="flow-title">ニーズ発掘</div>
+                <div>全社員による提案</span></div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-icon">2</div>
+                <div class="flow-title">振り分け</div>
+                <div><mark style="background-color: pink;">ガイドライン</mark>準拠</div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-icon">3</div>
+                <div class="flow-title">開発</div>
+                <div>市民/専門</span></div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-icon">4</div>
+                <div class="flow-title">展開・共有</div>
+                <div><mark style="background-color: pink;">ナレッジ蓄積</mark></div>
+              </div>
+            </div>
+            <div class="grid-container">
+              <p style="margin-top: 0; font-size: 20px; text-align: center;"><span class="strong">市民開発チームが</span><mark style="background-color: yellow;">伴走</mark></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">👥 経営層のニーズ</div>
+          <div class="card-content">
+            <div class="executive-needs">
+              <div class="executive-card">
+                <div class="executive-title">OME（副社長・執行役員）</div>
+                <ul>
+                  <li>人員不足で<mark style="background-color: yellow;">自動化は必須</mark></li>
+                  <li><mark style="background-color: pink;">スピーディー</mark>に<span class="strong">「開発」「改修」</span></li>
+                </ul>
+                <p style="margin-top: 8px;">→ 対応策：<br><mark style="background-color: pink;">変革コミュニティ/RPA分科会</mark>で支援中</p>
+              </div>
+              <div class="executive-card">
+                <div class="executive-title">最適化（常務執行役員）</div>
+                <ul>
+                  <li><mark style="background-color: yellow;">業務改善勧告</mark>への短期（数か月）対応</li>
+                  <li><mark style="background-color: pink;">RPA x AI</mark>による<span class="strong">「情報収集」「要約」</span></li>
+                </ul>
+                <p style="margin-top: 8px;">→ 対応策：<br><mark style="background-color: pink;">改革ポータル</mark>で連携・可視化中</p></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">🔮 今後の課題と展望</div>
+          <div class="card-content">
+            <div class="future-grid">
+              <div class="future-item">
+                <div class="future-title">👨‍🏫 市民開発サポート要員の育成</div>
+                <ul>
+                  <li>サポート要員を<mark style="background-color: pink;">育成</mark></li>                  
+                  <li><mark style="background-color: yellow;">現場ハンズオン研修</mark>を強化</li>
+                </ul>
+              </div>
+              <div class="future-item">
+                <div class="future-title">🤝 業務部門とのコラボレーション促進</div>
+                <ul>
+                  <li>短期集中型の<mark style="background-color: yellow;">社内インターンシップ</mark>（新入社員研修）新設</li>
+                  <li><mark style="background-color: pink;">部門横断</mark>の連携を促進し<mark style="background-color: pink;">ナレッジ共有</mark></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

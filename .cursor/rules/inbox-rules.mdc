@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 00_Inbox ノート作成・管理ルール
+
+### 基本原則
+
+このruleが指定された時には、〜/00_Inbox/other 以下にmdファイルを作成することになります。
+以下のルールに従って、obsidisianのmdファイルの作成を行います
+
+### 命名規則
+
+  - 基本形式: `YYYY-MM-DD_仮タイトル.md`
+  - 例: `2023-05-21_AI記事の要約.md`
+  - 日付プレフィックスを使用して時系列で整理
+
+### メタデータ (フロントマター)
+
+```yaml
+---
+created: {{date}}{{time}}
+source: "参照した情報の出所 (URLなど)"
+type: "clip/idea/other"
+status: "inbox"
+

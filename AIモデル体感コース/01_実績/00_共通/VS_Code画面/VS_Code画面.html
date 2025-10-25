@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Codeで生成AI（GitHub Copilot）体感</title>
+    <base href="./">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a2e;
+            --accent-cyan: #00f0ff;
+            --accent-magenta: #ff00ff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-primary: #333333;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 2vw;
+            box-sizing: border-box;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        #header-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px var(--accent-cyan);
+            margin: 0 0 15px 0;
+            font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+            text-align: center;
+            width: 100%;
+        }
+
+        .magenta {
+            color: var(--accent-magenta);
+            text-shadow: 0 0 10px var(--accent-magenta);
+        }
+
+        .slideshow-wrapper {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .slide {
+            margin-bottom: 40px;
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            padding: 20px;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 1% 4%;
+            box-sizing: border-box;
+        }
+
+        .slide-title {
+            order: 1;
+            color: var(--accent-cyan);
+            font-size: clamp(1rem, 2vw, 1.8rem);
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .slide .caption {
+            order: 2;
+            margin-bottom: 1%;
+            font-size: clamp(0.7rem, 1.5vw, 1.3rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .slide img {
+            order: 3;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border: 1px solid var(--border-primary);
+            align-self: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slideshow-wrapper">
+        <h1 id="header-title">VS Codeで生成AI（GitHub Copilot）体感</h1>
+        <div class="slideshow-container">
+            <!-- Slides will be injected by JavaScript -->
+            <noscript>
+                <!-- JavaScriptが無効またはブロックされた環境向けの静的コンテンツ -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">① ローコード開発ツールUiPath Studioでワークフロー.xamlを作成【アジャイル開発】</h2>
+                        <p class="caption">GUI操作でワークフローを作成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/1.PNG" alt="GUI操作でワークフローを作成">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">② 生成AIを活用し、ワークフロー.xamlから設計書.mdを生成【アジャイル開発】</h2>
+                        <p class="caption">Main.xamlから、コーディング規約.mdに準拠した設計書.mdを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/2.PNG" alt="Main.xamlから設計書.md生成">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">③ 生成AIを活用し、設計書.mdからワークフロー.pyを生成【ウォーターフォール開発】</h2>
+                        <p class="caption">設計書.mdから、経費登録.pyを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/3.png" alt="設計書.mdから経費登録.py生成">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">③ 生成AIを活用し、設計書.mdからワークフロー.pyを生成【アジャイル開発】</h2>
+                        <p class="caption">経費登録.pyから、プロジェクト計画書.mdなど各種ドキュメントを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/4.png" alt="経費登録.pyから各種ドキュメント生成">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">④ 生成AIを活用し、デモサイトからWebアプリ.htmlを生成【ウォーターフォール開発】</h2>
+                        <p class="caption">経費登録デモサイト(https://www.expense-demo.com/)から、経費管理システム.htmlを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/5.png" alt="経費管理デモサイトからHTML生成">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">④ 生成AIを活用し、デモサイトからWebアプリ.htmlを生成【アジャイル開発】</h2>
+                        <p class="caption">経費管理システム.htmlから、プロジェクト計画書.mdなど各種ドキュメントを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/6.png" alt="経費.htmlからドキュメント生成">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">⑤ 生成AIを活用し、電力需要予測の機械学習AIモデルを構築【ウォーターフォール開発】</h2>
+                        <p class="caption">要件定義書.mdから、電力需要予測AIモデル構築.pyを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/7.png" alt="電力需要予測AIモデル構築">
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="slide-content">
+                        <h2 class="slide-title">⑤ 生成AIを活用し、電力需要予測の機械学習AIモデルを構築【アジャイル開発】</h2>
+                        <p class="caption">電力需要予測AIモデル構築.pyから、プロジェクト計画書.mdなど各種ドキュメントを生成</p>
+                        <img src="https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/8.png" alt="AIモデルからドキュメント生成">
+                    </div>
+                </div>
+            </noscript>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slidesData = [
+                {
+                    title: "① ローコード開発ツールUiPath Studioでワークフロー.xamlを作成【アジャイル開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/1.PNG",
+                    caption: "GUI操作でワークフローを作成"
+                },
+                {
+                    title: "② 生成AIを活用し、ワークフロー.xamlから設計書.mdを生成【アジャイル開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/2.PNG",
+                    caption: "Main.xamlから、コーディング規約.mdに準拠した設計書.md生成"
+                },
+                {
+                    title: "③ 生成AIを活用し、設計書.mdからワークフロー.pyを生成【ウォーターフォール開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/3.png",
+                    caption: "設計書.mdから、経費登録.py生成"
+                },
+                {
+                    title: "③ 生成AIを活用し、設計書.mdからワークフロー.pyを生成【アジャイル開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/4.png",
+                    caption: "経費登録.pyから、プロジェクト計画書.md、要件定義書.md、リファクタリング報告.md、リリースノート.md、使用手順書.md生成"
+                },
+                {
+                    title: "④ 生成AIを活用し、デモサイトからWebアプリ.htmlを生成【ウォーターフォール開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/5.png",
+                    caption: "経費登録デモサイト(https://www.expense-demo.com/)から、経費管理システム.html生成"
+                },
+                {
+                    title: "④ 生成AIを活用し、デモサイトからWebアプリ.htmlを生成【アジャイル開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/6.png",
+                    caption: "経費.htmlから、プロジェクト計画書.md、要件定義書.md、リファクタリング報告.md、リリースノート.md、使用手順書.md生成"
+                },
+                {
+                    title: "⑤ 生成AIを活用し、電力需要予測の機械学習AIモデルを構築【ウォーターフォール開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/7.png",
+                    caption: "要件定義書.mdから、電力需要予測AIモデル構築.py生成"
+                },
+                {
+                    title: "⑤ 生成AIを活用し、電力需要予測の機械学習AIモデルを構築【アジャイル開発】",
+                    image: "https://jeragroup.sharepoint.com/sites/Jenny1/Shared%20Documents/General/@共有ファイル/20_教育資料/AIモデル体感コース/VS_Code画面/8.png",
+                    caption: "AIモデル.pyから、プロジェクト計画書.md、要件定義書.md、リファクタリング報告.md、リリースノート.md、使用手順書.md生成"
+                }
+            ];
+
+            const container = document.querySelector('.slideshow-container');
+
+            slidesData.forEach((slideData, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+
+                const content = document.createElement('div');
+                content.className = 'slide-content';
+                const title = document.createElement('h2');
+                title.className = 'slide-title';
+                title.textContent = slideData.title;
+                const img = document.createElement('img');
+                // make path explicit to favour same-folder resolution on SharePoint
+                img.src = './' + slideData.image;
+                // when image fails to load, replace it with a clickable link so user can download/view
+                img.onerror = function() {
+                    const link = document.createElement('a');
+                    link.href = './' + slideData.image;
+                    link.textContent = '画像を表示できません（クリックして開く）: ' + slideData.image;
+                    link.target = '_blank';
+                    // remove broken img and show link instead
+                    this.replaceWith(link);
+                };
+                img.alt = slideData.caption;
+                const caption = document.createElement('p');
+                caption.className = 'caption';
+                caption.textContent = slideData.caption;
+                content.appendChild(title);
+                content.appendChild(caption);
+                content.appendChild(img);
+                slide.appendChild(content);
+                container.appendChild(slide);
+            });
+        });
+    </script>
+
+</body>
+</html>

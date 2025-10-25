@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown to CSV Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg-color: #2a2a4a;
+            --text-color: #e0e0e0;
+            --accent-color: #00f0ff;
+            --secondary-accent-color: #ff00ff;
+            --border-color: #4a4a6a;
+            --shadow-color: rgba(0, 240, 255, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #0f0f1f 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-size: 1.05em;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: rgba(42, 42, 74, 0.6);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            box-shadow: 0 0 50px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--secondary-accent-color), var(--accent-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 24px 24px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+        }
+
+        main {
+            padding: 40px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            background: var(--card-bg-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 35px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--secondary-accent-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--secondary-accent-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        section h2::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--secondary-accent-color), var(--accent-color));
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--secondary-accent-color);
+        }
+
+        .file-input-area {
+            border: 3px dashed var(--border-color);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(26, 26, 46, 0.5);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-input-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .file-input-area:hover {
+            border-color: var(--accent-color);
+            background: rgba(0, 240, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+
+        .file-input-area:hover::before {
+            left: 100%;
+        }
+
+        .file-input-area.dragover {
+            border-color: var(--secondary-accent-color);
+            background: rgba(255, 0, 255, 0.05);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 3.5em;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px var(--accent-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .upload-icon + h3 {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .textarea-container {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-family: 'Roboto', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: rgba(26, 26, 46, 0.8);
+            color: var(--text-color);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--shadow-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-accent-color), #cc00cc);
+            color: white;
+            border: 1px solid var(--secondary-accent-color);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--accent-color), #0099cc);
+            color: white;
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-outline:hover {
+            background: rgba(74, 74, 106, 0.3);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        .preview-area {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .preview-area h3 {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 15px;
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .preview-table th,
+        .preview-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .preview-table th {
+            background: var(--card-bg-color);
+            font-weight: bold;
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-color);
+        }
+
+        .preview-table tr:nth-child(even) {
+            background: rgba(42, 42, 74, 0.3);
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            border-left: 4px solid;
+        }
+
+        .status-success {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        .status-error {
+            background: rgba(255, 0, 255, 0.1);
+            color: var(--secondary-accent-color);
+            border-color: var(--secondary-accent-color);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        .status-info {
+            background: rgba(224, 224, 224, 0.1);
+            color: var(--text-color);
+            border-color: var(--border-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 20px var(--shadow-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-color);
+            opacity: 0.7;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 1200px) {
+            .container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main, section {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            section h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .file-input-area {
+                padding: 25px;
+            }
+
+            .upload-icon {
+                font-size: 2.5em;
+            }
+
+            textarea {
+                height: 250px;
+            }
+        }
+
+        /* グロー効果の強化 */
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+            }
+            to {
+                text-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="glow">🔮 Markdown to CSV Converter</h1>
+        </header>
+
+        <main>
+            <!-- 入力セクション -->
+            <section>
+                <h2>📡 データ入力インターフェース</h2>
+                
+                <div class="file-input-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">🌐</div>
+                    <h3>ファイル転送プロトコル起動</h3>
+                    <p>対応形式: .md, .txt, .markdown</p>
+                    <input type="file" id="fileInput" class="file-input" accept=".md,.txt,.markdown">
+                </div>
+
+                <div class="textarea-container">
+                    <textarea id="markdownInput" placeholder="または、ここにMarkdownテーブルデータを直接注入してください...
+
+サンプル構造:
+| ID | プロセス | リソース |
+|----|----------|----------|
+| 1 | 初期化 | システム.exe |
+| 2 | 実行 | データベース.db |"></textarea>
+                </div>
+            </section>
+
+            <!-- 操作パネル -->
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="convertToCSV()">
+                    ⚡ CSV変換実行
+                </button>
+                <button class="btn btn-secondary" onclick="previewTable()">
+                    👁️ データプレビュー
+                </button>
+                <button class="btn btn-outline" onclick="clearAll()">
+                    🗑️ システムリセット
+                </button>
+                <button class="btn btn-outline" onclick="loadSample()">
+                    📊 サンプルロード
+                </button>
+            </div>
+
+            <!-- プロセス状態 -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>データ変換処理中...</p>
+            </div>
+
+            <!-- ステータス表示 -->
+            <div id="statusMessage"></div>
+
+            <!-- 出力セクション -->
+            <section>
+                <h2>📤 変換結果・データ出力</h2>
+                <div id="previewArea" class="preview-area" style="display: none;">
+                    <h3>📋 データ構造プレビュー</h3>
+                    <div id="tablePreview"></div>
+                </div>
+                
+                <div class="button-group" id="downloadSection" style="display: none;">
+                    <button class="btn btn-primary" onclick="downloadCSVToSource()">
+                        💾 元フォルダに保存
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadCSV()">
+                        📥 ダウンロードフォルダに保存
+                    </button>
+                    <button class="btn btn-outline" onclick="copyToClipboard()">
+                        📋 クリップボード転送
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2025 Cyber Markdown Converter - Powered by Neural Networks</p>
+        </footer>
+    </div>
+
+    <script>
+        let convertedData = null;
+        let csvContent = '';
+        let originalFileName = '';
+        let originalFilePath = '';
+        let sourceDirectoryHandle = null;
+
+        // ファイル選択の処理
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        
+        // ドラッグ&ドロップの処理
+        const fileInputArea = document.querySelector('.file-input-area');
+        
+        fileInputArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileInputArea.classList.add('dragover');
+        });
+        
+        fileInputArea.addEventListener('dragleave', () => {
+            fileInputArea.classList.remove('dragover');
+        });
+        
+        fileInputArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInputArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        async function handleFile(file) {
+            // 元ファイル名を保存（拡張子を除く）
+            originalFileName = file.name.replace(/\.[^/.]+$/, "");
+            
+            // File System Access API がサポートされている場合、ディレクトリハンドルを取得
+            if ('showDirectoryPicker' in window && file.webkitRelativePath) {
+                try {
+                    // ファイルが選択されたディレクトリのハンドルを取得
+                    const pathParts = file.webkitRelativePath.split('/');
+                    if (pathParts.length > 1) {
+                        // フォルダ選択の場合のみディレクトリハンドルを保存
+                        sourceDirectoryHandle = await window.showDirectoryPicker();
+                    }
+                } catch (error) {
+                    // ユーザーがキャンセルした場合やエラーの場合は無視
+                    console.log('Directory picker cancelled or not supported');
+                }
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('markdownInput').value = e.target.result;
+                showStatus(`データファイル "${file.name}" を正常に取得しました`, 'success');
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function parseMarkdownTable(content) {
+            const lines = content.trim().split('\n');
+            const tableData = [];
+            let inTable = false;
+
+            for (let line of lines) {
+                line = line.trim();
+                
+                // テーブル行の判定（|で始まり|で終わる）
+                if (line.startsWith('|') && line.endsWith('|')) {
+                    // 区切り行をスキップ（:---: のような行）
+                    if (/^\|[\s:|\-]+\|$/.test(line)) {
+                        continue;
+                    }
+                    
+                    inTable = true;
+                    // |で分割してセルデータを抽出
+                    const cells = line.split('|').slice(1, -1).map(cell => {
+                        let processedCell = cell.trim();
+                        
+                        // <br>タグを改行に変換
+                        processedCell = processedCell.replace(/<br\s*\/?>/gi, '\n');
+                        
+                        // Markdownの太字を除去
+                        processedCell = processedCell.replace(/\*\*(.*?)\*\*/g, '$1');
+                        
+                        // バッククォートを除去
+                        processedCell = processedCell.replace(/`(.*?)`/g, '$1');
+                        
+                        // HTMLエンティティのデコード
+                        processedCell = processedCell
+                            .replace(/&lt;/g, '<')
+                            .replace(/&gt;/g, '>')
+                            .replace(/&amp;/g, '&');
+                        
+                        return processedCell;
+                    });
+                    
+                    tableData.push(cells);
+                } else if (inTable && line === '') {
+                    // 空行でテーブル終了
+                    break;
+                }
+            }
+
+            return tableData;
+        }
+
+        function convertToCSV() {
+            const input = document.getElementById('markdownInput').value.trim();
+            
+            if (!input) {
+                showStatus('⚠️ データが検出されません', 'error');
+                return;
+            }
+
+            showLoading(true);
+
+            setTimeout(() => {
+                try {
+                    convertedData = parseMarkdownTable(input);
+                    
+                    if (convertedData.length === 0) {
+                        showStatus('❌ Markdownテーブル構造が見つかりません', 'error');
+                        showLoading(false);
+                        return;
+                    }
+
+                    // CSV形式に変換（Excel数式エラー対策）
+                    csvContent = convertedData.map(row => 
+                        row.map(cell => {
+                            // ダブルクォートをエスケープ
+                            let processedCell = cell.replace(/"/g, '""');
+                            
+                            // Excel数式エラー対策
+                            // - で始まる場合（Excelが数式と誤解釈する可能性）
+                            if (processedCell.startsWith('-')) {
+                                processedCell = "'" + processedCell;
+                            }
+                            // = で始まる場合（数式として解釈される）
+                            else if (processedCell.startsWith('=')) {
+                                processedCell = "'" + processedCell;
+                            }
+                            // + で始まる場合（数式として解釈される）
+                            else if (processedCell.startsWith('+')) {
+                                processedCell = "'" + processedCell;
+                            }
+                            // @ で始まる場合（配列数式として解釈される可能性）
+                            else if (processedCell.startsWith('@')) {
+                                processedCell = "'" + processedCell;
+                            }
+                            
+                            return `"${processedCell}"`;
+                        }).join(',')
+                    ).join('\n');
+
+                    showStatus(`✅ 変換処理完了！ ${convertedData.length}行 × ${convertedData[0].length}列のデータを生成`, 'success');
+                    
+                    // ダウンロードセクションを表示
+                    document.getElementById('downloadSection').style.display = 'flex';
+                    
+                    // プレビューも自動表示
+                    displayPreview();
+                    
+                } catch (error) {
+                    showStatus(`💥 変換エラー: ${error.message}`, 'error');
+                } finally {
+                    showLoading(false);
+                }
+            }, 800);
+        }
+
+        function previewTable() {
+            const input = document.getElementById('markdownInput').value.trim();
+            
+            if (!input) {
+                showStatus('⚠️ プレビュー用データが存在しません', 'error');
+                return;
+            }
+
+            try {
+                const tableData = parseMarkdownTable(input);
+                
+                if (tableData.length === 0) {
+                    showStatus('❌ テーブル構造の解析に失敗しました', 'error');
+                    return;
+                }
+
+                displayPreview(tableData);
+                showStatus(`🔍 プレビュー生成: ${tableData.length}行のデータ構造を表示中`, 'info');
+                
+            } catch (error) {
+                showStatus(`💥 プレビューエラー: ${error.message}`, 'error');
+            }
+        }
+
+        function displayPreview(data = convertedData) {
+            if (!data || data.length === 0) return;
+
+            const previewArea = document.getElementById('previewArea');
+            const tablePreview = document.getElementById('tablePreview');
+            
+            let tableHTML = '<table class="preview-table">';
+            
+            // ヘッダー行
+            if (data.length > 0) {
+                tableHTML += '<thead><tr>';
+                data[0].forEach(cell => {
+                    tableHTML += `<th>${escapeHtml(cell)}</th>`;
+                });
+                tableHTML += '</tr></thead>';
+            }
+            
+            // データ行
+            tableHTML += '<tbody>';
+            for (let i = 1; i < Math.min(data.length, 11); i++) { // 最大10行まで表示
+                tableHTML += '<tr>';
+                data[i].forEach(cell => {
+                    const displayCell = cell.length > 50 ? 
+                        cell.substring(0, 50) + '...' : cell;
+                    tableHTML += `<td>${escapeHtml(displayCell).replace(/\n/g, '<br>')}</td>`;
+                });
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody></table>';
+            
+            if (data.length > 11) {
+                tableHTML += `<p style="margin-top: 10px; color: var(--accent-color); text-align: center;">... 他 ${data.length - 11} 行（変換時には全行出力されます）</p>`;
+            }
+            
+            tablePreview.innerHTML = tableHTML;
+            previewArea.style.display = 'block';
+        }
+
+        async function downloadCSVToSource() {
+            if (!csvContent) {
+                showStatus('❌ ダウンロード可能なデータがありません', 'error');
+                return;
+            }
+
+            // File System Access API をサポートしているか確認
+            if (!('showSaveFilePicker' in window)) {
+                showStatus('❌ このブラウザは同フォルダ保存機能をサポートしていません。通常のダウンロードを使用してください。', 'error');
+                return;
+            }
+
+            try {
+                // ファイル名を生成
+                let fileName;
+                if (originalFileName) {
+                    fileName = `${originalFileName}_converted.csv`;
+                } else {
+                    fileName = `cyber_table_${new Date().toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '')}.csv`;
+                }
+
+                // 保存先を選択
+                const fileHandle = await window.showSaveFilePicker({
+                    suggestedName: fileName,
+                    types: [
+                        {
+                            description: 'CSV files',
+                            accept: {
+                                'text/csv': ['.csv'],
+                            },
+                        },
+                    ],
+                });
+
+                // ファイルに書き込み
+                const writable = await fileHandle.createWritable();
+                
+                // UTF-8 BOMを追加
+                const BOM = '\uFEFF';
+                await writable.write(BOM + csvContent);
+                await writable.close();
+
+                showStatus(`✅ CSVファイルを指定した場所に保存しました: ${fileName}`, 'success');
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showStatus('📁 保存がキャンセルされました', 'info');
+                } else {
+                    showStatus(`❌ 保存エラー: ${error.message}`, 'error');
+                    console.error('Save error:', error);
+                }
+            }
+        }
+
+        function downloadCSV() {
+            if (!csvContent) {
+                showStatus('❌ ダウンロード可能なデータがありません', 'error');
+                return;
+            }
+
+            // UTF-8 BOMを追加
+            const BOM = '\uFEFF';
+            const blob = new Blob([BOM + csvContent], { 
+                type: 'text/csv;charset=utf-8;' 
+            });
+            
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            // ファイル名を生成（元ファイル名がある場合はそれを使用）
+            let fileName;
+            if (originalFileName) {
+                fileName = `${originalFileName}_converted.csv`;
+            } else {
+                fileName = `cyber_table_${new Date().toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '')}.csv`;
+            }
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showStatus(`💾 CSVファイルをダウンロードフォルダに保存しました: ${fileName}`, 'success');
+        }
+
+        function copyToClipboard() {
+            if (!csvContent) {
+                showStatus('❌ コピー可能なデータがありません', 'error');
+                return;
+            }
+
+            // クリップボード用にはBOMを付けない
+            const clipboardContent = csvContent;
+
+            navigator.clipboard.writeText(clipboardContent).then(() => {
+                showStatus('📋 クリップボードへのデータ転送完了（Excel貼り付け時は「テキスト」形式を選択してください）', 'success');
+            }).catch(() => {
+                // フォールバック処理
+                const textArea = document.createElement('textarea');
+                textArea.value = clipboardContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showStatus('📋 クリップボードへのデータ転送完了（Excel貼り付け時は「テキスト」形式を選択してください）', 'success');
+            });
+        }
+
+        function clearAll() {
+            document.getElementById('markdownInput').value = '';
+            document.getElementById('previewArea').style.display = 'none';
+            document.getElementById('downloadSection').style.display = 'none';
+            document.getElementById('statusMessage').innerHTML = '';
+            convertedData = null;
+            csvContent = '';
+            originalFileName = '';
+            originalFilePath = '';
+            showStatus('🔄 システムを初期状態にリセットしました', 'info');
+        }
+
+        function loadSample() {
+            const sampleMarkdown = `# Process Definition Document (PDD) - 災害情報データ抽出
+
+| No. | 業務内容概要 | 利用するApp/処理する資料 | 業務内容の詳細 | 担当者 | RPA化対象 | 備考 |
+|:---:|:---|:---|:---|:---|:---:|:---|
+| 1 | **初期化** | - \`プロセス設定.xlsx\`<br>- \`ユーザー設定ファイル.xlsx\`<br>- Microsoft Edge<br>- Microsoft Excel | 1. 各種設定ファイルを読み込む。<br>2. 既存のEdge、Excelプロセスを終了させる。<br>3. ローカルのダウンロードフォルダをクリアする。 | ロボット | 対象 | プロセス実行前の環境をクリーンにする。 |
+| 2 | **Snowflakeデータ抽出** | - Microsoft Edge<br>- Snowflake<br>- \`ユーザー設定ファイル.xlsx\` | \`ユーザー設定ファイル.xlsx\`に記載された各ワークシートに対して以下を繰り返す。<br>1. EdgeでSnowflakeを開き、Azure ADでサインインする。<br>2. 対象のワークシートを開き、クエリを実行する。<br>3. 結果をCSV形式でローカルにダウンロードする。 | ロボット | 対象 | タイムアウトや画面表示の遅延はリトライ処理で対応する。 |
+| 3 | **抽出結果のアップロード** | - ダウンロードしたCSVファイル<br>- Microsoft 365 (SharePoint/OneDrive) | 1. ダウンロードしたCSVファイルが空でないことを確認する。<br>2. SharePointの指定フォルダに、ファイル名を \`yyyyMMdd_HHmm_{ワークシート名}.csv\` としてアップロードする。 | ロボット | 対象 | データが空の場合はビジネス例外として処理し、メールで通知する。 |
+| 4 | **後処理** | - Microsoft Edge<br>- Microsoft Excel | 1. 起動しているEdge、Excelプロセスを終了させる。<br>2. ローカルのダウンロードフォルダを再度クリアする。 | ロボット | 対象 | |
+| 5 | **プロセス完了通知** | - (設定による) | 正常終了時にメッセージボックスを表示、またはメールで通知する。 | ロボット | 対象 | \`プロセス設定.xlsx\`の設定に依存する。 |
+| 6 | **例外処理** | - Microsoft 365 (Outlook) | システム例外またはビジネス例外が発生した場合、エラー内容をログに記録し、スクリーンショットを撮影して、担当者にメールで通知する。 | ロボット | 対象 | |`;
+
+            document.getElementById('markdownInput').value = sampleMarkdown;
+            originalFileName = 'PDD'; // サンプル用のファイル名を設定
+            showStatus('📊 サンプルデータをシステムに注入しました', 'success');
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+            
+            // 3秒後に自動で消去（エラーメッセージ以外）
+            if (type !== 'error') {
+                setTimeout(() => {
+                    statusDiv.innerHTML = '';
+                }, 4000);
+            }
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            showStatus('🚀 サイバー変換システムが起動しました', 'info');
+            
+            // 背景にサイバー風のパーティクルエフェクトを追加
+            createParticles();
+        });
+
+        // パーティクルエフェクト
+        function createParticles() {
+            const particleContainer = document.createElement('div');
+            particleContainer.style.position = 'fixed';
+            particleContainer.style.top = '0';
+            particleContainer.style.left = '0';
+            particleContainer.style.width = '100%';
+            particleContainer.style.height = '100%';
+            particleContainer.style.pointerEvents = 'none';
+            particleContainer.style.zIndex = '-1';
+            document.body.appendChild(particleContainer);
+
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '2px';
+                particle.style.height = '2px';
+                particle.style.background = Math.random() > 0.5 ? 'var(--accent-color)' : 'var(--secondary-accent-color)';
+                particle.style.borderRadius = '50%';
+                particle.style.boxShadow = `0 0 6px ${Math.random() > 0.5 ? 'var(--accent-color)' : 'var(--secondary-accent-color)'}`;
+                particle.style.opacity = Math.random();
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animation = `float ${5 + Math.random() * 10}s infinite linear`;
+                particleContainer.appendChild(particle);
+            }
+
+            // フローティングアニメーション
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% {
+                        transform: translateY(100vh) translateX(0px);
+                        opacity: 0;
+                    }
+                    10% {
+                        opacity: 1;
+                    }
+                    90% {
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(-100px) translateX(${Math.random() * 200 - 100}px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>

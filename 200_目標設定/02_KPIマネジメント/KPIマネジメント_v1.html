@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPIマネジメント</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+1p:wght@400;500;700&family=Shippori+Mincho:wght@400;500;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .slide-container {
+        width: 1600px;
+        min-height: 900px;
+        height: auto;
+        background-color: white;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .header {
+        background-color: #2c3e50;
+        color: #ffffff;
+        padding: 10px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .header-title {
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .header-date {
+      font-size: 16px;
+    }
+    
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      height: auto;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 10px 15px;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 8px 8px 0 0;
+        overflow: hidden;
+    }
+    
+    .card-content {
+      padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+        font-size: 18px;
+        overflow-wrap: break-word;
+        overflow: hidden;
+        max-height: 100%;
+    }
+    
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      font-size: 14px;
+    }
+    
+    ul {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+    
+    li {
+      margin-bottom: 6px;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    
+    .highlight-pink {
+      background-color: #fdf2f4;
+      color: #EE6C8A;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .highlight-yellow {
+      background-color: #fff9c4;
+      color: #b59d00;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .terms {
+      background-color: #E6F2F5;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+    
+    .term-item {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: baseline;
+    }
+    
+    .term-title {
+      font-weight: bold;
+      color: #0A2463;
+      min-width: 120px;
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    
+    .term-desc {
+      flex: 1;
+      font-size: 18px;
+    }
+    
+    .process-flow {
+      display: flex;
+      justify-content: space-between;
+      margin: 16px 0;
+      position: relative;
+      flex-wrap: wrap;
+    }
+    
+    .process-step {
+      text-align: center;
+      width: 30%;
+      z-index: 2;
+      margin-bottom: 16px;
+    }
+    
+    .process-icon {
+      background-color: #3D84B8;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 8px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .process-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #1E56A0;
+    }
+    
+    .process-desc {
+      font-size: 18px;
+    }
+    
+    .formula {
+      background-color: #fdf2f4;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin: 6px 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    
+    table th, table td {
+      border: 1px solid #e2e8f0;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    table th {
+      background-color: #f8fafc;
+      font-weight: 600;
+    }
+    
+    .grid-item-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1E56A0;
+      margin-bottom: 5px;
+    }
+    
+    .grid-item {
+      padding-left: 20px;
+    }
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    <div class="header">
+      <h1 class="header-title">KPIマネジメント</h1>
+      <div class="header-date">2025年5月</div>
+    </div>
+    
+    <div class="content">
+      <div class="card">
+        <div class="card-title">📊 KPIマネジメントの基本概念</div>
+        <div class="card-content">
+          <div class="terms">
+            <div class="term-item">
+              <div class="term-title">KGI</div>
+              <div class="term-desc">最終的な目標数値</div>
+            </div>
+            <div class="term-item">
+              <div class="term-title">CSF</div>
+              <div class="term-desc">最重要プロセス（成功要因）</div>
+            </div>
+            <div class="term-item">
+              <div class="term-title">KPI</div>
+              <div class="term-desc">コントロールできる CSF の数値目標</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🔍 KPIマネジメントのプロセス（1-4）</div>
+        <div class="card-content grid-container">
+            <div class="card" style="border-left: 4px solid #3498db;">
+                <div class="card-content">
+                    <div class="grid-item-title">1. KGI の確認</div>
+                        
+                          <span class="highlight-yellow">RPA 活用による削減効果</span>
+                          <div class="formula">
+                            削減効果（時間） = RPA 導入前の作業時間 - RPA 導入後の作業時間
+                          </div>
+                          <div class="formula">
+                            削減効果（コスト） = RPA 導入前のコスト - RPA 導入後のコスト
+                          </div>
+                        
+                </div>
+            </div>
+            <div class="card" style="border-left: 4px solid #3498db;">
+              <div class="card-content">
+                <div class="grid-item-title">2. プロセスの確認（モデル化）</div>
+                    
+                        
+                          <div class="formula">
+                            削減効果＝アプローチ数×歩留り率（稼働中）
+                          </div>
+                          <strong>アプローチ数:</strong>
+                          <ul>
+                            <li>ハンズオン研修の回数</li>
+                            <li>提供するミニロボ数</li>
+                            <li>開発中ロボの個別サポート回数</li>
+                          </ul>
+                        
+                    
+                </div>
+            </div>
+            <div class="card" style="border-left: 4px solid #3498db;">
+                <div class="card-content">
+                  <div class="grid-item-title">3. CSF の設定</div>
+                    
+                        
+                          <div class="formula">
+                            RPA 導入の成功率<br>
+                            歩留り率（稼働中） = 稼働中ロボ数 / 総ロボ数
+                          </div>
+                          <div class="formula">
+                            開発者数 = ユーザー数×歩留り率（開発中）
+                          </div>
+                          <div class="formula">
+                            削減効果 = 開発者数×削減時間×単価×歩留り率（稼働中）
+                          </div>
+                        
+                    
+                </div>
+            </div>
+            <div class="card" style="border-left: 4px solid #3498db;">
+                <div class="card-content">
+                  <div class="grid-item-title">4. 目標の設定</div>
+                    
+                        
+                          前提：サポート要員のスキル向上<br>
+                          <strong>KPI 数値目標:</strong>
+                          <ul>
+                            <li>ハンズオン研修の回数</li>
+                            <li>提供するミニロボ数</li>
+                            <li>開発中ロボの個別サポート回数</li>
+                          </ul>
+                        
+                    
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">📈 KPIマネジメントのプロセス（5-8）</div>
+        <div class="card-content grid-container">
+          <div class="card" style="border-left: 4px solid #3498db;">
+            <div class="card-content">
+              <div class="grid-item-title">5. 運用の確認</div>
+                  <ul>
+                    <li>
+                      <strong>整合性</strong>: ロジックが正しい。<br>
+                      下記 KPI 施策を増加すれば、RPA 導入の成功率が向上する。
+                      <ul>
+                        <li>ハンズオン研修の回数</li>
+                        <li>提供するミニロボ数</li>
+                        <li>開発中ロボの個別サポート回数</li>
+                      </ul>
+                    </li>
+                    <li><strong>安定性</strong>: 安定的にデータを入手できる。</li>
+                    <li><strong>単純性</strong>: メンバー全員が理解できる。</li>
+                  </ul>
+                
+              
+            </div>
+          </div>
+          <div class="card" style="border-left: 4px solid #3498db;">
+            <div class="card-content">
+            <div class="grid-item-title">6. 対策の事前検討</div>
+                  KPI が悪化した場合の対策
+                  <table>
+                    <tr>
+                      <th>時期</th>
+                      <td>1 か月</td>
+                    </tr>
+                    <tr>
+                      <th>程度</th>
+                      <td>想定より 20％低い場合</td>
+                    </tr>
+                    <tr>
+                      <th>施策</th>
+                      <td>リーダーがメンバー（サポート要員）のスキル向上をサポート</td>
+                    </tr>
+                    <tr>
+                      <th>判断者</th>
+                      <td>リーダー</td>
+                    </tr>
+                  </table>
+                
+              
+            </div>
+          </div>
+          <div class="card" style="border-left: 4px solid #3498db;">
+            <div class="card-content">
+            <div class="grid-item-title">7. コンセンサス</div>
+                  <span class="highlight-pink">メンバー全員が合意するため毎週ワークショップを実施。</span>
+                
+              
+            </div>
+          </div>
+          <div class="card" style="border-left: 4px solid #3498db;">
+            <div class="card-content">
+            <div class="grid-item-title">8. 運用</div>
+                  ワークショップで、運用を継続的に見直し、改善を図る。
+                
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">👥 チームの役割と責任</div>
+        <div class="card-content grid-container">
+          <div class="card" style="border-left: 4px solid #3498db;">
+            <div class="card-content">
+              <div class="grid-item-title">リーダーの役割</div>
+              <ul class="grid-item">
+                <li>
+                  <strong>マネジメント戦略の立案:</strong><br>
+                  チーム全体のマネジメント戦略を立案し、メンバーと方向性の認識を合わせる。
+                </li>
+                <li>
+                  <strong>メンバーの成長に責任を持つ:</strong><br>
+                  チームのパフォーマンスを最大化するために、メンバーの成長を促進し、最高の成果を引き出す。
+                </li>
+                <li>
+                  <strong>心理的安全性の提供:</strong><br>
+                  メンバーのミスや失敗を許容し、バックアップする。
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="card" style="border-left: 4px solid #3498db;">
+            <div class="card-content">
+              <div class="grid-item-title">メンバーの役割</div>
+              <ul class="grid-item">
+                <li>
+                  <strong>主体的な行動:</strong><br>
+                  自ら最適な行動を考え、リーダーに提案する。
+                </li>
+                <li>
+                  <strong>自走するチームの一員:</strong><br>
+                  自ら主体的に行動し、チーム全体の成果に貢献する。
+                </li>
+                <li>
+                  <strong>相互支援:</strong><br>
+                  メンバー同士でフォロワーシップを発揮し、互いにサポートし合う。
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-title">🔄 KPIマネジメントの流れ</div>
+        <div class="card-content">
+          <div class="process-flow">
+            <div class="process-step">
+              <div class="process-icon">1</div>
+              <div class="process-title">目標設定</div>
+              <div class="process-desc">KGIを定め、現状とのギャップを確認</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon">2</div>
+              <div class="process-title">プロセス分析</div>
+              <div class="process-desc">CSF特定・KPI設定</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon">3</div>
+              <div class="process-title">運用・改善</div>
+              <div class="process-desc">定期的なワークショップによる継続改善</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      市民開発チーム
+    </div>
+  </div>
+</body>
+</html>

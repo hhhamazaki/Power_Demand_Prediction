@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal - はじめに</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本スタイル */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 背景グラデーション */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155; /* メインテキストカラー */
+        }
+
+        /* アニメーションキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カードのホバーエフェクト */
+        .content-card, .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover, .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ボタンのクリックアニメーション */
+        .btn {
+            transition: transform 0.15s ease-in-out, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container max-w-4xl mx-auto bg-white bg-opacity-95 backdrop-blur-lg rounded-3xl shadow-xl p-6 md:p-8 my-8">
+        <h2 class="text-3xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">はじめに</h2>
+        <p class="text-gray-700 mb-6">Jennyの理念、サポート体制、規約、稼働状況についてご紹介します。</p>
+
+        <div id="overview_cards" class="content-section active">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">RPAとは</h4>
+                    <p class="text-sm mb-4">理念、パーパス、ミッション、ビジョン、バリュー。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('rpa_intro_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">サポート体制</h4>
+                    <p class="text-sm mb-4">ローコード市民開発の効果。</p>
+                    <button class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('support_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">規約ガイド</h4>
+                    <p class="text-sm mb-4">市民開発の規約とガイドライン。</p>
+                    <button class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('guidelines_detail')">詳細を見る</button>
+                </div>
+
+                <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                    <h4 class="text-xl font-semibold mb-2">稼働状況</h4>
+                    <p class="text-sm mb-4">最新の稼働状況と開発者ランキング。</p>
+                    <button class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4" onclick="showSection('status_detail')">詳細を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="rpa_intro_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 mb-4 border-b-2 border-indigo-300 pb-2">RPAとは：Jennyの理念</h3>
+                <p class="text-gray-700 mb-6">全社員が市民開発を通じて目指すものです。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">パーパス</h4>
+                        <p class="text-sm">RPAを通じて全社員のデジタル能力を引き出し、業務革新と企業価値向上を実現する。</p>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">ミッション<span class="text-base font-normal"> 私たちの使命</span></h4>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">全社員のDXマインド醸成とRPAスキル向上の促進</li>
+                            <li class="mb-1">業務効率化・自動化による生産性と企業価値の向上</li>
+                            <li>市民開発者を支援するCoE（Center of Excellence）体制の確立と強化</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">ビジョン<span class="text-base font-normal"> 目指す未来像</span></h4>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">すべての部門に市民開発の文化が浸透し、自律的にDXを推進する組織</li>
+                            <li class="mb-1">RPAスキルを持つ人材が社内で活躍し、継続的な業務改善が実現する環境</li>
+                            <li>高度な技術サポートと知識共有が行われる市民開発者コミュニティの形成</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">バリュー<span class="text-base font-normal"> 項目説明</span></h4>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">革新: 既存の業務に疑問を持ち、最新テクノロジーで変革を生み出す姿勢を大切にします</li>
+                            <li class="mb-1">実践: 知識だけでなく行動に移し、実務に即した価値ある自動化を実現します</li>
+                            <li class="mb-1">共創: 部門を超えて知恵を出し合い、互いに学び合いながら最適解を見出します</li>
+                            <li class="mb-1">誠実: 透明性を持って問題に向き合い、信頼される市民開発の文化を築きます</li>
+                            <li>挑戦: 失敗を学びの機会と捉え、常に新たな可能性に挑戦し続けます</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="support_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">サポート体制：ローコード市民開発の効果</h3>
+                <p class="text-gray-700 mb-6">2025年5月更新</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <div class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">💫 全社員の主体的な行動・自己効力感の向上</h4>
+                        <p class="text-sm mb-2">全社員の自発的な業務Kaizenと変革スキル強化</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">非IT人材アプリ開発</li>
+                            <li class="mb-1">自己効力感（自分にもできる自信）の獲得</li>
+                            <li>主体的な行動の活性化</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">🚀 現場ニーズに合致したスピーディーな業務Kaizen</h4>
+                        <p class="text-sm mb-2">業務効率化と競争力の強化、現場課題スピード解決</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">現場主導ツール開発</li>
+                            <li class="mb-1">業務Kaizenスピード向上</li>
+                            <li>柔軟な変化への対応</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">💰 低コスト・短期間で内製システム開発・改修</h4>
+                        <p class="text-sm mb-2">開発コスト削減とスピーディーなシステム運用</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">低コスト・短期間で開発・改修</li>
+                            <li class="mb-1">内製化の推進</li>
+                            <li>アジャイルなKaizenサイクル定着</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-red-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">🧠 言語化スキル向上・AIプロンプト高度化</h4>
+                        <p class="text-sm mb-2">業務ナレッジ言語化とAI（言語モデル）活用による業務高度化</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">業務の構造化・言語化</li>
+                            <li class="mb-1">ナレッジ共有</li>
+                            <li>AI自動化の業務への応用</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-teal-500 to-cyan-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">👥 部門間コラボレーション・他者への貢献で幸福度アップ</h4>
+                        <p class="text-sm mb-2">部門横断コラボレーション促進と従業員満足度・幸福度の向上</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">部門間ナレッジ共有</li>
+                            <li class="mb-1">協働による組織力の強化</li>
+                            <li>貢献実感の醸成</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-pink-500 to-red-600 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">🌟 キャリア自律・市場価値・内発的モチベーション・エンゲージメント向上</h4>
+                        <p class="text-sm mb-2">優秀な人財の成長サポート・定着、エンゲージメント向上</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">新たなスキル習得サポート</li>
+                            <li class="mb-1">自己実現の促進</li>
+                            <li>エンゲージメント向上</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-indigo-500 to-purple-500 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">📚 外部ベンダー依存・ノウハウ流出・属人化の防止</h4>
+                        <p class="text-sm mb-2">ノウハウ流出の防止と組織ナレッジ蓄積・共有</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">内製化によるノウハウ蓄積・共有</li>
+                            <li class="mb-1">属人化の防止</li>
+                            <li>ナレッジ共有の強化</li>
+                        </ul>
+                    </div>
+                    <div class="course-card bg-gradient-to-br from-orange-500 to-yellow-500 text-white p-5 rounded-xl shadow-lg text-center">
+                        <h4 class="text-xl font-semibold mb-2">📊 投資収益率（ROI）検証・専門システム開発への昇華</h4>
+                        <p class="text-sm mb-2">IT投資効果の検証とリスクを抑えた段階的成長</p>
+                        <ul class="list-disc list-inside ml-4 text-sm text-left">
+                            <li class="mb-1">小規模開発によるROI検証</li>
+                            <li class="mb-1">専門開発への段階的昇華</li>
+                            <li>リスク抑制と投資判断の精度向上</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="guidelines_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">規約ガイド：市民開発における規約とガイドライン</h3>
+                <p class="text-gray-700 mb-6">Jennyの市民開発における規約とガイドラインについて説明します。安全で効率的な開発を促進するための重要な指針です。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <a href="guidelines_development_policy.html" class="course-card bg-gradient-to-br from-blue-500 to-purple-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">開発方針</h4>
+                            <p class="text-sm">市民開発を推進するための基本的な方向性を示します。ユーザー中心のアプローチを重視し、継続的な改善を目指します。</p>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="guidelines_development_guide.html" class="course-card bg-gradient-to-br from-green-500 to-blue-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">開発ガイドライン</h4>
+                            <p class="text-sm">ロボット開発における具体的な手順、推奨されるツール、およびセキュリティに関するガイドラインを提供します。</p>
+                        </div>
+                        <span class="btn bg-white text-blue-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="guidelines_coding_rules.html" class="course-card bg-gradient-to-br from-yellow-500 to-orange-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">コーディング規約</h4>
+                            <p class="text-sm">品質と保守性を確保するためのコーディング標準とベストプラクティスを定義します。可読性の高いコード作成を推奨します。</p>
+                        </div>
+                        <span class="btn bg-white text-orange-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('overview_cards')">戻る</button>
+            </div>
+        </div>
+
+        <div id="status_detail" class="content-section hidden">
+            <div class="content-card bg-white p-6 rounded-2xl shadow-md mb-6">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 border-b-2 border-indigo-300 pb-2">稼働状況：最新情報</h3>
+                <p class="text-gray-700 mb-6">Jennyの最新の稼働状況と、今後の本番稼働スケジュールをご確認いただけます。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="status_developer_ranking.html" class="course-card bg-gradient-to-br from-purple-500 to-indigo-500 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">開発者トップ10ランキング</h4>
+                            <p class="text-sm mb-2">現在の学習進捗と成果をランキング形式で表示：</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">2024年5月更新</li>
+                                <li class="mb-1">月間アクティブユーザー: 1,500名</li>
+                                <li class="mb-1">完了プロジェクト数: 850件</li>
+                                <li>平均学習時間: 週3時間</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-purple-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                    <a href="status_production_schedule.html" class="course-card bg-gradient-to-br from-teal-500 to-cyan-600 text-white p-5 rounded-xl shadow-lg text-center flex flex-col justify-between items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">本番稼働スケジュール</h4>
+                            <p class="text-sm mb-2">主要なロボットやシステムの今後の稼働予定：</p>
+                            <ul class="list-disc list-inside ml-4 text-sm text-left">
+                                <li class="mb-1">2025年6月: 経理業務自動化ロボット v2.0 リリース</li>
+                                <li class="mb-1">2025年7月: 人事データ連携システム 本番稼働開始</li>
+                                <li class="mb-1">2025年8月: AIレコメンデーション機能 β版公開</li>
+                                <li>2025年Q4: 全社RPA導入プロジェクト フェーズ2開始</li>
+                            </ul>
+                        </div>
+                        <span class="btn bg-white text-cyan-600 px-4 py-2 rounded-full font-medium hover:bg-gray-100 active:scale-95 mt-4 inline-block">詳細を見る</span>
+                    </a>
+                </div>
+                <button class="btn bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-full font-medium hover:from-purple-600 hover:to-indigo-600 active:scale-95 mt-6" onclick="showSection('overview_cards')">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // すべてのコンテンツセクションを非表示にし、指定されたセクションを表示する関数
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // DOMContentLoadedイベントリスナー
+        document.addEventListener('DOMContentLoaded', function() {
+            // カードのホバーエフェクト
+            const cards = document.querySelectorAll('.content-card, .course-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)'; /* Tailwindのshadow-mdに相当 */
+                });
+            });
+
+            // ボタンのクリックアニメーション
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('scale-95');
+                    setTimeout(() => {
+                        this.classList.remove('scale-95');
+                    }, 150);
+                });
+            });
+
+            // 初期ロード時に概要カードを表示
+            showSection('overview_cards');
+        });
+    </script>
+</body>
+</html>

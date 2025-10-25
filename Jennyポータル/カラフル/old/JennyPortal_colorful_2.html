@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JennyPortal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        /* ルート変数 */
+        :root {
+            --bg-color: #1a1a2e;
+            --card-bg-color: #2a2a4a;
+            --text-color: #e0e0e0;
+            --accent-color: #00f0ff; /* シアン */
+            --secondary-accent-color: #ff00ff; /* マゼンタ */
+            --border-color: #4a4a6a;
+            --shadow-color: rgba(0, 240, 255, 0.3);
+            --glow-filter: drop-shadow(0 0 5px var(--accent-color)) drop_shadow(0 0 10px var(--accent-color));
+        }
+
+        /* 基本のHTMLとボディのスタイル */
+        html {
+            scroll-behavior: smooth; /* スムーズスクロール */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%); /* 色は維持 */
+            color: var(--text-color);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        /* メインコンテンツエリア */
+        main {
+            width: 100%;
+            max-width: 1600px; /* コンテナの最大幅 */
+            margin: 0 auto; /* 水平中央寄せ */
+            padding: 20px;
+            background-color: rgba(26, 32, 44, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); */ /* Cyberテーマに合わせて削除 */
+            flex-grow: 1; /* メインコンテンツが利用可能なスペースを埋めるようにする */
+            box-sizing: border-box;
+        }
+
+        /* セクションのスタイリング */
+        section {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 0 20px var(--shadow-color);
+            /* opacity: 0; */ /* Cyberテーマに合わせて削除 */
+            /* transform: translateY(20px); */ /* Cyberテーマに合わせて削除 */
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Cyberテーマに合わせて調整 */
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--accent-color);
+        }
+
+        /* section.fade-in { */ /* Cyberテーマに合わせて削除 */
+        /* opacity: 1; */
+        /* transform: translateY(0); */
+        /* } */
+
+        /* セクションタイトル */
+        section h2 { /* .section-title から section h2 に変更 */
+            font-family: 'Orbitron', sans-serif; /* フォントは維持 */
+            color: #667eea; /* 色は維持 */
+            margin-top: 0;
+            border-bottom: 2px solid #667eea; /* 色は維持 */
+            font-size: 1.8em;
+            /* text-shadow: 0 0 10px var(--secondary-accent-color), 0 0 20px rgba(255, 0, 255, 0.2); */ /* Cyberテーマのグロー効果は色関連なので維持しない */
+            font-weight: 700;
+            margin-bottom: 1.5rem; /* Cyberテーマに合わせる */
+            padding-bottom: 12px; /* Cyberテーマに合わせる */
+        }
+
+        /* メイン見出しカード内の説明テキストのスタイル */
+        section > p { /* .section-description から section > p に変更 */
+            line-height: 1.7;
+            margin-bottom: 25px; /* Cyberテーマに合わせる */
+            color: #a0aec0; /* 色は維持 */
+        }
+
+        /* サブカードのコンテナ */
+        .sub-card-container { /* .grid から .sub-card-container に変更 */
+            display: grid;
+            gap: 20px; /* カード間のスペース */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Cyberテーマのminmax値に合わせる */
+        }
+
+        /* サブカードのスタイル */
+        .sub-card { /* .card から .sub-card に変更 */
+            background-color: rgba(42, 42, 74, 0.7); /* 色は維持 */
+            border: 1px solid; /* 色は維持 */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); /* 色は維持 */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-sizing: border-box; /* パディングとボーダーを幅に含める */
+            position: relative;
+            overflow: hidden;
+            color: inherit; /* 色は維持 */
+            /* flex: 1 1 300px; */ /* Cyberテーマに合わせて削除 */
+        }
+
+        /* .card::before, .card::after { */ /* Cyberテーマに合わせて削除 */
+        /* content: none; */
+        /* } */
+
+        /* サブカード内のリンクスタイルをリセットし、カード全体をリンクのように振る舞わせる */
+        .sub-card a { /* a.card から .sub-card a に変更 */
+            text-decoration: none; /* 下線を削除 */
+            color: inherit; /* 親要素から色を継承 */
+            display: block; /* カード全体をリンクにする */
+        }
+
+        .sub-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* カードボーダー色 (維持) */
+        .border-blue { border-color: #3b82f6; --card-border-color-var: #3b82f6; }
+        .border-green { border-color: #10b981; --card-border-color-var: #10b981; }
+        .border-yellow { border-color: #f59e0b; --card-border-color-var: #f59e0b; }
+        .border-pink { border-color: #ec4899; --card-border-color-var: #ec4899; }
+        .border-red { border-color: #ef4444; --card-border-color-var: #ef4444; }
+        .border-teal { border-color: #14b8a6; --card-border-color-var: #14b8a6; }
+        .border-purple { border-color: #8b5cf6; --card-border-color-var: #8b5cf6; }
+        .border-orange { border-color: #f97316; --card-border-color-var: #f97316; }
+        .border-indigo { border-color: #6366f1; --card-border-color-var: #6366f1; }
+
+        /* カードタイトル */
+        .sub-card h3 { /* .card-title から .sub-card h3 に変更 */
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-family: 'Orbitron', sans-serif;
+            /* グラデーションテキスト色はHTML側で直接クラスを付与 */
+        }
+
+        /* カードタイトルのグラデーションテキスト色 (維持) */
+        .gradient-blue {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-green {
+            background: linear-gradient(to right, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-yellow {
+            background: linear-gradient(to right, #f59e0b, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-pink {
+            background: linear-gradient(to right, #ec4899, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-red {
+            background: linear-gradient(to right, #ef4444, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-teal {
+            background: linear-gradient(to right, #14b8a6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-purple {
+            background: linear-gradient(to right, #8b5cf6, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-orange {
+            background: linear-gradient(to right, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* カードテキスト */
+        .sub-card p { /* .card-text から .sub-card p に変更 */
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* カードリストスタイル */
+        section ul { /* .card-list から section ul に変更 */
+            list-style: none;
+            padding: 0;
+            margin-top: 0; /* ulのデフォルトのトップマージンを削除 */
+            margin-bottom: 1rem;
+        }
+
+        section ul li { /* .card-list-item から section ul li に変更 */
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--card-border-color-var); /* 親カードの色に合わせる */
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease;
+        }
+
+        section ul li a { /* .card-list-item a から section ul li a に変更 */
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        section ul li a:hover {
+            color: var(--accent-color); /* ホバー時にアクセントカラーにする */
+        }
+
+        /* ダウンロードボタン (共通コンポーネント) */
+        .download-button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        .download-button:hover {
+            background-color: #00b3cc; /* ホバー時に濃いシアン */
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* ミニリンクカードのスタイル */
+        .mini-link-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* インラインカードのギャップを小さくする */
+            margin-bottom: 15px; /* ミニカードと他のコンテンツの間のスペース */
+        }
+
+        .mini-link-card {
+            background-color: rgba(74, 74, 106, 0.7); /* Cyberテーマに合わせて変更 */
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 15px;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            flex: 0 1 auto; /* Cyberテーマに合わせて変更 */
+            max-width: 100%; /* ミニリンクカードが親の幅を超えないようにする */
+            word-break: break-word; /* Cyberテーマに合わせて移動 */
+        }
+
+        .mini-link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 12px var(--accent-color);
+        }
+
+        .mini-link-card a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            font-size: 0.9em; /* フォントサイズを小さくする */
+            font-family: 'Orbitron', sans-serif; /* これらのボタンにもOrbitronを使用 */
+            text-shadow: 0 0 5px var(--accent-color); /* 微妙なグロー */
+            white-space: normal; /* テキストを改行する */
+            overflow: visible; /* コンテンツが隠れないようにする */
+            text-overflow: clip; /* 省略記号を表示しない */
+            /* word-break: break-word; */ /* Cyberテーマに合わせて親要素に移動 */
+        }
+
+        .mini-link-card a:hover {
+            color: var(--accent-color);
+        }
+
+        /* フッター */
+        footer {
+            width: 100%;
+            max-width: 1600px;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center; /* ボタンを中央に配置 */
+            margin-top: 20px; /* メインコンテンツとの間にスペースを追加 */
+        }
+
+        /* スクロールバーのスタイル */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: none; /* Cyberテーマに合わせて変更 */
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: none; /* Cyberテーマに合わせて変更 */
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            /* background: #667eea; */ /* Cyberテーマに合わせて削除 */
+        }
+
+        /* アニメーション */
+        /* @keyframes fadeInUp { */ /* Cyberテーマに合わせて削除 */
+        /* from { */
+        /* opacity: 0; */
+        /* transform: translateY(30px); */
+        /* } */
+        /* to { */
+        /* opacity: 1; */
+        /* transform: translateY(0); */
+        /* } */
+        /* } */
+
+        /* .fade-in-delayed { */ /* Cyberテーマに合わせて削除 */
+        /* animation: fadeInUp 0.8s ease-out forwards; */
+        /* } */
+
+        /* レスポンシブ調整 */
+        @media (max-width: 1200px) {
+            .sub-card-container { /* 全てのサブカードコンテナに適用 */
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 10px; /* 小さい画面でのパディング調整 */
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .sub-card-container { /* 全てのサブカードコンテナに適用 */
+                grid-template-columns: repeat(auto-fit, minmax(calc(50% - 10px), 1fr));
+                gap: 20px;
+            }
+
+            .sub-card { /* .card から .sub-card に変更 */
+                padding: 1rem;
+            }
+
+            section h2 { /* .section-title から section h2 に変更 */
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sub-card-container { /* 全てのサブカードコンテナに適用 */
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            section h2 { /* .section-title から section h2 に変更 */
+                font-size: 1.25em;
+            }
+
+            .sub-card h3 { /* .card-title から .sub-card h3 に変更 */
+                font-size: 1.125em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section id="introduction">
+            <h2>はじめに</h2>
+            <p>このポータルサイトは、RPA（Robotic Process Automation）活用の理念からサポート体制、各種規約、そして現在の稼働状況まで、RPA開発に関する基本的な情報を網羅しています。<br>RPA活用の第一歩として、まずはこちらのセクションをご覧ください。</p>
+            <div class="sub-card-container">
+                <div class="sub-card border-blue">
+                    <h3 class="gradient-blue">RPAとは</h3>
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://1drv.ms/u/c/04d75a8d40ea301c/ERF66KVye-VDnDjSDGfc8VsBLxmr4rs-a0c14_lS5AnQTg?e=6UOeMQ" target="_blank" data-link-id="intro-rpa-philosophy">
+                                理念（パーパス、ミッション、ビジョン）
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://1drv.ms/u/c/04d75a8d40ea301c/EcO5w0XyO5lEjq1URhZvLZcBZX-XuzHZY2yrhQ5DllesQQ?e=v9aIgO" target="_blank" data-link-id="intro-rpa-value">
+                                バリュー
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-card border-green"> <!-- 色を緑系に変更 -->
+                    <h3 class="gradient-green">サポート体制</h3> <!-- 色を緑系に変更 -->
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://1drv.ms/u/c/04d75a8d40ea301c/EWMVbL1UOdlLlVHCuOHSt8YBZgiN2cpQi0hUmvUOsd2jmQ?e=h7g5oc" target="_blank" data-link-id="intro-support-lowcode">
+                                ローコード市民開発の効果
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-card border-orange"> <!-- 色をオレンジ系に変更 -->
+                    <h3 class="gradient-orange">規約ガイド</h3> <!-- 色をオレンジ系に変更 -->
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-terms-policy">
+                                開発方針
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-terms-guideline">
+                                開発ガイドライン
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-terms-coding">
+                                コーディング規約
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-card border-red"> <!-- 色を赤系に変更 -->
+                    <h3 class="gradient-red">稼働状況</h3> <!-- 色を赤系に変更 -->
+                    <div class="mini-link-card-container">
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-status-ranking">
+                                稼働状況と開発者ランキング
+                            </a>
+                        </div>
+                        <div class="mini-link-card">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="intro-status-schedule">
+                                本番VM稼働スケジュール（昨日実績）
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="preparation">
+            <h2>準備</h2>
+            <p>RPA開発を始めるための準備ステップです。<br>利用申請から開発環境の構築、初期設定まで、スムーズにスタートできるようガイドします。<br>各ステップに従って、あなたの開発環境を整えましょう。</p>
+            <div class="sub-card-container">
+                <div class="sub-card border-blue"> <!-- 色を青系に変更 -->
+                    <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="prep-step1">
+                        <h3 class="gradient-blue">Step 1: 利用申請</h3> <!-- 色を青系に変更 -->
+                        <p>オンラインフォームから申請</p>
+                    </a>
+                </div>
+                <div class="sub-card border-green"> <!-- 色を緑系に変更 -->
+                    <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="prep-step2">
+                        <h3 class="gradient-green">Step 2: 環境構築</h3> <!-- 色を緑系に変更 -->
+                        <p>ソフトウェアのインストールガイド</p>
+                    </a>
+                </div>
+                <div class="sub-card border-orange"> <!-- 色をオレンジ系に変更 -->
+                    <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="prep-step3">
+                        <h3 class="gradient-orange">Step 3: 初期設定</h3> <!-- 色をオレンジ系に変更 -->
+                        <p>学習環境の最適化と設定</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="try">
+            <h2>試行したい</h2>
+            <p>具体的な自動化対象がまだ見つかっていない方でも、RPAの世界を体験できるコンテンツを用意しました。<br>数分で完成するミニロボから、すぐに使えるサンプルロボまで、まずは試してみることから始めましょう。</p>
+            <div class="sub-card-container">
+                <div class="sub-card border-blue"> <!-- 色を青系に変更 -->
+                    <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="try-mini">
+                        <h3 class="gradient-blue">ミニロボ</h3> <!-- 色を青系に変更 -->
+                        <p>独学に最適な数分でマスターできる超入門ミニロボ事例集</p>
+                    </a>
+                </div>
+                <div class="sub-card border-green"> <!-- 色を緑系に変更 -->
+                    <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="try-sample">
+                        <h3 class="gradient-green">サンプルロボ</h3> <!-- 色を緑系に変更 -->
+                        <p>すぐに業務に適用できるサンプルロボット事例集</p>
+                    </a>
+                </div>
+                <div class="sub-card border-orange">
+                    <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="try-edu">
+                        <h3 class="gradient-orange">教育コンテンツ</h3>
+                        <p>業務効率化の基礎概念から応用まで、段階的に学習できるコンテンツ</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="training">
+            <h2>ハンズオン研修</h2>
+            <p>手を動かしながら実践的にスキルを習得するためのハンズオン研修カリキュラムです。<br>入門から上級まで、あなたのレベルに合わせたコースを選択し、AI連携やRPA開発のエキスパートを目指しましょう。</p>
+            <div class="sub-card-container">
+                <div class="sub-card border-blue"> <!-- 色を青系に変更 -->
+                    <h3 class="gradient-blue">入門コース</h3> <!-- 色を青系に変更 -->
+                    <p class="card-text">RPAツールの基本操作を習得</p>
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-browser">ブラウザ操作</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-condition">条件分岐</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-excel">Excel操作</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intro-loop">繰り返し処理</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sub-card border-green"> <!-- 色を緑系に変更 -->
+                    <h3 class="gradient-green">初級コース</h3> <!-- 色を緑系に変更 -->
+                    <p class="card-text">基礎知識と応用スキルを習得</p>
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-variables">変数とデータ型</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-web">Web操作応用</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-excel">Excel操作応用</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-beginner-data">データ加工</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sub-card border-orange"> <!-- 色をオレンジ系に変更 -->
+                    <h3 class="gradient-orange">中級コース</h3> <!-- 色をオレンジ系に変更 -->
+                    <p class="card-text">複雑な業務プロセスの自動化</p>
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-exception">例外処理</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-module">モジュール化</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-file">ファイル操作</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-intermediate-sharepoint">SharePoint連携</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sub-card border-red"> <!-- 色を赤系に変更 -->
+                    <h3 class="gradient-red">上級コース</h3> <!-- 色を赤系に変更 -->
+                    <p class="card-text">エンタープライズレベルのRPA</p>
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-api">API連携</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-security">セキュリティ対策</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-copilot">Copilot連携</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="training-advanced-ai">AI自動化</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="development">
+            <h2>開発したい</h2>
+            <p>自動化したい具体的な業務がある方向けの開発フローです。<br>要件定義から設計、テスト、そして本番運用まで、各フェーズで必要なタスクと注意点を解説します。</p>
+            <div class="sub-card-container">
+                <div class="sub-card border-blue">
+                    <h3 class="gradient-blue">開発フェーズ</h3>
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-phase-requirements">要件定義・設計</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-phase-analysis">業務分析から自動化対象の特定</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-phase-systemdesign">システム設計</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sub-card border-green"> <!-- 色を緑系に変更 -->
+                    <h3 class="gradient-green">プレ本番フェーズ</h3> <!-- 色を緑系に変更 -->
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-preprod-testing">テスト・検証</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-preprod-verification">開発したロボットの動作確認</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-preprod-performance">パフォーマンステスト</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sub-card border-orange"> <!-- 色をオレンジ系に変更 -->
+                    <h3 class="gradient-orange">本番フェーズ</h3> <!-- 色をオレンジ系に変更 -->
+                    <ul>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-prod-operation">運用・保守</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-prod-start">本番環境での運用開始</a>
+                        </li>
+                        <li class="card-list-item">
+                            <a href="https://www.yahoo.co.jp/" target="_blank" data-link-id="dev-prod-improvement">継続的な改善</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <button class="download-button" onclick="downloadLinksCSV()">リンクCSVダウンロード</button>
+    </footer>
+
+    <script>
+        // DOMContentLoadedイベントでアニメーションをトリガー (Cyberテーマにはないため削除)
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const sections = document.querySelectorAll('section');
+        //     const observer = new IntersectionObserver((entries) => {
+        //         entries.forEach((entry, index) => {
+        //             if (entry.isIntersecting) {
+        //                 setTimeout(() => {
+        //                     entry.target.classList.add('fade-in');
+        //                 }, index * 100);
+        //                 observer.unobserve(entry.target);
+        //             }
+        //         });
+        //     }, {
+        //         threshold: 0.1,
+        //         rootMargin: '0px 0px -50px 0px'
+        //     });
+        //     sections.forEach(section => {
+        //         observer.observe(section);
+        //     });
+        // });
+
+        function downloadLinksCSV() {
+            // CSVヘッダーを定義します。
+            const headers = ["セクション名", "カード名", "URL", "data-link-id"];
+            let csvContent = "\uFEFF" + headers.join(",") + "\n"; // UTF-8 BOMを追加
+
+            // すべてのセクションを取得します。
+            const sections = document.querySelectorAll('section');
+
+            sections.forEach(section => {
+                const sectionName = section.querySelector('h2').textContent.trim();
+                const subCards = section.querySelectorAll('.sub-card');
+
+                subCards.forEach(card => {
+                    // カード内の直接の<a>タグ（ミニカードではないもの）を取得
+                    const directLink = card.querySelector('a:not(li a):not(.mini-link-card a)');
+                    if (directLink) {
+                        const cardTitleElement = directLink.querySelector('h3');
+                        const cardName = cardTitleElement ? cardTitleElement.textContent.trim() : '';
+                        const url = directLink.href;
+                        const dataLinkId = directLink.getAttribute('data-link-id');
+                        const row = [
+                            `"${sectionName.replace(/"/g, '""')}"`,
+                            `"${cardName.replace(/"/g, '""')}"`,
+                            `"${url.replace(/"/g, '""')}"`,
+                            `"${dataLinkId.replace(/"/g, '""')}"`
+                        ];
+                        csvContent += row.join(",") + "\n";
+                    }
+
+                    // <ul><li><a>の形式のリンクを取得
+                    const listLinks = card.querySelectorAll('ul li a'); /* ul li a に変更 */
+                    listLinks.forEach(linkElement => {
+                        const cardName = card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : '';
+                        const listItemText = linkElement.textContent.trim();
+                        const url = linkElement.href;
+                        const dataLinkId = linkElement.getAttribute('data-link-id');
+
+                        const row = [
+                            `"${sectionName.replace(/"/g, '""')}"`,
+                            `"${cardName.replace(/"/g, '""')} - ${listItemText.replace(/"/g, '""')}"`,
+                            `"${url.replace(/"/g, '""')}"`,
+                            `"${dataLinkId.replace(/"/g, '""')}"`
+                        ];
+                        csvContent += row.join(",") + "\n";
+                    });
+
+                    // mini-link-card内のリンクを取得
+                    const miniLinkCards = card.querySelectorAll('.mini-link-card a');
+                    miniLinkCards.forEach(linkElement => {
+                        const cardName = card.querySelector('h3') ? card.querySelector('h3').textContent.trim() : ''; // 親カード名
+                        const miniCardText = linkElement.textContent.trim(); // ミニカード内のテキスト
+                        const url = linkElement.href;
+                        const dataLinkId = linkElement.getAttribute('data-link-id');
+
+                        const row = [
+                            `"${sectionName.replace(/"/g, '""')}"`,
+                            `"${cardName.replace(/"/g, '""')} - ${miniCardText.replace(/"/g, '""')}"`, // 親カード名とミニカードテキストを結合
+                            `"${url.replace(/"/g, '""')}"`,
+                            `"${dataLinkId.replace(/"/g, '""')}"`
+                        ];
+                        csvContent += row.join(",") + "\n";
+                    });
+                });
+            });
+
+            // Blobを作成し、ダウンロードリンクを生成します。
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', 'JennyPortal_links.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

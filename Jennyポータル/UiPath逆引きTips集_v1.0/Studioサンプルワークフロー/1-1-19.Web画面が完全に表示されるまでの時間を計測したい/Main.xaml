@@ -1,0 +1,139 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="743,1036" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence DisplayName="『画像を探す（Find Image）』を使う" sap:VirtualizedContainerService.HintSize="486,871" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:DateTime" Name="クリック直後時刻" />
+      <Variable x:TypeArguments="x:TimeSpan" Name="表示時間" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:OpenBrowser BrowserType="{x:Null}" CommunicationMethod="{x:Null}" Hidden="{x:Null}" NewSession="{x:Null}" Private="{x:Null}" UiBrowser="{x:Null}" DisplayName="ブラウザーを開く" sap:VirtualizedContainerService.HintSize="444,779" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" Url="https://www.uipath.com/ja/">
+      <ui:OpenBrowser.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,677" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:Click AlterIfDisabled="{x:Null}" DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" SimulateClick="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="クリック" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT">
+              <ui:Click.CursorPosition>
+                <ui:CursorPosition Position="Center">
+                  <ui:CursorPosition.OffsetX>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetX>
+                  <ui:CursorPosition.OffsetY>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:CursorPosition.OffsetY>
+                </ui:CursorPosition>
+              </ui:Click.CursorPosition>
+              <ui:Click.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="e06ab0a5-3065-48ca-8955-bd3ac22efcb4" InformativeScreenshot="f6cfed107bd120a533dbffadf35ac7fb" Selector="&lt;webctrl aaname='トライアルの開始' tag='A' /&gt;">
+                  <ui:Target.TimeoutMS>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:Target.TimeoutMS>
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:Click.Target>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:Click>
+            <Assign DisplayName="代入" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="s:DateTime">[クリック直後時刻]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="s:DateTime">[Now]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:WaitImageAppear FoundElement="{x:Null}" DisplayName="画像を探す" sap:VirtualizedContainerService.HintSize="334,106" sap2010:WorkflowViewState.IdRef="WaitImageAppear_1">
+              <ui:WaitImageAppear.Image>
+                <ui:ImageTarget Image="{x:Null}" Accuracy="0.8" InitialScalingFactor="2" Profile="Basic" TargetImageBase64="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" />
+              </ui:WaitImageAppear.Image>
+              <ui:WaitImageAppear.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" Id="cbf08cbf-13af-44c5-9588-109a593528da">
+                  <ui:Target.TimeoutMS>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:Target.TimeoutMS>
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:WaitImageAppear.Target>
+            </ui:WaitImageAppear>
+            <Assign DisplayName="代入" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:TimeSpan">[表示時間]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:TimeSpan">[Now - クリック直後時刻]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:LogMessage DisplayName="メッセージをログ" sap:VirtualizedContainerService.HintSize="334,93" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;表示に要する時間：&quot; &amp; 表示時間.ToString]" />
+          </Sequence>
+        </ActivityAction>
+      </ui:OpenBrowser.Body>
+    </ui:OpenBrowser>
+  </Sequence>
+</Activity>

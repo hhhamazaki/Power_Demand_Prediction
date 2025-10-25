@@ -1,0 +1,1158 @@
+[2025-10-15 09:36:34] Received /run-data payload: {'years': ['2024']}
+[2025-10-15 09:36:34] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\data.py
+[2025-10-15 09:36:34] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 09:36:46] Script finished: data\data.py returncode=0
+[2025-10-15 09:36:46] STDOUT:
+対象年に制限を適用します: ['2024']
+============================================================
+電力需要予測AIモデル - データ前処理開始
+============================================================
+AI_TARGET_YEARS によりファイルを絞り込み: ['2024']
+電力データファイル: 1件
+気温データファイル: 1件
+共通年: 1年分 (2024)
+電力データ読み込み中: data\juyo-2024.csv
+電力データ読み込み完了: 8784行 (メモリ最適化済み)
+気温データ読み込み中: data\temperature-2024.csv
+気温データ読み込み完了: 8784行 (メモリ最適化済み)
+電力データ前処理開始
+電力データ前処理完了 (パフォーマンス最適化済み)
+気温データ前処理開始
+気温データ前処理完了 (パフォーマンス最適化済み)
+データマージ開始
+データマージ完了: 8782行 (パフォーマンス最適化済み)
+特徴量・ターゲットデータ作成開始
+特徴量データ作成完了: (8782, 4)
+ターゲットデータ作成完了: (8782, 1)
+データ保存開始
+すべてのデータ保存完了: data/X.csv, data/Y.csv
+学習・テストデータ保存完了
+学習データ: 7903行, テストデータ: 879行
+============================================================
+すべての処理が正常に完了しました
+============================================================
+すべての処理が正常に完了しました
+
+[2025-10-15 09:36:46] STDERR:
+2025-10-15 09:36:44,591 - __main__ - INFO - wrapper:91 - データファイル検索開始
+2025-10-15 09:36:44,591 - __main__ - INFO - wrapper:93 - データファイル検索完了
+2025-10-15 09:36:44,591 - __main__ - INFO - wrapper:91 - 電力データ読み込み開始
+2025-10-15 09:36:44,624 - __main__ - INFO - wrapper:93 - 電力データ読み込み完了
+2025-10-15 09:36:44,624 - __main__ - INFO - wrapper:91 - 気温データ読み込み開始
+2025-10-15 09:36:44,654 - __main__ - INFO - wrapper:93 - 気温データ読み込み完了
+2025-10-15 09:36:46,596 - __main__ - INFO - wrapper:91 - データセット保存開始
+2025-10-15 09:36:46,739 - __main__ - INFO - wrapper:93 - データセット保存完了
+2025-10-15 09:36:46,739 - __main__ - INFO - main:652 - データ処理正常完了
+
+[2025-10-15 09:36:53] Received /run-train payload: {'model': 'Keras', 'years': ['2024']}
+[2025-10-15 09:36:53] Running data pipeline before training with AI_TARGET_YEARS=2024
+[2025-10-15 09:36:53] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\data.py
+[2025-10-15 09:36:53] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 09:36:57] Script finished: data\data.py returncode=0
+[2025-10-15 09:36:57] STDOUT:
+対象年に制限を適用します: ['2024']
+============================================================
+電力需要予測AIモデル - データ前処理開始
+============================================================
+AI_TARGET_YEARS によりファイルを絞り込み: ['2024']
+電力データファイル: 1件
+気温データファイル: 1件
+共通年: 1年分 (2024)
+電力データ読み込み中: data\juyo-2024.csv
+電力データ読み込み完了: 8784行 (メモリ最適化済み)
+気温データ読み込み中: data\temperature-2024.csv
+気温データ読み込み完了: 8784行 (メモリ最適化済み)
+電力データ前処理開始
+電力データ前処理完了 (パフォーマンス最適化済み)
+気温データ前処理開始
+気温データ前処理完了 (パフォーマンス最適化済み)
+データマージ開始
+データマージ完了: 8782行 (パフォーマンス最適化済み)
+特徴量・ターゲットデータ作成開始
+特徴量データ作成完了: (8782, 4)
+ターゲットデータ作成完了: (8782, 1)
+データ保存開始
+すべてのデータ保存完了: data/X.csv, data/Y.csv
+学習・テストデータ保存完了
+学習データ: 7903行, テストデータ: 879行
+============================================================
+すべての処理が正常に完了しました
+============================================================
+すべての処理が正常に完了しました
+
+[2025-10-15 09:36:57] STDERR:
+2025-10-15 09:36:55,421 - __main__ - INFO - wrapper:91 - データファイル検索開始
+2025-10-15 09:36:55,421 - __main__ - INFO - wrapper:93 - データファイル検索完了
+2025-10-15 09:36:55,421 - __main__ - INFO - wrapper:91 - 電力データ読み込み開始
+2025-10-15 09:36:55,438 - __main__ - INFO - wrapper:93 - 電力データ読み込み完了
+2025-10-15 09:36:55,438 - __main__ - INFO - wrapper:91 - 気温データ読み込み開始
+2025-10-15 09:36:55,457 - __main__ - INFO - wrapper:93 - 気温データ読み込み完了
+2025-10-15 09:36:56,942 - __main__ - INFO - wrapper:91 - データセット保存開始
+2025-10-15 09:36:57,013 - __main__ - INFO - wrapper:93 - データセット保存完了
+2025-10-15 09:36:57,014 - __main__ - INFO - main:652 - データ処理正常完了
+
+[2025-10-15 09:36:57] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\train\Keras\Keras_train.py
+[2025-10-15 09:36:57] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 09:37:17] Script finished: train\Keras\Keras_train.py returncode=0
+[2025-10-15 09:37:17] STDOUT:
+Keras: 統一パフォーマンス最適化設定を適用しました
+AI_TARGET_YEARS=2024
+=== Keras学習開始 ===
+Keras電力需要予測モデルの学習を開始します...
+=== 学習・テストデータ読み込み開始 ===
+学習データを読み込み中...
+学習データ形状: X_train=(7903, 4), y_train=(7903,)
+テストデータ形状: X_test=(879, 4), y_test=(879,)
+=== 学習・テストデータ読み込み完了 ===
+=== データ標準化開始 ===
+データの標準化を実行中...
+標準化完了: 特徴量数=4
+=== データ標準化完了 ===
+=== Kerasモデル構築開始 ===
+Kerasモデルを構築中... (入力次元: 4)
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ hidden1 (Dense)             (None, 32)                160       
+                                                                 
+ dropout1 (Dropout)          (None, 32)                0         
+                                                                 
+ hidden2 (Dense)             (None, 32)                1056      
+                                                                 
+ dropout2 (Dropout)          (None, 32)                0         
+                                                                 
+ output (Dense)              (None, 1)                 33        
+                                                                 
+=================================================================
+Total params: 1249 (4.88 KB)
+Trainable params: 1249 (4.88 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Kerasモデル構築完了 (学習率: 0.001)
+=== Kerasモデル構築完了 ===
+=== モデル学習開始 ===
+モデル学習開始 (epochs: 200, batch_size: 128, patience: 10)
+Epoch 1/200
+
+ 1/50 [..............................] - ETA: 32s - loss: 1.6565 - mean_absolute_error: 0.9746
+39/50 [======================>.......] - ETA: 0s - loss: 1.0675 - mean_absolute_error: 0.8102 
+50/50 [==============================] - 1s 5ms/step - loss: 1.0121 - mean_absolute_error: 0.7879 - val_loss: 0.5081 - val_mean_absolute_error: 0.5764
+Epoch 2/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.6712 - mean_absolute_error: 0.6495
+36/50 [====================>.........] - ETA: 0s - loss: 0.6643 - mean_absolute_error: 0.6344
+50/50 [==============================] - 0s 2ms/step - loss: 0.6475 - mean_absolute_error: 0.6236 - val_loss: 0.3496 - val_mean_absolute_error: 0.4577
+Epoch 3/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.5103 - mean_absolute_error: 0.5539
+36/50 [====================>.........] - ETA: 0s - loss: 0.5417 - mean_absolute_error: 0.5608
+50/50 [==============================] - 0s 2ms/step - loss: 0.5277 - mean_absolute_error: 0.5540 - val_loss: 0.3118 - val_mean_absolute_error: 0.4268
+Epoch 4/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.5846 - mean_absolute_error: 0.5826
+39/50 [======================>.......] - ETA: 0s - loss: 0.4890 - mean_absolute_error: 0.5286
+50/50 [==============================] - 0s 2ms/step - loss: 0.4815 - mean_absolute_error: 0.5249 - val_loss: 0.2879 - val_mean_absolute_error: 0.4095
+Epoch 5/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.5505 - mean_absolute_error: 0.5234
+36/50 [====================>.........] - ETA: 0s - loss: 0.4620 - mean_absolute_error: 0.5133
+50/50 [==============================] - 0s 2ms/step - loss: 0.4514 - mean_absolute_error: 0.5067 - val_loss: 0.2481 - val_mean_absolute_error: 0.3730
+Epoch 6/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.4884 - mean_absolute_error: 0.5180
+36/50 [====================>.........] - ETA: 0s - loss: 0.4266 - mean_absolute_error: 0.4876
+50/50 [==============================] - 0s 2ms/step - loss: 0.4215 - mean_absolute_error: 0.4858 - val_loss: 0.2495 - val_mean_absolute_error: 0.3774
+Epoch 7/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.4706 - mean_absolute_error: 0.5122
+37/50 [=====================>........] - ETA: 0s - loss: 0.4158 - mean_absolute_error: 0.4778
+50/50 [==============================] - 0s 2ms/step - loss: 0.4072 - mean_absolute_error: 0.4733 - val_loss: 0.2367 - val_mean_absolute_error: 0.3632
+Epoch 8/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.3562 - mean_absolute_error: 0.4361
+38/50 [=====================>........] - ETA: 0s - loss: 0.3855 - mean_absolute_error: 0.4601
+50/50 [==============================] - 0s 2ms/step - loss: 0.3836 - mean_absolute_error: 0.4601 - val_loss: 0.2370 - val_mean_absolute_error: 0.3664
+Epoch 9/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.2837 - mean_absolute_error: 0.3983
+33/50 [==================>...........] - ETA: 0s - loss: 0.3663 - mean_absolute_error: 0.4487
+50/50 [==============================] - 0s 2ms/step - loss: 0.3676 - mean_absolute_error: 0.4498 - val_loss: 0.2501 - val_mean_absolute_error: 0.3808
+Epoch 10/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.3987 - mean_absolute_error: 0.4593
+45/50 [==========================>...] - ETA: 0s - loss: 0.3626 - mean_absolute_error: 0.4435
+50/50 [==============================] - 0s 2ms/step - loss: 0.3610 - mean_absolute_error: 0.4425 - val_loss: 0.2376 - val_mean_absolute_error: 0.3690
+Epoch 11/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.3536 - mean_absolute_error: 0.4538
+34/50 [===================>..........] - ETA: 0s - loss: 0.3460 - mean_absolute_error: 0.4328
+50/50 [==============================] - 0s 2ms/step - loss: 0.3513 - mean_absolute_error: 0.4371 - val_loss: 0.2422 - val_mean_absolute_error: 0.3747
+Epoch 12/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.3169 - mean_absolute_error: 0.4240
+46/50 [==========================>...] - ETA: 0s - loss: 0.3427 - mean_absolute_error: 0.4313
+50/50 [==============================] - 0s 2ms/step - loss: 0.3417 - mean_absolute_error: 0.4312 - val_loss: 0.2390 - val_mean_absolute_error: 0.3739
+Epoch 13/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.3537 - mean_absolute_error: 0.4453
+44/50 [=========================>....] - ETA: 0s - loss: 0.3335 - mean_absolute_error: 0.4262
+50/50 [==============================] - 0s 2ms/step - loss: 0.3302 - mean_absolute_error: 0.4230 - val_loss: 0.2549 - val_mean_absolute_error: 0.3929
+Epoch 14/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.2759 - mean_absolute_error: 0.3920
+44/50 [=========================>....] - ETA: 0s - loss: 0.3229 - mean_absolute_error: 0.4166
+50/50 [==============================] - 0s 2ms/step - loss: 0.3228 - mean_absolute_error: 0.4171 - val_loss: 0.2542 - val_mean_absolute_error: 0.3895
+Epoch 15/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.2346 - mean_absolute_error: 0.3537
+48/50 [===========================>..] - ETA: 0s - loss: 0.3160 - mean_absolute_error: 0.4114
+50/50 [==============================] - 0s 2ms/step - loss: 0.3166 - mean_absolute_error: 0.4118 - val_loss: 0.2593 - val_mean_absolute_error: 0.3969
+Epoch 16/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.2989 - mean_absolute_error: 0.4051
+40/50 [=======================>......] - ETA: 0s - loss: 0.3152 - mean_absolute_error: 0.4091
+50/50 [==============================] - 0s 2ms/step - loss: 0.3149 - mean_absolute_error: 0.4095 - val_loss: 0.2582 - val_mean_absolute_error: 0.3971
+Epoch 17/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 0.2847 - mean_absolute_error: 0.3874
+39/50 [======================>.......] - ETA: 0s - loss: 0.3001 - mean_absolute_error: 0.3982
+50/50 [==============================] - 0s 2ms/step - loss: 0.2994 - mean_absolute_error: 0.3979 - val_loss: 0.2369 - val_mean_absolute_error: 0.3752
+学習完了 (実際のエポック数: 17)
+=== モデル学習完了 ===
+=== 学習履歴可視化開始 ===
+学習履歴グラフ保存: train/Keras/Keras_history.png
+=== 学習履歴可視化完了 ===
+=== モデル・スケーラー保存開始 ===
+Kerasモデル保存: train/Keras/Keras_model.h5
+Pickleモデル保存: train/Keras/Keras_model.sav
+スケーラー保存: train/Keras/Keras_model_scaler.pkl
+スケーラー保存: train/Keras/Keras_model_scaler.pkl
+=== モデル・スケーラー保存完了 ===
+yスケーラ保存: train/Keras/Keras_model_y_scaler.pkl
+最終結果 - RMSE: 724.315 kW, R2: -1.2969, MAE: 619.738 kW
+予測結果を train/Keras/Keras_Ypred.csv に保存しました
+全期間グラフを train/Keras/Keras_Ypred.png に保存しました
+1週間グラフを train/Keras/Keras_Ypred_7d.png に保存しました
+Keras電力需要予測モデルの学習が正常に完了しました!
+=== Keras学習完了 (実行時間: 5.48秒) ===
+
+[2025-10-15 09:37:17] STDERR:
+2025-10-15 09:37:00.517290: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\backend.py:873: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+2025-10-15 09:37:11.594080: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE SSE2 SSE3 SSE4.1 SSE4.2 AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+
+[2025-10-15 09:37:41] /run-tomorrow-data: invoking tomorrow/temp.py before tomorrow/data.py
+[2025-10-15 09:37:41] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\temp.py
+[2025-10-15 09:37:41] Child env subset: {'AI_TARGET_YEARS': None, 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 09:37:43] Script finished: tomorrow\temp.py returncode=0
+[2025-10-15 09:37:43] STDOUT:
+=== tomorrow気温データ取得・処理開始（パフォーマンス最適化版） ===
+=== 処理完了 ===
+実行時間: 1.232秒
+メモリ使用量変化: +2.6MB (開始: 61.7MB → 終了: 64.2MB)
+出力ファイル: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv
+
+[2025-10-15 09:37:43] STDERR:
+2025-10-15 09:37:42,569 - __main__ - INFO - main:440 - 開始時メモリ使用量: 61.7MB
+2025-10-15 09:37:42,569 - __main__ - INFO - temp:405 - 気温データ取得処理開始
+2025-10-15 09:37:42,569 - __main__ - INFO - wrapper:179 - 気温データAPI取得開始
+2025-10-15 09:37:42,569 - __main__ - INFO - fetch_temperature_data:259 - API Request URL: https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823&hourly=temperature_2m&timezone=Asia%2FTokyo&past_days=7&forecast_days=7
+2025-10-15 09:37:43,770 - __main__ - INFO - wrapper:184 - 気温データAPI取得完了 (実行時間: 1.201秒)
+2025-10-15 09:37:43,786 - __main__ - INFO - create_temperature_dataframe:323 - 気温データフレーム作成完了: 336行, カラム: ['MONTH', 'WEEK', 'HOUR', 'TEMP']
+2025-10-15 09:37:43,786 - __main__ - INFO - wrapper:179 - CSV保存開始
+2025-10-15 09:37:43,802 - __main__ - INFO - save_temperature_csv:365 - 気温データCSV保存完了: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv (0.01MB)
+2025-10-15 09:37:43,802 - __main__ - INFO - wrapper:184 - CSV保存完了 (実行時間: 0.016秒)
+2025-10-15 09:37:43,802 - __main__ - INFO - temp:418 - 気温データ取得処理完了 (実行時間: 1.232秒)
+
+[2025-10-15 09:37:43] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\data.py
+[2025-10-15 09:37:43] Child env subset: {'AI_TARGET_YEARS': None, 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 09:37:45] Script finished: tomorrow\data.py returncode=0
+[2025-10-15 09:37:45] STDOUT:
+=== tomorrow予測データ取得開始 ===
+データ更新・重複除去完了: data/juyo-2025.csv
+データ更新・重複除去完了: data/juyo-2025.csv
+最新日付: 2025-10-15 00:00:00
+開始日付: 2025-10-08 00:00:00
+予測日数: 7
+tomorrow予測データセット作成完了: tomorrow/Ytest.csv (168行)
+=== tomorrow予測データ取得完了 (実行時間: 0.59秒) ===
+
+[2025-10-15 09:37:45] STDERR:
+2025-10-15 09:37:44,766 - __main__ - INFO - main:699 - tomorrow予測データ取得開始
+2025-10-15 09:37:44,766 - __main__ - INFO - data:352 - tomorrow予測データ取得開始
+2025-10-15 09:37:44,766 - __main__ - INFO - data:379 - 試行対象URL: https://www.tepco.co.jp/forecast/html/images/202510_power_usage.zip
+2025-10-15 09:37:44,766 - __main__ - INFO - data:380 - 試行対象ファイル: data/juyo-2025.csv
+2025-10-15 09:37:44,766 - __main__ - INFO - wrapper:188 - 既存データ読み込み開始
+2025-10-15 09:37:44,797 - __main__ - INFO - load_existing_data:288 - 既存データ読み込み完了: data/juyo-2025.csv (6,888行)
+2025-10-15 09:37:44,797 - __main__ - INFO - wrapper:190 - 既存データ読み込み完了
+2025-10-15 09:37:44,797 - __main__ - INFO - wrapper:188 - 最新データダウンロード・展開開始
+2025-10-15 09:37:44,986 - __main__ - INFO - download_and_extract_latest_data:492 - ZIPファイルダウンロード・処理完了: https://www.tepco.co.jp/forecast/html/images/202510_power_usage.zip
+2025-10-15 09:37:45,017 - __main__ - INFO - wrapper:190 - 最新データダウンロード・展開完了
+2025-10-15 09:37:45,017 - __main__ - INFO - data:379 - 試行対象URL: https://www.tepco.co.jp/forecast/html/images/202509_power_usage.zip
+2025-10-15 09:37:45,017 - __main__ - INFO - data:380 - 試行対象ファイル: data/juyo-2025.csv
+2025-10-15 09:37:45,017 - __main__ - INFO - wrapper:188 - 既存データ読み込み開始
+2025-10-15 09:37:45,051 - __main__ - INFO - load_existing_data:288 - 既存データ読み込み完了: data/juyo-2025.csv (6,888行)
+2025-10-15 09:37:45,051 - __main__ - INFO - wrapper:190 - 既存データ読み込み完了
+2025-10-15 09:37:45,051 - __main__ - INFO - wrapper:188 - 最新データダウンロード・展開開始
+2025-10-15 09:37:45,256 - __main__ - INFO - download_and_extract_latest_data:492 - ZIPファイルダウンロード・処理完了: https://www.tepco.co.jp/forecast/html/images/202509_power_usage.zip
+2025-10-15 09:37:45,291 - __main__ - INFO - wrapper:190 - 最新データダウンロード・展開完了
+2025-10-15 09:37:45,291 - __main__ - INFO - wrapper:188 - tomorrow予測データセット作成開始
+2025-10-15 09:37:45,321 - __main__ - INFO - wrapper:188 - 温度データ処理・データセット作成開始
+2025-10-15 09:37:45,321 - __main__ - INFO - wrapper:190 - 温度データ処理・データセット作成完了
+2025-10-15 09:37:45,321 - __main__ - INFO - wrapper:190 - tomorrow予測データセット作成完了
+2025-10-15 09:37:45,338 - __main__ - INFO - data:421 - tomorrow予測データ取得完了
+2025-10-15 09:37:45,351 - __main__ - INFO - main:720 - tomorrow予測データ取得正常完了 (実行時間: 0.59秒)
+
+[2025-10-15 09:37:48] Received /run-tomorrow payload: {'model': 'Keras', 'years': ['2024']}
+[2025-10-15 09:37:48] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.py
+[2025-10-15 09:37:48] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 09:37:48] Script finished: tomorrow\Keras\Keras_tomorrow.py returncode=1
+[2025-10-15 09:37:48] STDERR:
+  File "c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.py", line 844
+    rmse, r2_score = calculate_evaluation_metrics(Ypred, Ytest)
+    ^^^^
+SyntaxError: expected 'except' or 'finally' block
+
+[2025-10-15 10:58:46] /run-tomorrow-data: invoking tomorrow/temp.py before tomorrow/data.py
+[2025-10-15 10:58:46] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\temp.py
+[2025-10-15 10:58:46] Child env subset: {'AI_TARGET_YEARS': None, 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 10:58:48] Script finished: tomorrow\temp.py returncode=0
+[2025-10-15 10:58:48] STDOUT:
+=== tomorrow気温データ取得・処理開始（パフォーマンス最適化版） ===
+=== 処理完了 ===
+実行時間: 1.287秒
+メモリ使用量変化: +4.5MB (開始: 59.8MB → 終了: 64.3MB)
+出力ファイル: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv
+
+[2025-10-15 10:58:48] STDERR:
+2025-10-15 10:58:47,080 - __main__ - INFO - main:440 - 開始時メモリ使用量: 59.8MB
+2025-10-15 10:58:47,080 - __main__ - INFO - temp:405 - 気温データ取得処理開始
+2025-10-15 10:58:47,080 - __main__ - INFO - wrapper:179 - 気温データAPI取得開始
+2025-10-15 10:58:47,080 - __main__ - INFO - fetch_temperature_data:259 - API Request URL: https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823&hourly=temperature_2m&timezone=Asia%2FTokyo&past_days=7&forecast_days=7
+2025-10-15 10:58:48,332 - __main__ - INFO - wrapper:184 - 気温データAPI取得完了 (実行時間: 1.253秒)
+2025-10-15 10:58:48,348 - __main__ - INFO - create_temperature_dataframe:323 - 気温データフレーム作成完了: 336行, カラム: ['MONTH', 'WEEK', 'HOUR', 'TEMP']
+2025-10-15 10:58:48,348 - __main__ - INFO - wrapper:179 - CSV保存開始
+2025-10-15 10:58:48,366 - __main__ - INFO - save_temperature_csv:365 - 気温データCSV保存完了: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv (0.01MB)
+2025-10-15 10:58:48,366 - __main__ - INFO - wrapper:184 - CSV保存完了 (実行時間: 0.018秒)
+2025-10-15 10:58:48,366 - __main__ - INFO - temp:418 - 気温データ取得処理完了 (実行時間: 1.286秒)
+
+[2025-10-15 10:58:48] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\data.py
+[2025-10-15 10:58:48] Child env subset: {'AI_TARGET_YEARS': None, 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 10:58:50] Script finished: tomorrow\data.py returncode=0
+[2025-10-15 10:58:50] STDOUT:
+=== tomorrow予測データ取得開始 ===
+データ更新・重複除去完了: data/juyo-2025.csv
+データ更新・重複除去完了: data/juyo-2025.csv
+最新日付: 2025-10-15 00:00:00
+開始日付: 2025-10-08 00:00:00
+予測日数: 7
+tomorrow予測データセット作成完了: tomorrow/Ytest.csv (168行)
+=== tomorrow予測データ取得完了 (実行時間: 0.81秒) ===
+
+[2025-10-15 10:58:50] STDERR:
+2025-10-15 10:58:49,235 - __main__ - INFO - main:699 - tomorrow予測データ取得開始
+2025-10-15 10:58:49,235 - __main__ - INFO - data:352 - tomorrow予測データ取得開始
+2025-10-15 10:58:49,235 - __main__ - INFO - data:379 - 試行対象URL: https://www.tepco.co.jp/forecast/html/images/202510_power_usage.zip
+2025-10-15 10:58:49,235 - __main__ - INFO - data:380 - 試行対象ファイル: data/juyo-2025.csv
+2025-10-15 10:58:49,235 - __main__ - INFO - wrapper:188 - 既存データ読み込み開始
+2025-10-15 10:58:49,267 - __main__ - INFO - load_existing_data:288 - 既存データ読み込み完了: data/juyo-2025.csv (6,888行)
+2025-10-15 10:58:49,267 - __main__ - INFO - wrapper:190 - 既存データ読み込み完了
+2025-10-15 10:58:49,267 - __main__ - INFO - wrapper:188 - 最新データダウンロード・展開開始
+2025-10-15 10:58:49,719 - __main__ - INFO - download_and_extract_latest_data:492 - ZIPファイルダウンロード・処理完了: https://www.tepco.co.jp/forecast/html/images/202510_power_usage.zip
+2025-10-15 10:58:49,734 - __main__ - INFO - wrapper:190 - 最新データダウンロード・展開完了
+2025-10-15 10:58:49,734 - __main__ - INFO - data:379 - 試行対象URL: https://www.tepco.co.jp/forecast/html/images/202509_power_usage.zip
+2025-10-15 10:58:49,734 - __main__ - INFO - data:380 - 試行対象ファイル: data/juyo-2025.csv
+2025-10-15 10:58:49,734 - __main__ - INFO - wrapper:188 - 既存データ読み込み開始
+2025-10-15 10:58:49,749 - __main__ - INFO - load_existing_data:288 - 既存データ読み込み完了: data/juyo-2025.csv (6,888行)
+2025-10-15 10:58:49,749 - __main__ - INFO - wrapper:190 - 既存データ読み込み完了
+2025-10-15 10:58:49,749 - __main__ - INFO - wrapper:188 - 最新データダウンロード・展開開始
+2025-10-15 10:58:49,953 - __main__ - INFO - download_and_extract_latest_data:492 - ZIPファイルダウンロード・処理完了: https://www.tepco.co.jp/forecast/html/images/202509_power_usage.zip
+2025-10-15 10:58:49,985 - __main__ - INFO - wrapper:190 - 最新データダウンロード・展開完了
+2025-10-15 10:58:49,985 - __main__ - INFO - wrapper:188 - tomorrow予測データセット作成開始
+2025-10-15 10:58:50,000 - __main__ - INFO - wrapper:188 - 温度データ処理・データセット作成開始
+2025-10-15 10:58:50,016 - __main__ - INFO - wrapper:190 - 温度データ処理・データセット作成完了
+2025-10-15 10:58:50,016 - __main__ - INFO - wrapper:190 - tomorrow予測データセット作成完了
+2025-10-15 10:58:50,032 - __main__ - INFO - data:421 - tomorrow予測データ取得完了
+2025-10-15 10:58:50,047 - __main__ - INFO - main:720 - tomorrow予測データ取得正常完了 (実行時間: 0.81秒)
+
+[2025-10-15 10:59:33] Received /run-tomorrow payload: {'model': 'Keras', 'years': ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']}
+[2025-10-15 10:59:33] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.py
+[2025-10-15 10:59:33] Child env subset: {'AI_TARGET_YEARS': '2016,2017,2018,2019,2020,2021,2022,2023,2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 10:59:46] Script finished: tomorrow\Keras\Keras_tomorrow.py returncode=0
+[2025-10-15 10:59:46] STDOUT:
+psutil: 利用可能 - メモリ監視機能を有効化
+Keras Tomorrow: パフォーマンス最適化設定を適用しました
+Keras: 利用可能
+AI_TARGET_YEARS=2016,2017,2018,2019,2020,2021,2022,2023,2024
+=== Keras Tomorrow プログラム開始 ===
+開始時メモリ使用量: 300.4MB
+=== Keras Tomorrow 電力需要予測開始（統一アーキテクチャ版） ===
+[明日予測処理開始] メモリ使用量: 12.18 GB
+[データ読み込み開始] メモリ使用量: 12.18 GB
+訓練データを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\Xtrain.csv
+テストデータを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\Xtest.csv
+ラベルデータを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\Ytrain.csv
+[データ読み込み完了] メモリ使用量: 12.19 GB
+学習データの読み込みが完了しました (実行時間: 0.063秒)
+[OK] load_training_data 実行時間: 0.175秒
+[テスト・明日データ読み込み開始] メモリ使用量: 12.19 GB
+テストラベルを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Ytest.csv
+明日予測用データを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv
+[テスト・明日データ読み込み完了] メモリ使用量: 12.19 GB
+テストデータと明日予測用データの読み込みが完了しました (実行時間: 0.031秒)
+[OK] load_test_and_tomorrow_data 実行時間: 0.151秒
+訓練済みモデルとスケーラーを読み込んでいます...
+[モデル読み込み開始] メモリ使用量: 12.19 GB
+モデルディレクトリ: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\train\Keras
+[OK] スケーラー読み込み成功: <class 'sklearn.preprocessing._data.StandardScaler'>
+[WARN] H5モデル読み込み失敗（手法1）: 'utf-8' codec can't decode byte 0xe2 in position 33: invalid continuation byte
+手法2: SAVファイル試行中...
+SAVファイルサイズ: 78,990 bytes
+[OK] SAVファイルからモデル読み込み成功（手法2）
+[モデル読み込み完了] メモリ使用量: 12.20 GB
+モデル読み込み完了 (実行時間: 0.391秒)
+モデルタイプ: <class 'keras.src.engine.sequential.Sequential'>
+スケーラータイプ: <class 'sklearn.preprocessing._data.StandardScaler'>
+[モデル読み込み完了] メモリ使用量: 12.19 GB
+[予測処理開始] メモリ使用量: 12.19 GB
+テストデータ標準化開始: (7673, 4)
+翌日データ標準化開始: (336, 4)
+[データ標準化完了] メモリ使用量: 12.19 GB
+テストデータ予測実行中...
+翌日データ予測実行中...
+自動スケール調整を実行
+予測値範囲調整完了: テスト予測 1998-5000kW, 翌日予測 2130-3874kW
+[予測処理完了] メモリ使用量: 12.20 GB
+予測処理完了 (実行時間: 1.097秒)
+テスト予測: (7673, 1), 翌日予測: (336, 1)
+[OK] predict_with_model 実行時間: 1.106秒
+[予測完了] メモリ使用量: 12.20 GB
+評価指標を計算しています
+ypred形状: (168, 1), ytest形状: (7673, 1)
+[WARN] 形状不一致を検出: ypred(168, 1) vs ytest(7673, 1)
+[OK] ytestを調整: (168, 1)
+評価指標計算完了 (実行時間: 0.000秒)
+MAE: 808.768
+RMSE: 852.42
+R2 Score: -3.0706
+[CSV保存開始] メモリ使用量: 12.20 GB
+明日の予測結果を保存しています: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.csv
+[CSV保存完了] メモリ使用量: 12.20 GB
+明日の予測結果の保存が完了しました (実行時間: 0.031秒, サイズ: 0.00MB)
+[OK] save_tomorrow_predictions 実行時間: 0.191秒
+予測結果のグラフを作成しています: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.png
+予測結果のグラフ作成が完了しました
+[明日予測処理完了] メモリ使用量: 12.19 GB
+明日の電力需要予測が完了しました: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.csv
+R2 Score: -3.0706
+[OK] tomorrow 実行時間: 3.986秒
+メモリ使用量変化: +57.1MB (開始: 300.4MB → 終了: 357.5MB)
+=== 処理完了 ===
+RMSE: 852.42
+実行時間: 3.986秒
+出力ファイル: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.csv
+=== Keras Tomorrow プログラム正常終了 ===
+
+[2025-10-15 10:59:46] STDERR:
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\backend.py:277: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+
+
+[2025-10-15 11:47:18] Received /run-data payload: {'years': ['2024']}
+[2025-10-15 11:47:18] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\data.py
+[2025-10-15 11:47:18] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:47:21] Script finished: data\data.py returncode=0
+[2025-10-15 11:47:21] STDOUT:
+対象年に制限を適用します: ['2024']
+============================================================
+電力需要予測AIモデル - データ前処理開始
+============================================================
+AI_TARGET_YEARS によりファイルを絞り込み: ['2024']
+電力データファイル: 1件
+気温データファイル: 1件
+共通年: 1年分 (2024)
+電力データ読み込み中: data\juyo-2024.csv
+電力データ読み込み完了: 8784行 (メモリ最適化済み)
+気温データ読み込み中: data\temperature-2024.csv
+気温データ読み込み完了: 8784行 (メモリ最適化済み)
+電力データ前処理開始
+電力データ前処理完了 (パフォーマンス最適化済み)
+気温データ前処理開始
+気温データ前処理完了 (パフォーマンス最適化済み)
+データマージ開始
+データマージ完了: 8782行 (パフォーマンス最適化済み)
+特徴量・ターゲットデータ作成開始
+特徴量データ作成完了: (8782, 4)
+ターゲットデータ作成完了: (8782, 1)
+データ保存開始
+すべてのデータ保存完了: data/X.csv, data/Y.csv
+学習・テストデータ保存完了
+学習データ: 7903行, テストデータ: 879行
+============================================================
+すべての処理が正常に完了しました
+============================================================
+すべての処理が正常に完了しました
+
+[2025-10-15 11:47:21] STDERR:
+2025-10-15 11:47:20,298 - __main__ - INFO - wrapper:91 - データファイル検索開始
+2025-10-15 11:47:20,300 - __main__ - INFO - wrapper:93 - データファイル検索完了
+2025-10-15 11:47:20,300 - __main__ - INFO - wrapper:91 - 電力データ読み込み開始
+2025-10-15 11:47:20,327 - __main__ - INFO - wrapper:93 - 電力データ読み込み完了
+2025-10-15 11:47:20,327 - __main__ - INFO - wrapper:91 - 気温データ読み込み開始
+2025-10-15 11:47:20,364 - __main__ - INFO - wrapper:93 - 気温データ読み込み完了
+2025-10-15 11:47:21,784 - __main__ - INFO - wrapper:91 - データセット保存開始
+2025-10-15 11:47:21,848 - __main__ - INFO - wrapper:93 - データセット保存完了
+2025-10-15 11:47:21,849 - __main__ - INFO - main:652 - データ処理正常完了
+
+[2025-10-15 11:47:29] Received /run-train payload: {'model': 'Keras', 'years': ['2024']}
+[2025-10-15 11:47:29] 年指定あり: AI_TARGET_YEARS=2024
+[2025-10-15 11:47:29] Running data pipeline before training with AI_TARGET_YEARS=2024
+[2025-10-15 11:47:29] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\data.py
+[2025-10-15 11:47:29] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:47:32] Script finished: data\data.py returncode=0
+[2025-10-15 11:47:32] STDOUT:
+対象年に制限を適用します: ['2024']
+============================================================
+電力需要予測AIモデル - データ前処理開始
+============================================================
+AI_TARGET_YEARS によりファイルを絞り込み: ['2024']
+電力データファイル: 1件
+気温データファイル: 1件
+共通年: 1年分 (2024)
+電力データ読み込み中: data\juyo-2024.csv
+電力データ読み込み完了: 8784行 (メモリ最適化済み)
+気温データ読み込み中: data\temperature-2024.csv
+気温データ読み込み完了: 8784行 (メモリ最適化済み)
+電力データ前処理開始
+電力データ前処理完了 (パフォーマンス最適化済み)
+気温データ前処理開始
+気温データ前処理完了 (パフォーマンス最適化済み)
+データマージ開始
+データマージ完了: 8782行 (パフォーマンス最適化済み)
+特徴量・ターゲットデータ作成開始
+特徴量データ作成完了: (8782, 4)
+ターゲットデータ作成完了: (8782, 1)
+データ保存開始
+すべてのデータ保存完了: data/X.csv, data/Y.csv
+学習・テストデータ保存完了
+学習データ: 7903行, テストデータ: 879行
+============================================================
+すべての処理が正常に完了しました
+============================================================
+すべての処理が正常に完了しました
+
+[2025-10-15 11:47:32] STDERR:
+2025-10-15 11:47:31,023 - __main__ - INFO - wrapper:91 - データファイル検索開始
+2025-10-15 11:47:31,024 - __main__ - INFO - wrapper:93 - データファイル検索完了
+2025-10-15 11:47:31,024 - __main__ - INFO - wrapper:91 - 電力データ読み込み開始
+2025-10-15 11:47:31,034 - __main__ - INFO - wrapper:93 - 電力データ読み込み完了
+2025-10-15 11:47:31,034 - __main__ - INFO - wrapper:91 - 気温データ読み込み開始
+2025-10-15 11:47:31,044 - __main__ - INFO - wrapper:93 - 気温データ読み込み完了
+2025-10-15 11:47:32,483 - __main__ - INFO - wrapper:91 - データセット保存開始
+2025-10-15 11:47:32,543 - __main__ - INFO - wrapper:93 - データセット保存完了
+2025-10-15 11:47:32,544 - __main__ - INFO - main:652 - データ処理正常完了
+
+[2025-10-15 11:47:32] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\train\Keras\Keras_train.py
+[2025-10-15 11:47:32] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:47:51] Script finished: train\Keras\Keras_train.py returncode=0
+[2025-10-15 11:47:51] STDOUT:
+Keras: 統一パフォーマンス最適化設定を適用しました
+AI_TARGET_YEARS=2024
+=== Keras学習開始 ===
+Keras電力需要予測モデルの学習を開始します...
+=== 学習・テストデータ読み込み開始 ===
+学習データを読み込み中...
+学習データ形状: X_train=(7903, 4), y_train=(7903,)
+テストデータ形状: X_test=(879, 4), y_test=(879,)
+=== 学習・テストデータ読み込み完了 ===
+=== データ標準化開始 ===
+データの標準化を実行中...
+標準化完了: 特徴量数=4
+=== データ標準化完了 ===
+=== Kerasモデル構築開始 ===
+Kerasモデルを構築中... (入力次元: 4)
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ hidden1 (Dense)             (None, 64)                320       
+                                                                 
+ hidden2 (Dense)             (None, 64)                4160      
+                                                                 
+ output (Dense)              (None, 1)                 65        
+                                                                 
+=================================================================
+Total params: 4545 (17.75 KB)
+Trainable params: 4545 (17.75 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Kerasモデル構築完了 (学習率: 0.001)
+=== Kerasモデル構築完了 ===
+=== モデル学習開始 ===
+モデル学習開始 (epochs: 200, batch_size: 128, patience: 5)
+Epoch 1/200
+
+ 1/50 [..............................] - ETA: 30s - loss: 11286261.0000 - mean_absolute_error: 3265.5112
+35/50 [====================>.........] - ETA: 0s - loss: 11296953.0000 - mean_absolute_error: 3276.1956 
+50/50 [==============================] - 1s 9ms/step - loss: 11328652.0000 - mean_absolute_error: 3280.7271 - val_loss: 8330495.0000 - val_mean_absolute_error: 2844.3145
+Epoch 2/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 10865480.0000 - mean_absolute_error: 3224.9155
+19/50 [==========>...................] - ETA: 0s - loss: 11214225.0000 - mean_absolute_error: 3263.6184
+28/50 [===============>..............] - ETA: 0s - loss: 11270939.0000 - mean_absolute_error: 3273.3372
+33/50 [==================>...........] - ETA: 0s - loss: 11311086.0000 - mean_absolute_error: 3278.5952
+41/50 [=======================>......] - ETA: 0s - loss: 11287181.0000 - mean_absolute_error: 3274.6250
+48/50 [===========================>..] - ETA: 0s - loss: 11278539.0000 - mean_absolute_error: 3272.8333
+50/50 [==============================] - 1s 11ms/step - loss: 11266247.0000 - mean_absolute_error: 3271.1968 - val_loss: 8263453.5000 - val_mean_absolute_error: 2832.3279
+Epoch 3/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 11022054.0000 - mean_absolute_error: 3243.4041
+16/50 [========>.....................] - ETA: 0s - loss: 11078784.0000 - mean_absolute_error: 3243.4336
+48/50 [===========================>..] - ETA: 0s - loss: 11080905.0000 - mean_absolute_error: 3242.5957
+50/50 [==============================] - 0s 3ms/step - loss: 11063183.0000 - mean_absolute_error: 3240.0962 - val_loss: 8102611.5000 - val_mean_absolute_error: 2803.4905
+Epoch 4/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 12076490.0000 - mean_absolute_error: 3391.4182
+33/50 [==================>...........] - ETA: 0s - loss: 10726399.0000 - mean_absolute_error: 3187.6309
+50/50 [==============================] - 0s 3ms/step - loss: 10597853.0000 - mean_absolute_error: 3167.4441 - val_loss: 7801688.0000 - val_mean_absolute_error: 2748.8979
+Epoch 5/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 9715156.0000 - mean_absolute_error: 3017.4380
+25/50 [==============>...............] - ETA: 0s - loss: 9957802.0000 - mean_absolute_error: 3065.3638
+43/50 [========================>.....] - ETA: 0s - loss: 9821987.0000 - mean_absolute_error: 3043.1064
+50/50 [==============================] - 0s 5ms/step - loss: 9761495.0000 - mean_absolute_error: 3032.5015 - val_loss: 7317411.5000 - val_mean_absolute_error: 2658.8679
+Epoch 6/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 9216426.0000 - mean_absolute_error: 2943.8325
+40/50 [=======================>......] - ETA: 0s - loss: 8719526.0000 - mean_absolute_error: 2853.3425
+42/50 [========================>.....] - ETA: 0s - loss: 8671153.0000 - mean_absolute_error: 2845.6201
+50/50 [==============================] - 0s 4ms/step - loss: 8521492.0000 - mean_absolute_error: 2819.3469 - val_loss: 6645154.5000 - val_mean_absolute_error: 2528.7524
+Epoch 7/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 7685134.0000 - mean_absolute_error: 2692.9341
+18/50 [=========>....................] - ETA: 0s - loss: 7459191.0000 - mean_absolute_error: 2623.9392
+34/50 [===================>..........] - ETA: 0s - loss: 7297772.5000 - mean_absolute_error: 2588.2288
+50/50 [==============================] - 0s 4ms/step - loss: 6953238.5000 - mean_absolute_error: 2521.4248 - val_loss: 5793095.5000 - val_mean_absolute_error: 2353.2808
+Epoch 8/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 5587947.0000 - mean_absolute_error: 2255.3674
+34/50 [===================>..........] - ETA: 0s - loss: 5448529.5000 - mean_absolute_error: 2199.0706
+50/50 [==============================] - 0s 2ms/step - loss: 5247366.0000 - mean_absolute_error: 2147.8296 - val_loss: 4826433.5000 - val_mean_absolute_error: 2135.9849
+Epoch 9/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 4444315.0000 - mean_absolute_error: 1936.9023
+27/50 [===============>..............] - ETA: 0s - loss: 3964697.0000 - mean_absolute_error: 1818.8019
+50/50 [==============================] - 0s 2ms/step - loss: 3659788.0000 - mean_absolute_error: 1723.8988 - val_loss: 3809644.7500 - val_mean_absolute_error: 1879.1676
+Epoch 10/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 3034999.0000 - mean_absolute_error: 1519.2579
+26/50 [==============>...............] - ETA: 0s - loss: 2653191.7500 - mean_absolute_error: 1402.7635
+50/50 [==============================] - 0s 4ms/step - loss: 2394773.7500 - mean_absolute_error: 1309.3865 - val_loss: 2846551.5000 - val_mean_absolute_error: 1595.1583
+Epoch 11/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 1798872.5000 - mean_absolute_error: 1098.5913
+37/50 [=====================>........] - ETA: 0s - loss: 1600642.2500 - mean_absolute_error: 1017.7127
+50/50 [==============================] - 0s 3ms/step - loss: 1516970.1250 - mean_absolute_error: 984.9033 - val_loss: 2038515.8750 - val_mean_absolute_error: 1306.3779
+Epoch 12/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 1193250.7500 - mean_absolute_error: 838.9581
+37/50 [=====================>........] - ETA: 0s - loss: 1018107.4375 - mean_absolute_error: 790.3234
+50/50 [==============================] - 0s 3ms/step - loss: 970077.9375 - mean_absolute_error: 767.9706 - val_loss: 1443797.6250 - val_mean_absolute_error: 1046.0831
+Epoch 13/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 756261.6250 - mean_absolute_error: 675.8367
+28/50 [===============>..............] - ETA: 0s - loss: 677774.5000 - mean_absolute_error: 643.4792
+50/50 [==============================] - 0s 3ms/step - loss: 657389.1875 - mean_absolute_error: 632.9340 - val_loss: 1059950.0000 - val_mean_absolute_error: 852.3835
+Epoch 14/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 578545.0000 - mean_absolute_error: 593.8983
+32/50 [==================>...........] - ETA: 0s - loss: 495683.9375 - mean_absolute_error: 551.4821
+50/50 [==============================] - 0s 3ms/step - loss: 493038.7812 - mean_absolute_error: 552.4104 - val_loss: 835695.7500 - val_mean_absolute_error: 725.7955
+Epoch 15/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 446903.7812 - mean_absolute_error: 528.1206
+31/50 [=================>............] - ETA: 0s - loss: 421860.2500 - mean_absolute_error: 512.2804
+50/50 [==============================] - 0s 3ms/step - loss: 412909.1562 - mean_absolute_error: 506.7459 - val_loss: 712654.5625 - val_mean_absolute_error: 651.4967
+Epoch 16/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 408355.9375 - mean_absolute_error: 505.7812
+35/50 [====================>.........] - ETA: 0s - loss: 376041.0938 - mean_absolute_error: 485.6869
+50/50 [==============================] - 0s 3ms/step - loss: 373039.0000 - mean_absolute_error: 481.7542 - val_loss: 646302.9375 - val_mean_absolute_error: 611.7687
+Epoch 17/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 450018.5625 - mean_absolute_error: 523.3500
+35/50 [====================>.........] - ETA: 0s - loss: 356502.8125 - mean_absolute_error: 470.8541
+50/50 [==============================] - 0s 2ms/step - loss: 350704.0312 - mean_absolute_error: 467.9327 - val_loss: 604668.8750 - val_mean_absolute_error: 588.8640
+Epoch 18/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 444545.6875 - mean_absolute_error: 542.7845
+32/50 [==================>...........] - ETA: 0s - loss: 344543.3438 - mean_absolute_error: 466.8519
+50/50 [==============================] - 0s 4ms/step - loss: 335133.4688 - mean_absolute_error: 457.8560 - val_loss: 580602.5625 - val_mean_absolute_error: 576.3662
+Epoch 19/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 375200.0000 - mean_absolute_error: 471.7229
+16/50 [========>.....................] - ETA: 0s - loss: 325238.0938 - mean_absolute_error: 450.6413
+31/50 [=================>............] - ETA: 0s - loss: 325615.0000 - mean_absolute_error: 452.5787
+42/50 [========================>.....] - ETA: 0s - loss: 324708.2188 - mean_absolute_error: 451.2774
+50/50 [==============================] - 0s 5ms/step - loss: 322218.0312 - mean_absolute_error: 449.7230 - val_loss: 563377.3750 - val_mean_absolute_error: 567.5026
+Epoch 20/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 359646.1250 - mean_absolute_error: 477.8702
+30/50 [=================>............] - ETA: 0s - loss: 318542.0312 - mean_absolute_error: 448.0114
+49/50 [============================>.] - ETA: 0s - loss: 310188.5000 - mean_absolute_error: 441.5092
+50/50 [==============================] - 0s 4ms/step - loss: 310710.8438 - mean_absolute_error: 442.0317 - val_loss: 550334.1250 - val_mean_absolute_error: 560.7781
+Epoch 21/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 307580.8438 - mean_absolute_error: 447.3444
+29/50 [================>.............] - ETA: 0s - loss: 297538.6562 - mean_absolute_error: 432.7592
+50/50 [==============================] - 0s 3ms/step - loss: 300180.0625 - mean_absolute_error: 434.8544 - val_loss: 539283.9375 - val_mean_absolute_error: 555.2654
+Epoch 22/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 329779.8750 - mean_absolute_error: 474.5133
+28/50 [===============>..............] - ETA: 0s - loss: 291211.2812 - mean_absolute_error: 429.1809
+50/50 [==============================] - 0s 3ms/step - loss: 290570.9688 - mean_absolute_error: 428.4140 - val_loss: 531007.6250 - val_mean_absolute_error: 551.1234
+Epoch 23/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 339701.1250 - mean_absolute_error: 472.0715
+42/50 [========================>.....] - ETA: 0s - loss: 281635.0625 - mean_absolute_error: 422.9210
+50/50 [==============================] - 0s 2ms/step - loss: 281812.1562 - mean_absolute_error: 422.1302 - val_loss: 523357.4375 - val_mean_absolute_error: 547.2761
+Epoch 24/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 350130.5625 - mean_absolute_error: 478.0015
+36/50 [====================>.........] - ETA: 0s - loss: 271263.3750 - mean_absolute_error: 414.0183
+50/50 [==============================] - 0s 3ms/step - loss: 273779.8438 - mean_absolute_error: 416.1680 - val_loss: 517520.0000 - val_mean_absolute_error: 544.3932
+Epoch 25/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 259339.4531 - mean_absolute_error: 403.0663
+34/50 [===================>..........] - ETA: 0s - loss: 263868.7500 - mean_absolute_error: 407.3045
+50/50 [==============================] - 0s 2ms/step - loss: 266385.7812 - mean_absolute_error: 410.9038 - val_loss: 512194.9688 - val_mean_absolute_error: 541.6913
+Epoch 26/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 270860.6250 - mean_absolute_error: 408.6554
+39/50 [======================>.......] - ETA: 0s - loss: 258801.1094 - mean_absolute_error: 404.0965
+50/50 [==============================] - 0s 2ms/step - loss: 259774.8281 - mean_absolute_error: 406.2182 - val_loss: 506079.8125 - val_mean_absolute_error: 538.7408
+Epoch 27/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 272495.9375 - mean_absolute_error: 413.8030
+43/50 [========================>.....] - ETA: 0s - loss: 255948.8438 - mean_absolute_error: 404.1696
+50/50 [==============================] - 0s 2ms/step - loss: 253592.1094 - mean_absolute_error: 401.3281 - val_loss: 503754.0000 - val_mean_absolute_error: 537.3160
+Epoch 28/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 227760.3438 - mean_absolute_error: 379.2787
+35/50 [====================>.........] - ETA: 0s - loss: 245762.6875 - mean_absolute_error: 393.3941
+50/50 [==============================] - 0s 3ms/step - loss: 247989.6094 - mean_absolute_error: 397.2041 - val_loss: 500550.3125 - val_mean_absolute_error: 535.8073
+Epoch 29/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 247000.8594 - mean_absolute_error: 392.4397
+33/50 [==================>...........] - ETA: 0s - loss: 243657.2656 - mean_absolute_error: 394.9624
+50/50 [==============================] - 0s 3ms/step - loss: 242807.2500 - mean_absolute_error: 392.9433 - val_loss: 499679.0625 - val_mean_absolute_error: 535.0823
+Epoch 30/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 298785.6250 - mean_absolute_error: 442.1597
+35/50 [====================>.........] - ETA: 0s - loss: 239612.1875 - mean_absolute_error: 390.2626
+50/50 [==============================] - 0s 2ms/step - loss: 238036.2188 - mean_absolute_error: 389.1812 - val_loss: 496743.9062 - val_mean_absolute_error: 533.6415
+Epoch 31/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 217910.2500 - mean_absolute_error: 367.8543
+36/50 [====================>.........] - ETA: 0s - loss: 233166.6094 - mean_absolute_error: 385.0244
+50/50 [==============================] - 0s 2ms/step - loss: 233576.5781 - mean_absolute_error: 385.4055 - val_loss: 496393.2812 - val_mean_absolute_error: 533.4608
+Epoch 32/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 207962.4844 - mean_absolute_error: 364.1064
+41/50 [=======================>......] - ETA: 0s - loss: 232446.1719 - mean_absolute_error: 385.6967
+50/50 [==============================] - 0s 2ms/step - loss: 229422.6250 - mean_absolute_error: 382.0379 - val_loss: 495375.6250 - val_mean_absolute_error: 532.8680
+Epoch 33/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 203515.6250 - mean_absolute_error: 365.9171
+35/50 [====================>.........] - ETA: 0s - loss: 226766.6875 - mean_absolute_error: 378.5270
+50/50 [==============================] - 0s 2ms/step - loss: 225496.0312 - mean_absolute_error: 378.5951 - val_loss: 494945.4688 - val_mean_absolute_error: 532.6134
+Epoch 34/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 196812.1250 - mean_absolute_error: 361.4431
+36/50 [====================>.........] - ETA: 0s - loss: 222425.3125 - mean_absolute_error: 376.8277
+50/50 [==============================] - 0s 2ms/step - loss: 221844.8594 - mean_absolute_error: 375.3883 - val_loss: 494603.2500 - val_mean_absolute_error: 532.3250
+Epoch 35/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 242634.9375 - mean_absolute_error: 387.8013
+35/50 [====================>.........] - ETA: 0s - loss: 215090.7344 - mean_absolute_error: 367.6864
+50/50 [==============================] - 0s 2ms/step - loss: 218378.3438 - mean_absolute_error: 372.1201 - val_loss: 495051.5000 - val_mean_absolute_error: 532.6094
+Epoch 36/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 199778.0938 - mean_absolute_error: 350.3782
+36/50 [====================>.........] - ETA: 0s - loss: 214364.4844 - mean_absolute_error: 367.9380
+50/50 [==============================] - 0s 2ms/step - loss: 215027.0156 - mean_absolute_error: 369.1182 - val_loss: 497189.1562 - val_mean_absolute_error: 533.6821
+Epoch 37/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 238085.5625 - mean_absolute_error: 399.1903
+38/50 [=====================>........] - ETA: 0s - loss: 209542.1562 - mean_absolute_error: 364.6830
+50/50 [==============================] - 0s 3ms/step - loss: 211931.5938 - mean_absolute_error: 366.4698 - val_loss: 497200.6250 - val_mean_absolute_error: 533.9437
+Epoch 38/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 248677.3750 - mean_absolute_error: 393.1668
+27/50 [===============>..............] - ETA: 0s - loss: 206605.2656 - mean_absolute_error: 360.4879
+50/50 [==============================] - 0s 3ms/step - loss: 208963.2812 - mean_absolute_error: 363.5349 - val_loss: 497634.9375 - val_mean_absolute_error: 534.3453
+Epoch 39/200
+
+ 1/50 [..............................] - ETA: 0s - loss: 214155.7500 - mean_absolute_error: 358.9735
+35/50 [====================>.........] - ETA: 0s - loss: 203353.9531 - mean_absolute_error: 358.1708
+50/50 [==============================] - 0s 2ms/step - loss: 206089.2344 - mean_absolute_error: 360.6759 - val_loss: 498204.4062 - val_mean_absolute_error: 535.0944
+学習完了 (実際のエポック数: 39)
+=== モデル学習完了 ===
+=== 学習履歴可視化開始 ===
+学習履歴グラフ保存: train/Keras/Keras_history.png
+=== 学習履歴可視化完了 ===
+=== モデル・スケーラー保存開始 ===
+Kerasモデル保存: train/Keras/Keras_model.h5
+Pickleモデル保存: train/Keras/Keras_model.sav
+スケーラー保存: train/Keras/Keras_model_scaler.pkl
+=== モデル・スケーラー保存完了 ===
+=== モデル性能評価開始 ===
+モデル性能評価を実行中...
+テスト損失: 2673195.500, テストMAE: 1531.246
+RMSE: 1634.991 kW
+R2スコア: -10.7038
+MAE: 1531.246 kW
+=== モデル性能評価完了 ===
+予測結果を train/Keras/Keras_Ypred.csv に保存しました
+全期間グラフを train/Keras/Keras_Ypred.png に保存しました
+1週間グラフを train/Keras/Keras_Ypred_7d.png に保存しました
+Keras電力需要予測モデルの学習が正常に完了しました!
+=== Keras学習完了 (実行時間: 9.15秒) ===
+
+[2025-10-15 11:47:51] STDERR:
+2025-10-15 11:47:34.880206: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\backend.py:873: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+2025-10-15 11:47:41.869689: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE SSE2 SSE3 SSE4.1 SSE4.2 AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\utils\tf_utils.py:492: The name tf.ragged.RaggedTensorValue is deprecated. Please use tf.compat.v1.ragged.RaggedTensorValue instead.
+
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\engine\base_layer_utils.py:384: The name tf.executing_eagerly_outside_functions is deprecated. Please use tf.compat.v1.executing_eagerly_outside_functions instead.
+
+
+[2025-10-15 11:48:09] Received /run-train payload: {'model': 'LightGBM', 'years': ['2024']}
+[2025-10-15 11:48:09] 年指定あり: AI_TARGET_YEARS=2024
+[2025-10-15 11:48:09] Running data pipeline before training with AI_TARGET_YEARS=2024
+[2025-10-15 11:48:09] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\data.py
+[2025-10-15 11:48:09] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:48:12] Script finished: data\data.py returncode=0
+[2025-10-15 11:48:12] STDOUT:
+対象年に制限を適用します: ['2024']
+============================================================
+電力需要予測AIモデル - データ前処理開始
+============================================================
+AI_TARGET_YEARS によりファイルを絞り込み: ['2024']
+電力データファイル: 1件
+気温データファイル: 1件
+共通年: 1年分 (2024)
+電力データ読み込み中: data\juyo-2024.csv
+電力データ読み込み完了: 8784行 (メモリ最適化済み)
+気温データ読み込み中: data\temperature-2024.csv
+気温データ読み込み完了: 8784行 (メモリ最適化済み)
+電力データ前処理開始
+電力データ前処理完了 (パフォーマンス最適化済み)
+気温データ前処理開始
+気温データ前処理完了 (パフォーマンス最適化済み)
+データマージ開始
+データマージ完了: 8782行 (パフォーマンス最適化済み)
+特徴量・ターゲットデータ作成開始
+特徴量データ作成完了: (8782, 4)
+ターゲットデータ作成完了: (8782, 1)
+データ保存開始
+すべてのデータ保存完了: data/X.csv, data/Y.csv
+学習・テストデータ保存完了
+学習データ: 7903行, テストデータ: 879行
+============================================================
+すべての処理が正常に完了しました
+============================================================
+すべての処理が正常に完了しました
+
+[2025-10-15 11:48:12] STDERR:
+2025-10-15 11:48:10,715 - __main__ - INFO - wrapper:91 - データファイル検索開始
+2025-10-15 11:48:10,716 - __main__ - INFO - wrapper:93 - データファイル検索完了
+2025-10-15 11:48:10,716 - __main__ - INFO - wrapper:91 - 電力データ読み込み開始
+2025-10-15 11:48:10,726 - __main__ - INFO - wrapper:93 - 電力データ読み込み完了
+2025-10-15 11:48:10,726 - __main__ - INFO - wrapper:91 - 気温データ読み込み開始
+2025-10-15 11:48:10,739 - __main__ - INFO - wrapper:93 - 気温データ読み込み完了
+2025-10-15 11:48:11,992 - __main__ - INFO - wrapper:91 - データセット保存開始
+2025-10-15 11:48:12,062 - __main__ - INFO - wrapper:93 - データセット保存完了
+2025-10-15 11:48:12,063 - __main__ - INFO - main:652 - データ処理正常完了
+
+[2025-10-15 11:48:12] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\train\LightGBM\LightGBM_train.py
+[2025-10-15 11:48:12] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:48:17] Script finished: train\LightGBM\LightGBM_train.py returncode=0
+[2025-10-15 11:48:17] STDOUT:
+=== LightGBM統一最適化設定適用完了 ===
+AI_TARGET_YEARS=2024
+=== LightGBM学習開始 ===
+=== LightGBM学習統合処理 開始 ===
+=== LightGBM電力需要予測モデル学習開始 ===
+=== 学習データ読み込み 開始 ===
+学習データを読み込み中...
+学習データ形状: X_train=(7903, 4), y_train=(7903,)
+テストデータ形状: X_test=(879, 4), y_test=(879,)
+メモリ最適化: float32データ型使用、メモリ使用量約50%削減
+=== 学習データ読み込み 完了 (実行時間: 0.05秒) ===
+=== データ標準化処理 開始 ===
+データの標準化を実行中...
+データの標準化が完了しました（float32最適化済み）
+=== データ標準化処理 完了 (実行時間: 0.00秒) ===
+学習率を 0.1 に設定しました
+=== LightGBMモデル構築 開始 ===
+LightGBMモデルを構築中...
+LightGBMモデル構築完了 - パラメータ: {'n_estimators': 100, 'learning_rate': 0.1, 'max_depth': -1, 'num_leaves': 31, 'min_child_samples': 20, 'subsample': 1.0, 'colsample_bytree': 1.0, 'random_state': 42, 'verbose': -1}
+=== LightGBMモデル構築 完了 (実行時間: 0.00秒) ===
+=== LightGBMモデル学習 開始 ===
+LightGBMモデルの学習を開始します...
+LightGBMモデルの学習が完了しました
+=== LightGBMモデル学習 完了 (実行時間: 0.08秒) ===
+=== モデル・スケーラー保存 開始 ===
+=== ディレクトリ確認・作成 開始 ===
+=== ディレクトリ確認・作成 完了 (実行時間: 0.00秒) ===
+LightGBMモデルを train/LightGBM/LightGBM_model.sav に保存しました
+スケーラーを train/LightGBM/LightGBM_model_scaler.pkl に保存しました
+=== モデル・スケーラー保存 完了 (実行時間: 0.04秒) ===
+=== モデル性能評価 開始 ===
+=== モデル性能評価開始 ===
+モデル性能評価を実行中...
+テストスコア: 0.7467
+テスト損失: 57858.867, テストMAE: 193.551
+RMSE: 240.539 kW
+R2スコア: 0.7467
+MAE: 193.551 kW
+=== モデル性能評価完了 ===
+=== モデル性能評価 完了 (実行時間: 0.00秒) ===
+=== 予測結果CSV保存 開始 ===
+=== ディレクトリ確認・作成 開始 ===
+=== ディレクトリ確認・作成 完了 (実行時間: 0.00秒) ===
+予測結果を train/LightGBM/LightGBM_Ypred.csv に保存しました（879行）
+=== 予測結果CSV保存 完了 (実行時間: 0.04秒) ===
+=== 予測結果可視化 開始 ===
+=== ディレクトリ確認・作成 開始 ===
+=== ディレクトリ確認・作成 完了 (実行時間: 0.00秒) ===
+=== ディレクトリ確認・作成 開始 ===
+=== ディレクトリ確認・作成 完了 (実行時間: 0.00秒) ===
+全期間グラフを train/LightGBM/LightGBM_Ypred.png に保存しました（16:9統一フォーマット）
+1週間グラフを train/LightGBM/LightGBM_Ypred_7d.png に保存しました（16:9統一フォーマット）
+=== 予測結果可視化 完了 (実行時間: 2.04秒) ===
+=== LightGBM電力需要予測モデル学習完了 ===
+=== LightGBM学習統合処理 完了 (実行時間: 2.52秒) ===
+=== LightGBM学習完了 (実行時間: 2.54秒) ===
+最終結果 - RMSE: 240.539 kW, R2スコア: 0.7467, MAE: 193.551 kW
+
+[2025-10-15 11:48:30] /run-tomorrow-data: invoking tomorrow/temp.py before tomorrow/data.py
+[2025-10-15 11:48:30] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\temp.py
+[2025-10-15 11:48:30] Child env subset: {'AI_TARGET_YEARS': None, 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:48:32] Script finished: tomorrow\temp.py returncode=0
+[2025-10-15 11:48:32] STDOUT:
+=== tomorrow気温データ取得・処理開始（パフォーマンス最適化版） ===
+=== 処理完了 ===
+実行時間: 1.189秒
+メモリ使用量変化: +4.6MB (開始: 59.7MB → 終了: 64.3MB)
+出力ファイル: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv
+
+[2025-10-15 11:48:32] STDERR:
+2025-10-15 11:48:31,340 - __main__ - INFO - main:440 - 開始時メモリ使用量: 59.7MB
+2025-10-15 11:48:31,340 - __main__ - INFO - temp:405 - 気温データ取得処理開始
+2025-10-15 11:48:31,340 - __main__ - INFO - wrapper:179 - 気温データAPI取得開始
+2025-10-15 11:48:31,340 - __main__ - INFO - fetch_temperature_data:259 - API Request URL: https://api.open-meteo.com/v1/forecast?latitude=35.6785&longitude=139.6823&hourly=temperature_2m&timezone=Asia%2FTokyo&past_days=7&forecast_days=7
+2025-10-15 11:48:32,507 - __main__ - INFO - wrapper:184 - 気温データAPI取得完了 (実行時間: 1.166秒)
+2025-10-15 11:48:32,523 - __main__ - INFO - create_temperature_dataframe:323 - 気温データフレーム作成完了: 336行, カラム: ['MONTH', 'WEEK', 'HOUR', 'TEMP']
+2025-10-15 11:48:32,524 - __main__ - INFO - wrapper:179 - CSV保存開始
+2025-10-15 11:48:32,529 - __main__ - INFO - save_temperature_csv:365 - 気温データCSV保存完了: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv (0.01MB)
+2025-10-15 11:48:32,529 - __main__ - INFO - wrapper:184 - CSV保存完了 (実行時間: 0.005秒)
+2025-10-15 11:48:32,529 - __main__ - INFO - temp:418 - 気温データ取得処理完了 (実行時間: 1.188秒)
+
+[2025-10-15 11:48:32] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\data.py
+[2025-10-15 11:48:32] Child env subset: {'AI_TARGET_YEARS': None, 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:48:34] Script finished: tomorrow\data.py returncode=0
+[2025-10-15 11:48:34] STDOUT:
+=== tomorrow予測データ取得開始 ===
+データ更新・重複除去完了: data/juyo-2025.csv
+データ更新・重複除去完了: data/juyo-2025.csv
+最新日付: 2025-10-15 00:00:00
+開始日付: 2025-10-08 00:00:00
+予測日数: 7
+tomorrow予測データセット作成完了: tomorrow/Ytest.csv (168行)
+=== tomorrow予測データ取得完了 (実行時間: 0.65秒) ===
+
+[2025-10-15 11:48:34] STDERR:
+2025-10-15 11:48:33,486 - __main__ - INFO - main:699 - tomorrow予測データ取得開始
+2025-10-15 11:48:33,487 - __main__ - INFO - data:352 - tomorrow予測データ取得開始
+2025-10-15 11:48:33,487 - __main__ - INFO - data:379 - 試行対象URL: https://www.tepco.co.jp/forecast/html/images/202510_power_usage.zip
+2025-10-15 11:48:33,487 - __main__ - INFO - data:380 - 試行対象ファイル: data/juyo-2025.csv
+2025-10-15 11:48:33,487 - __main__ - INFO - wrapper:188 - 既存データ読み込み開始
+2025-10-15 11:48:33,511 - __main__ - INFO - load_existing_data:288 - 既存データ読み込み完了: data/juyo-2025.csv (6,888行)
+2025-10-15 11:48:33,511 - __main__ - INFO - wrapper:190 - 既存データ読み込み完了
+2025-10-15 11:48:33,511 - __main__ - INFO - wrapper:188 - 最新データダウンロード・展開開始
+2025-10-15 11:48:33,749 - __main__ - INFO - download_and_extract_latest_data:492 - ZIPファイルダウンロード・処理完了: https://www.tepco.co.jp/forecast/html/images/202510_power_usage.zip
+2025-10-15 11:48:33,780 - __main__ - INFO - wrapper:190 - 最新データダウンロード・展開完了
+2025-10-15 11:48:33,780 - __main__ - INFO - data:379 - 試行対象URL: https://www.tepco.co.jp/forecast/html/images/202509_power_usage.zip
+2025-10-15 11:48:33,780 - __main__ - INFO - data:380 - 試行対象ファイル: data/juyo-2025.csv
+2025-10-15 11:48:33,780 - __main__ - INFO - wrapper:188 - 既存データ読み込み開始
+2025-10-15 11:48:33,800 - __main__ - INFO - load_existing_data:288 - 既存データ読み込み完了: data/juyo-2025.csv (6,888行)
+2025-10-15 11:48:33,800 - __main__ - INFO - wrapper:190 - 既存データ読み込み完了
+2025-10-15 11:48:33,800 - __main__ - INFO - wrapper:188 - 最新データダウンロード・展開開始
+2025-10-15 11:48:34,032 - __main__ - INFO - download_and_extract_latest_data:492 - ZIPファイルダウンロード・処理完了: https://www.tepco.co.jp/forecast/html/images/202509_power_usage.zip
+2025-10-15 11:48:34,065 - __main__ - INFO - wrapper:190 - 最新データダウンロード・展開完了
+2025-10-15 11:48:34,066 - __main__ - INFO - wrapper:188 - tomorrow予測データセット作成開始
+2025-10-15 11:48:34,107 - __main__ - INFO - wrapper:188 - 温度データ処理・データセット作成開始
+2025-10-15 11:48:34,111 - __main__ - INFO - wrapper:190 - 温度データ処理・データセット作成完了
+2025-10-15 11:48:34,111 - __main__ - INFO - wrapper:190 - tomorrow予測データセット作成完了
+2025-10-15 11:48:34,126 - __main__ - INFO - data:421 - tomorrow予測データ取得完了
+2025-10-15 11:48:34,139 - __main__ - INFO - main:720 - tomorrow予測データ取得正常完了 (実行時間: 0.65秒)
+
+[2025-10-15 11:48:40] Received /run-tomorrow payload: {'model': 'LightGBM', 'years': ['2024']}
+[2025-10-15 11:48:40] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\LightGBM\LightGBM_tomorrow.py
+[2025-10-15 11:48:40] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:48:44] Script finished: tomorrow\LightGBM\LightGBM_tomorrow.py returncode=0
+[2025-10-15 11:48:44] STDOUT:
+AI_TARGET_YEARS=2024
+============================================================
+LightGBM翌日電力需要予測 開始
+============================================================
+実行開始: LightGBM翌日予測メイン処理
+実行開始: 学習データ読み込み
+学習データ形状: (7903, 4)
+実行完了: 学習データ読み込み
+実行時間: 0.036秒
+メモリ使用量: 115.7MB → 118.0MB (差分: +2.3MB)
+ガベージコレクション: 0個のオブジェクトを回収
+実行開始: テスト・翌日データ読み込み
+テストデータ形状: (168,)
+翌日データ形状: (336, 4)
+実行完了: テスト・翌日データ読み込み
+実行時間: 0.032秒
+メモリ使用量: 118.0MB → 118.0MB (差分: +0.0MB)
+ガベージコレクション: 0個のオブジェクトを回収
+実行開始: モデル読み込み
+モデル読み込み完了: train/LightGBM/LightGBM_model.sav
+実行完了: モデル読み込み
+実行時間: 0.083秒
+メモリ使用量: 118.0MB → 120.2MB (差分: +2.1MB)
+ガベージコレクション: 0個のオブジェクトを回収
+実行開始: 予測実行
+テスト精度: 0.9491
+最終結果 - RMSE: 97.886 kW, R2: 0.9491, MAE: 72.503 kW
+実行完了: 予測実行
+実行時間: 0.036秒
+メモリ使用量: 120.2MB → 120.4MB (差分: +0.2MB)
+ガベージコレクション: 8個のオブジェクトを回収
+実行開始: 翌日予測結果保存
+予測結果保存完了: tomorrow/LightGBM/LightGBM_tomorrow.csv (336行)
+実行完了: 翌日予測結果保存
+実行時間: 0.037秒
+メモリ使用量: 120.4MB → 120.5MB (差分: +0.1MB)
+ガベージコレクション: 0個のオブジェクトを回収
+実行開始: グラフ生成
+グラフ保存完了: tomorrow/LightGBM/LightGBM_tomorrow.png
+実行完了: グラフ生成
+実行時間: 0.736秒
+メモリ使用量: 120.5MB → 139.7MB (差分: +19.2MB)
+ガベージコレクション: 4110個のオブジェクトを回収
+実行完了: LightGBM翌日予測メイン処理
+実行時間: 0.987秒
+メモリ使用量: 115.7MB → 139.7MB (差分: +24.0MB)
+ガベージコレクション: 0個のオブジェクトを回収
+============================================================
+LightGBM翌日電力需要予測 完了
+最終結果 - RMSE: 97.89 kW, スコア: 0.96
+総実行時間: 0.987秒
+============================================================
+
+[2025-10-15 11:48:55] Received /run-tomorrow payload: {'model': 'Keras', 'years': ['2024']}
+[2025-10-15 11:48:55] Executing script: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.py
+[2025-10-15 11:48:55] Child env subset: {'AI_TARGET_YEARS': '2024', 'SERVER_PYTHON': None, 'PYTHONIOENCODING': 'utf-8'}
+[2025-10-15 11:49:07] Script finished: tomorrow\Keras\Keras_tomorrow.py returncode=0
+[2025-10-15 11:49:07] STDOUT:
+psutil: 利用可能 - メモリ監視機能を有効化
+Keras Tomorrow: パフォーマンス最適化設定を適用しました
+Keras: 利用可能
+AI_TARGET_YEARS=2024
+=== Keras Tomorrow プログラム開始 ===
+開始時メモリ使用量: 300.3MB
+=== Keras Tomorrow 電力需要予測開始（統一アーキテクチャ版） ===
+[明日予測処理開始] メモリ使用量: 13.40 GB
+[データ読み込み開始] メモリ使用量: 13.40 GB
+訓練データを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\Xtrain.csv
+テストデータを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\Xtest.csv
+ラベルデータを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\data\Ytrain.csv
+[データ読み込み完了] メモリ使用量: 13.40 GB
+学習データの読み込みが完了しました (実行時間: 0.014秒)
+[OK] load_training_data 実行時間: 0.103秒
+[テスト・明日データ読み込み開始] メモリ使用量: 13.40 GB
+テストラベルを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Ytest.csv
+明日予測用データを読み込んでいます: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\tomorrow.csv
+[テスト・明日データ読み込み完了] メモリ使用量: 13.40 GB
+テストデータと明日予測用データの読み込みが完了しました (実行時間: 0.014秒)
+[OK] load_test_and_tomorrow_data 実行時間: 0.105秒
+訓練済みモデルとスケーラーを読み込んでいます...
+[モデル読み込み開始] メモリ使用量: 13.40 GB
+モデルディレクトリ: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\train\Keras
+[OK] スケーラー読み込み成功: <class 'sklearn.preprocessing._data.StandardScaler'>
+[WARN] H5モデル読み込み失敗（手法1）: 'utf-8' codec can't decode byte 0xe2 in position 33: invalid continuation byte
+手法2: SAVファイル試行中...
+SAVファイルサイズ: 78,990 bytes
+[OK] SAVファイルからモデル読み込み成功（手法2）
+[モデル読み込み完了] メモリ使用量: 13.39 GB
+モデル読み込み完了 (実行時間: 0.280秒)
+モデルタイプ: <class 'keras.src.engine.sequential.Sequential'>
+スケーラータイプ: <class 'sklearn.preprocessing._data.StandardScaler'>
+[モデル読み込み完了] メモリ使用量: 13.39 GB
+[予測処理開始] メモリ使用量: 13.39 GB
+テストデータ標準化開始: (879, 4)
+翌日データ標準化開始: (336, 4)
+[データ標準化完了] メモリ使用量: 13.39 GB
+テストデータ予測実行中...
+翌日データ予測実行中...
+自動スケール調整を実行
+予測値範囲調整完了: テスト予測 1363-2637kW, 翌日予測 1684-3643kW
+[予測処理完了] メモリ使用量: 13.39 GB
+予測処理完了 (実行時間: 0.417秒)
+テスト予測: (879, 1), 翌日予測: (336, 1)
+[OK] predict_with_model 実行時間: 0.423秒
+[予測完了] メモリ使用量: 13.39 GB
+評価指標を計算しています
+ypred形状: (168, 1), ytest形状: (879, 1)
+[WARN] 形状不一致を検出: ypred(168, 1) vs ytest(879, 1)
+[OK] ytestを調整: (168, 1)
+評価指標計算完了 (実行時間: 0.000秒)
+MAE: 1023.870
+RMSE: 1143.69
+R2 Score: -38.8084
+[CSV保存開始] メモリ使用量: 13.39 GB
+明日の予測結果を保存しています: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.csv
+[CSV保存完了] メモリ使用量: 13.39 GB
+明日の予測結果の保存が完了しました (実行時間: 0.008秒, サイズ: 0.00MB)
+[OK] save_tomorrow_predictions 実行時間: 0.107秒
+予測結果のグラフを作成しています: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.png
+予測結果のグラフ作成が完了しました
+[明日予測処理完了] メモリ使用量: 13.43 GB
+明日の電力需要予測が完了しました: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.csv
+R2 Score: -38.8084
+[OK] tomorrow 実行時間: 2.403秒
+メモリ使用量変化: +55.7MB (開始: 300.3MB → 終了: 356.0MB)
+=== 処理完了 ===
+RMSE: 1143.69
+実行時間: 2.403秒
+出力ファイル: c:\Users\J1921604\Obsidian\AIモデル体感コース\01_実績\05_電力需要予測AIモデル構築_v2\AI\tomorrow\Keras\Keras_tomorrow.csv
+=== Keras Tomorrow プログラム正常終了 ===
+
+[2025-10-15 11:49:07] STDERR:
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+WARNING:tensorflow:From C:\Users\J1921604\AppData\Local\Programs\Python\Python310\lib\site-packages\keras\src\backend.py:277: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+
+
